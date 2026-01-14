@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Search Visualization</title>
+    <link rel="stylesheet" href="../static/style.css" />
+  </head>
+
+  <body>
+
+    <div class="banner">
+      <h1>What does Munich work on?</h1>
+    </div>
+
+    <h1>Search Keyword</h1>
+
+    <div class="example-searches">
+      <button class="example-btn" data-keyword="Klima">Klima</button>
+      <button class="example-btn" data-keyword="Mieten">Mieten</button>
+      <button class="example-btn" data-keyword="Migranten">Migranten</button>
+      <button class="example-btn" data-keyword="Wehrpflicht">Wehrpflicht</button>
+      <button class="example-btn" data-keyword="Fahrradweg">Fahrradweg</button>
+    </div>
+
+    <div class="search-bar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter keywords..."
+      />
+      <button id="searchBtn">Search</button>
+    </div>
+
+
+    <!-- This is where D3 or any visualization will go -->
+    <div id="visualization"></div>
+
+    <script src="../static/script.js"></script>
+  </body>
+</html>

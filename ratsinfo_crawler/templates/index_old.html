@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show DataFrame JSON</title>
+</head>
+<body>
+
+<h1>Get DataFrame result</h1>
+
+<input type="text" id="word" placeholder="Enter a word">
+<button onclick="fetchData()">Submit</button>
+
+<h2>Result</h2>
+<ul id="resultList"></ul>
+
+<script>
+function fetchData() {
+    const word = document.getElementById("word").value;
+    fetch(`/get_dataframe?word=${word}`)
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById("resultList");
+            list.innerHTML = "";
+            if (data.length === 0) {
+                list.innerHTML = "<li>No results</li>";
+                return;
+            }
+
+            // data is a list of objects (dicts)
+            data.forEach(row => {
+                for (const [key, value] of Object.entries(row)) {
+                    const li = document.createElement("li");
+                    li.textContent = `${key}: ${value}`;
+                    list.appendChild(li);
+                }
+                // optional: separator between rows
+                const hr = document.createElement("hr");
+                list.appendChild(hr);
+            });
+        })
+        .catch(err => console.error(err));
+}
+</script>
+
+</body>
+</html>
