@@ -34,7 +34,12 @@ def extract_keywords_tfidf(file: str, top_n: int = 10) -> list[str]:
             'dass', 'sie', 'nach', 'wird', 'bei', 'einer', 'um', 'am', 'sind',
             'noch', 'wie', 'einem', 'über', 'einen', 'so', 'zum', 'war', 'haben',
             'nur', 'oder', 'aber', 'vor', 'zur', 'bis', 'mehr', 'durch', 'man',
-            'sein', 'wurde', 'sei', 'in', 'prozent', 'jahr', 'jahren', 'müssen'
+            'sein', 'wurde', 'sei', 'in', 'prozent', 'jahr', 'jahren', 'müssen',
+            # project-specific exclusions to avoid generic/structural terms in suggestions
+            'münchen', 'stadtrat', 'fraktion', 'rathaus', "muenchen", "oberbürgermeister", 
+            "oberbuergermeister", "stadträtin", "stadraetin", "antrag", "anträge", "antraege", 
+            "stadtraetin", "landeshauptstadt", "stadt", "bürgerservice", "buergerservice",
+            "herr", "frau", "damen", "herren", "herrn"
         }
         
         # Combine all document content

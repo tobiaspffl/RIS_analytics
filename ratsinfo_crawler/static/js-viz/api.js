@@ -63,6 +63,25 @@ export async function fetchFraktionen(word) {
 }
 
 /**
+ * Fetch faction share data for a given keyword
+ * @param {string} word - The keyword to search for
+ * @returns {Promise<Array>} - Array of {name, share, count, total}
+ */
+export async function fetchFraktionenShare(word) {
+  try {
+    const res = await fetch(`/fraktionen_share?word=${encodeURIComponent(word)}`);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return [];
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching fraktionen share:", error);
+    return [];
+  }
+}
+
+/**
  * Fetch processing metrics for a given keyword
  * @param {string} word - The keyword to search for
  * @returns {Promise<Object>} - Object with avgDays, openCount, closedCount, totalCount, byReferat

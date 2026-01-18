@@ -2,6 +2,9 @@ import pandas as pd
 import re
 import matplotlib.pyplot as plt
 
+# Central parameter: minimum occurrences in a document to count as a hit
+MIN_OCCURRENCES_PER_DOC = 1
+
 
 def extract_fraktion(text):
     """Versucht, die Fraktion(en) aus dem Text zu extrahieren"""
@@ -30,6 +33,10 @@ def extract_fraktion(text):
 
 
 def find_word_occurrences(file, word):
+    """
+    Count documents that mention the word at least MIN_OCCURRENCES_PER_DOC times.
+    Each document contributes at most 1 to the count (binary hit per doc).
+    """
     print(word)
     df = pd.read_csv(file)
 
@@ -37,11 +44,16 @@ def find_word_occurrences(file, word):
 
     pattern = re.compile(word, re.IGNORECASE)
 
-    df["count"] = df["document_content"].apply(lambda x: len(pattern.findall(x)))
+    # Raw occurrences per document
+    df["occurrences"] = df["document_content"].apply(lambda x: len(pattern.findall(x)))
 
-    # Total frequency across the whole dataset
-    total_word_count = df["count"].sum()
+    # Binary count per document based on threshold
+    df["count"] = (df["occurrences"] >= MIN_OCCURRENCES_PER_DOC).astype(int)
 
+    # Total matching documents across the dataset (sum of binary counts)
+    total_word_count = int(df["count"].sum())
+
+    # Only documents that meet the threshold
     rows_with_word = df[df["count"] > 0]
     return rows_with_word, total_word_count
 
@@ -181,3 +193,49 @@ def compute_processing_metrics(file: str, words: list[str]) -> dict:
         "totalCount": int(total_count),
         "byReferat": by_referat
     }
+
+
+def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Gestellt von") -> pd.DataFrame:
+    """
+    Compute share of proposals per faction (group_by) that mention the given words.
+
+    Returns a DataFrame with columns:
+    [name, share, count, total]
+
+    - name: the faction/submitter
+    - count: number of matching documents for the keyword(s)
+    - total: total number of documents for that faction
+    - share: count / total (float in [0,1])
+    """
+    # Read full dataset to compute totals per faction
+    df_all = pd.read_csv(file)
+
+    if group_by not in df_all.columns:
+        return pd.DataFrame({"name": [], "share": [], "count": [], "total": []})
+
+    # Compute totals per faction across all documents
+    totals = df_all.groupby(group_by).size().reset_index(name="total")
+
+    # Compute matched counts per faction for given words
+    rows_with_words, _ = find_words_frequency(file, words)
+
+    if rows_with_words.empty or group_by not in rows_with_words.columns:
+        # No matches: return factions with zero counts (filtered out later)
+        matched_counts = pd.DataFrame({group_by: [], "count": []})
+    else:
+        matched_counts = (
+            rows_with_words.groupby(group_by)["count"].sum().reset_index()
+        )
+
+    # Merge totals with matched counts
+    merged = totals.merge(matched_counts, on=group_by, how="left")
+    merged["count"] = merged["count"].fillna(0).astype(int)
+    merged["share"] = merged["count"] / merged["total"].replace(0, pd.NA)
+
+    # Clean up and sort; filter out zero matches to focus on relevant factions
+    merged = merged.rename(columns={group_by: "name"})
+    merged = merged.dropna(subset=["share"])  # drop divisions by zero
+    merged = merged[merged["count"] > 0]
+    merged = merged.sort_values("share", ascending=False)
+
+    return merged

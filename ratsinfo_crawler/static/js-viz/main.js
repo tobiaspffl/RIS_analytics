@@ -9,8 +9,8 @@
  */
 
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
-import { renderTrendChart, renderBarChart, renderFraktionChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchMetrics } from './api.js';
+import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -25,6 +25,7 @@ const state = {
   currentWord: "",
   showTrend: true,
   showFraktionen: true,
+  showFraktionenShare: true,
   showTopDocs: false
 };
 
@@ -56,11 +57,13 @@ async function refresh() {
   // Show loading state in containers
   const trendContainer = document.getElementById("viz-trend");
   const fraktionenContainer = document.getElementById("viz-fraktionen");
+  const fraktionenShareContainer = document.getElementById("viz-fraktionen-share");
   const docsContainer = document.getElementById("viz-topdocs");
 
-  if (trendContainer && fraktionenContainer && docsContainer) {
+  if (trendContainer && fraktionenContainer && fraktionenShareContainer && docsContainer) {
     trendContainer.innerHTML = "<p>Loading data...</p>";
     fraktionenContainer.innerHTML = "";
+    fraktionenShareContainer.innerHTML = "";
     docsContainer.innerHTML = "";
   }
 
@@ -79,6 +82,12 @@ async function refresh() {
       promises.push(Promise.resolve(null));
     }
 
+    if (state.showFraktionenShare) {
+      promises.push(fetchFraktionenShare(word));
+    } else {
+      promises.push(Promise.resolve(null));
+    }
+
     if (state.showTopDocs) {
       promises.push(fetchDocuments(word));
     } else {
@@ -88,7 +97,7 @@ async function refresh() {
     // Fetch metrics data
     promises.push(fetchMetrics(word));
 
-    const [trendData, fraktionenData, documentsData, metrics] = await Promise.all(promises);
+    const [trendData, fraktionenData, fraktionenShareData, documentsData, metrics] = await Promise.all(promises);
     // Containers sind bereits oben initialisiert
 
     // Render trend chart
@@ -123,6 +132,23 @@ async function refresh() {
       }
     } else {
       fraktionenContainer.innerHTML = "";
+    }
+
+    // Render fraktionen share chart
+    if (state.showFraktionenShare) {
+      if (fraktionenShareData && fraktionenShareData.length > 0) {
+        renderFraktionShareChart(fraktionenShareData, "#viz-fraktionen-share", {
+          title: `Anteil thematisierte Anträge`,
+          searchTerm: word,
+          width: 900,
+          height: 400,
+          limit: 15
+        });
+      } else {
+        fraktionenShareContainer.innerHTML = "<p>No faction share data available</p>";
+      }
+    } else {
+      fraktionenShareContainer.innerHTML = "";
     }
 
     // Render top documents chart

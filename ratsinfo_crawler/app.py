@@ -62,6 +62,17 @@ def fraktionen():
     return jsonify(agg.to_dict(orient="records"))
 
 
+# Route to return share of keyword-related proposals per faction
+@app.route("/fraktionen_share", methods=["GET"])
+def fraktionen_share():
+    word = request.args.get("word", type=str)
+    if not word:
+        return jsonify([])
+
+    agg_share = ri.compute_fraktionen_share("data.csv", [word])
+    return jsonify(agg_share.to_dict(orient="records"))
+
+
 # Route to return processing metrics
 @app.route("/metrics", methods=["GET"])
 def metrics():

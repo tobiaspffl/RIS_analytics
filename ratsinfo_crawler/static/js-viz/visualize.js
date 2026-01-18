@@ -896,3 +896,212 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
     .style("fill", "#1f2937")
     .text(titleText);
 }
+
+/**
+ * Render a horizontal bar chart for faction share (percentage of proposals mentioning the keyword)
+ * @param {Array} data - Array of {name, share, count, total}
+ * @param {string} selector - CSS selector for container
+ * @param {Object} options - Configuration object
+ * @param {string} options.title - Chart title
+ * @param {number} options.width - Chart width
+ * @param {number} options.height - Chart height
+ * @param {number} options.limit - Max factions to show
+ * @param {string} options.searchTerm - The search term (for context in title)
+ */
+export function renderFraktionShareChart(data, selector, options = {}) {
+  const {
+    title = "Anteil thematisierte Anträge",
+    width = 900,
+    height = 400,
+    limit = 15,
+    searchTerm = ""
+  } = options;
+
+  const container = document.querySelector(selector);
+  if (!container) {
+    console.error(`Container not found: ${selector}`);
+    return;
+  }
+
+  container.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p style='text-align:center; padding:40px; color:#666;'>Keine Daten verfügbar</p>";
+    return;
+  }
+
+  // Prepare and sort by share descending, limit to top N
+  const items = data
+    .filter(d => typeof d.share === "number" && d.share > 0)
+    .sort((a, b) => b.share - a.share)
+    .slice(0, limit);
+
+  const margin = { top: 40, right: 30, bottom: 30, left: 200 };
+  const chartWidth = width - margin.left - margin.right;
+  const chartHeight = height - margin.top - margin.bottom;
+
+  const svg = d3
+    .select(selector)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .style("background-color", "#fafafa");
+
+  const g = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // X scale in [0,1] for share; use percentage ticks
+  const xScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(items, d => d.share)])
+    .nice()
+    .range([0, chartWidth]);
+
+  const yScale = d3
+    .scaleBand()
+    .domain(items.map(d => d.name))
+    .range([0, chartHeight])
+    .padding(0.3);
+
+  // Grid lines (vertical)
+  g.append("g")
+    .attr("class", "grid")
+    .attr("stroke", "#e5e7eb")
+    .attr("stroke-dasharray", "4")
+    .attr("opacity", 0.7)
+    .call(
+      d3
+        .axisBottom(xScale)
+        .tickSize(chartHeight)
+        .tickFormat("")
+    )
+    .select(".domain")
+    .remove();
+
+  // X-Axis with percentage format
+  const percentFormat = d3.format(".0%");
+  g.append("g")
+    .attr("transform", `translate(0,${chartHeight})`)
+    .call(d3.axisBottom(xScale).tickFormat(percentFormat))
+    .attr("class", "axis x-axis")
+    .style("font-size", "12px");
+
+  // Y-Axis for faction names
+  g.append("g")
+    .call(d3.axisLeft(yScale))
+    .attr("class", "axis y-axis")
+    .style("font-size", "12px");
+
+  const colorScale = d3
+    .scaleOrdinal()
+    .domain(items.map(d => d.name))
+    .range(d3.schemeSet2);
+
+  // Tooltip
+  const tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("position", "absolute")
+    .style("padding", "8px 12px")
+    .style("background-color", "rgba(0, 0, 0, 0.8)")
+    .style("color", "#fff")
+    .style("border-radius", "4px")
+    .style("font-size", "12px")
+    .style("pointer-events", "none")
+    .style("display", "none")
+    .style("z-index", "1000");
+
+  // Bars
+  g.selectAll(".bar")
+    .data(items)
+    .join("rect")
+    .attr("class", "bar")
+    .attr("y", d => yScale(d.name))
+    .attr("x", 0)
+    .attr("height", yScale.bandwidth())
+    .attr("width", d => xScale(d.share))
+    .attr("fill", d => colorScale(d.name))
+    .style("cursor", "pointer")
+    .style("transition", "all 200ms ease-in-out")
+    .on("mouseover", function (event, d) {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .style("opacity", 0.8)
+        .attr("filter", "drop-shadow(0px 2px 4px rgba(0,0,0,0.2))");
+
+      tooltip
+        .style("display", "block")
+        .html(`<strong>${d.name}</strong><br/>Anteil: ${percentFormat(d.share)}<br/>${d.count} von ${d.total}`)
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 10 + "px");
+    })
+    .on("mousemove", function (event) {
+      tooltip
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 10 + "px");
+    })
+    .on("mouseout", function () {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .style("opacity", 1)
+        .attr("filter", "none");
+
+      tooltip.style("display", "none");
+    });
+
+  // Value labels (percentage)
+  g.selectAll(".bar-label")
+    .data(items)
+    .join("text")
+    .attr("class", "bar-label")
+    .attr("y", d => yScale(d.name) + yScale.bandwidth() / 2)
+    .attr("x", d => xScale(d.share) + 5)
+    .attr("dy", "0.35em")
+    .attr("font-size", "12px")
+    .attr("fill", "#374151")
+    .attr("font-weight", "500")
+    .text(d => percentFormat(d.share));
+
+  // X-Axis label
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", height - 5)
+    .attr("text-anchor", "middle")
+    .attr("class", "axis-label")
+    .style("font-size", "13px")
+    .style("fill", "#666")
+    .text("Anteil thematisierte Anträge (%)");
+
+  // Y-Axis label
+  svg
+    .append("text")
+    .attr("x", 15)
+    .attr("y", 20)
+    .attr("text-anchor", "start")
+    .attr("class", "axis-label")
+    .style("font-size", "13px")
+    .style("fill", "#666")
+    .text("Fraktion");
+
+  // Title
+  const titleText = searchTerm
+    ? `${title}: "${capitalizeFirstLetter(searchTerm)}"`
+    : title;
+
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 25)
+    .attr("text-anchor", "middle")
+    .attr("class", "chart-title")
+    .style("font-size", "18px")
+    .style("font-weight", "600")
+    .style("fill", "#1f2937")
+    .text(titleText);
+}

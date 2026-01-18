@@ -2,12 +2,21 @@
  * Load top keywords from backend and dynamically create example search buttons
  */
 
+// Central suggestions count (fallback). Can be overridden via
+// data-count on the element with id="example-searches" in index.html.
+const TOP_KEYWORD_COUNT = 8;
+
 async function loadTopKeywords() {
   try {
-    const response = await fetch('/api/top-keywords?count=5');
+    const container = document.getElementById('example-searches');
+    const attrCount = container && container.dataset && container.dataset.count
+      ? parseInt(container.dataset.count, 10)
+      : NaN;
+    const count = Number.isFinite(attrCount) ? attrCount : TOP_KEYWORD_COUNT;
+
+    const response = await fetch(`/api/top-keywords?count=${count}`);
     const data = await response.json();
     
-    const container = document.getElementById('example-searches');
     container.innerHTML = ''; // Clear loading message
     
     if (!data.keywords || data.keywords.length === 0) {
