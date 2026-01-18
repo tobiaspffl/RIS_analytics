@@ -12,6 +12,14 @@ import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
 import { fetchTrend, fetchDocuments, fetchFraktionen, fetchMetrics } from './api.js';
 
+/**
+ * Helper function to capitalize first letter of a word
+ */
+function capitalizeFirstLetter(word) {
+  if (!word) return word;
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
 // Application state
 const state = {
   currentWord: "",
@@ -191,7 +199,7 @@ searchInput.addEventListener("keypress", (e) => {
 exampleBtns.forEach(btn => {
   btn.addEventListener("click", (e) => {
     const keyword = e.target.getAttribute("data-keyword");
-    searchInput.value = keyword;
+    searchInput.value = capitalizeFirstLetter(keyword);
     refresh();
   });
 });

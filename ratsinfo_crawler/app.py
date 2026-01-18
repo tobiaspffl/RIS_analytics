@@ -1,38 +1,19 @@
 ﻿import pandas as pd
 from flask import Flask, request, render_template, jsonify
 import Ratsinfo as ri
-import re
 
 app = Flask(__name__)
+
+# Register dynamic keywords blueprint 
+try:
+    from keyword_routes import keyword_bp
+    app.register_blueprint(keyword_bp)
+except ImportError:
+    print("Warning: keyword_routes module not found. Dynamic keywords feature disabled.")
 
 def get_data(word: str):
     rows_with_words, total_word_count = ri.find_words_frequency("data.csv", [word])
     return rows_with_words.to_dict(orient="records")
-
-def extract_fraktion(text):
-    """Versucht, die Fraktion(en) aus dem Text zu extrahieren"""
-    if not text:
-        return []
-    
-    fraktionen = []
-    
-    # Pattern 1: "Fraktion [Name] des Stadtrates"
-    matches = re.findall(r'Fraktion\s+([A-Za-z\-/\s\(\)]+?)(?:\s+des Stadtrates|[\n:])', str(text))
-    fraktionen.extend([m.strip() for m in matches])
-    
-    # Pattern 2: "[Name]-Fraktion im Stadtrat" (z.B. "CSU-FW-Fraktion")
-    matches = re.findall(r'([A-Za-z\-/]+?)\s*-\s*(?:Fraktion|Fraktion im Stadtrat)', str(text))
-    fraktionen.extend([m.strip() for m in matches])
-    
-    # Pattern 3: Aus Email-Adresse extrahieren (z.B. csu-fw-fraktion@muenchen.de)
-    matches = re.findall(r'([a-z\-]+)-fraktion@', str(text).lower())
-    if matches:
-        fraktionen.extend([m.replace('-', ' ').title() for m in matches if m not in fraktionen])
-    
-    # Duplikate entfernen und bereinigen
-    fraktionen = list(set(f for f in fraktionen if f and len(f) > 3))
-    
-    return fraktionen
 
 # Route to render HTML page
 @app.route("/", methods=["GET"])

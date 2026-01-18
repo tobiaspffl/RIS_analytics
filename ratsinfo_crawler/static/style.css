@@ -84,6 +84,13 @@ button:hover {
   border: 1px solid var(--border);
 }
 
+/* Hide empty visualization containers */
+.viz-container:empty {
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+
 .viz-container svg {
   max-width: 100%;
   height: auto;
@@ -169,4 +176,21 @@ button:hover {
   background: #e5e7eb;
 }
 
+/* Loading and error states */
+#example-searches .loading,
+#example-searches .error {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 12px;
+}
 
+#example-searches .error {
+  color: #b91c1c;
+}
+
+.keyword-info {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: -12px;
+  margin-bottom: 16px;
+}

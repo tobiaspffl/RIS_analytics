@@ -2,6 +2,33 @@ import pandas as pd
 import re
 import matplotlib.pyplot as plt
 
+
+def extract_fraktion(text):
+    """Versucht, die Fraktion(en) aus dem Text zu extrahieren"""
+    if not text:
+        return []
+    
+    fraktionen = []
+    
+    # Pattern 1: "Fraktion [Name] des Stadtrates"
+    matches = re.findall(r'Fraktion\s+([A-Za-z\-/\s\(\)]+?)(?:\s+des Stadtrates|[\n:])', str(text))
+    fraktionen.extend([m.strip() for m in matches])
+    
+    # Pattern 2: "[Name]-Fraktion im Stadtrat" (z.B. "CSU-FW-Fraktion")
+    matches = re.findall(r'([A-Za-z\-/]+?)\s*-\s*(?:Fraktion|Fraktion im Stadtrat)', str(text))
+    fraktionen.extend([m.strip() for m in matches])
+    
+    # Pattern 3: Aus Email-Adresse extrahieren (z.B. csu-fw-fraktion@muenchen.de)
+    matches = re.findall(r'([a-z\-]+)-fraktion@', str(text).lower())
+    if matches:
+        fraktionen.extend([m.replace('-', ' ').title() for m in matches if m not in fraktionen])
+    
+    # Duplikate entfernen und bereinigen
+    fraktionen = list(set(f for f in fraktionen if f and len(f) > 3))
+    
+    return fraktionen
+
+
 def find_word_occurrences(file, word):
     print(word)
     df = pd.read_csv(file)

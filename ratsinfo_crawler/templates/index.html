@@ -14,13 +14,21 @@
 
     <h1>Search Keyword</h1>
 
-    <div class="example-searches">
+    <p class="keyword-info">Die am häufigsten vorkommenden Themen in den Stadtrats-Anträgen:</p>
+
+
+    <div class="example-searches" id="example-searches">
+      <!-- Buttons will be dynamically generated here -->
+      <p class="loading">Loading keywords...</p>
+    </div>
+
+     <!-- <div class="example-searches">
       <button class="example-btn" data-keyword="Klima">Klima</button>
       <button class="example-btn" data-keyword="Mieten">Mieten</button>
       <button class="example-btn" data-keyword="Migranten">Migranten</button>
       <button class="example-btn" data-keyword="Wehrpflicht">Wehrpflicht</button>
       <button class="example-btn" data-keyword="Fahrradweg">Fahrradweg</button>
-    </div>
+    </div> -->
 
     <div class="search-bar">
       <input
@@ -43,6 +51,9 @@
 
     <!-- Load D3.js library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Load keyword loader script -->
+    <script src="../static/keyword-loader.js"></script>
 
     <!-- Load main application with ES modules (bundled under static/js) -->
     <script type="module" src="../static/js-viz/main.js"></script>

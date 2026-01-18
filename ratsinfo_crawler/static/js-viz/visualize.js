@@ -8,6 +8,14 @@
  */
 
 /**
+ * Helper function to capitalize first letter of a word
+ */
+function capitalizeFirstLetter(word) {
+  if (!word) return word;
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+/**
  * Render a line chart for monthly trend data
  * @param {Array} trendData - Array of {month, count, date} objects (use prepareTrendData)
  * @param {string} selector - CSS selector for container (e.g., "#viz-trend")
@@ -221,7 +229,7 @@ export function renderTrendChart(trendData, selector, options = {}) {
 
   // Title
   const titleText = searchTerm
-    ? `${title}: "${searchTerm}"`
+    ? `${title}: "${capitalizeFirstLetter(searchTerm)}"`
     : title;
 
   svg
@@ -550,7 +558,7 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
 
   // Title
   const titleText = searchTerm
-    ? `${title}: "${searchTerm}"`
+    ? `${title}: "${capitalizeFirstLetter(searchTerm)}"`
     : title;
 
   svg
@@ -635,7 +643,7 @@ export function renderKPICards(metrics, selector, options = {}) {
   // Add title if searchTerm provided
   if (searchTerm) {
     const title = document.createElement("h3");
-    title.textContent = `Bearbeitungsmetriken: "${searchTerm}"`;
+    title.textContent = `Bearbeitungsmetriken: "${capitalizeFirstLetter(searchTerm)}"`;
     title.style.cssText = "text-align: center; color: #1f2937; margin: 10px 0;";
     container.appendChild(title);
   }
@@ -874,7 +882,7 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
 
   // Title
   const titleText = searchTerm
-    ? `${title}: "${searchTerm}"`
+    ? `${title}: "${capitalizeFirstLetter(searchTerm)}"`
     : title;
 
   svg
