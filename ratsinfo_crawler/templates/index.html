@@ -31,10 +31,17 @@
       <button id="searchBtn">Search</button>
     </div>
 
+    <!-- D3 visualizations will be rendered here -->
+    <div id="visualization">
+      <div id="viz-trend" class="viz-container"></div>
+      <div id="viz-fraktionen" class="viz-container"></div>
+      <div id="viz-topdocs" class="viz-container"></div>
+    </div>
 
-    <!-- This is where D3 or any visualization will go -->
-    <div id="visualization"></div>
+    <!-- Load D3.js library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 
-    <script src="../static/script.js"></script>
+    <!-- Load main application with ES modules (bundled under static/js) -->
+    <script type="module" src="../static/js-viz/main.js"></script>
   </body>
 </html>
