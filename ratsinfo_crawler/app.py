@@ -1,4 +1,4 @@
-import pandas as pd
+﻿import pandas as pd
 from flask import Flask, request, render_template, jsonify
 import Ratsinfo as ri
 import re
@@ -79,6 +79,34 @@ def fraktionen():
 
     agg = ri.compute_fraktionen("data.csv", [word])
     return jsonify(agg.to_dict(orient="records"))
+
+
+# Route to return processing metrics
+@app.route("/metrics", methods=["GET"])
+def metrics():
+    """
+    Returns processing time metrics for a given keyword.
+    Query params: word (required)
+    Response: {
+        avgDays: float | null,
+        openCount: int,
+        closedCount: int,
+        totalCount: int,
+        byReferat: [{referat: str, avgDays: float, count: int}, ...]
+    }
+    """
+    word = request.args.get("word", type=str)
+    if not word:
+        return jsonify({
+            "avgDays": None,
+            "openCount": 0,
+            "closedCount": 0,
+            "totalCount": 0,
+            "byReferat": []
+        })
+    
+    metrics_data = ri.compute_processing_metrics("data.csv", [word])
+    return jsonify(metrics_data)
 
 
 if __name__ == "__main__":

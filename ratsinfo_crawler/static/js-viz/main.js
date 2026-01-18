@@ -8,9 +8,9 @@
  * - App state management
  */
 
-import { fetchTrend, fetchDocuments, fetchFraktionen } from "./api.js";
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
-import { renderTrendChart, renderBarChart, renderFraktionChart } from "./visualize.js";
+import { renderTrendChart, renderBarChart, renderFraktionChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchMetrics } from './api.js';
 
 // Application state
 const state = {
@@ -77,7 +77,10 @@ async function refresh() {
       promises.push(Promise.resolve(null));
     }
 
-    const [trendData, fraktionenData, documentsData] = await Promise.all(promises);
+    // Fetch metrics data
+    promises.push(fetchMetrics(word));
+
+    const [trendData, fraktionenData, documentsData, metrics] = await Promise.all(promises);
     // Containers sind bereits oben initialisiert
 
     // Render trend chart
@@ -135,6 +138,30 @@ async function refresh() {
     } else {
       docsContainer.innerHTML = "";
     }
+
+    // Render KPI Cards
+    const kpiContainer = document.querySelector("#viz-kpi");
+    if (kpiContainer) {
+      if (metrics) {
+        renderKPICards(metrics, "#viz-kpi", { searchTerm: word });
+      } else {
+        kpiContainer.innerHTML = "<p>Keine Metriken verfügbar</p>";
+      }
+    }
+
+    // Render Processing Time Chart
+    const metricsChartContainer = document.querySelector("#viz-metrics-chart");
+    if (metricsChartContainer) {
+      if (metrics && metrics.byReferat && metrics.byReferat.length > 0) {
+        renderProcessingTimeChart(metrics.byReferat, "#viz-metrics-chart", { 
+          searchTerm: word,
+          limit: 10 
+        });
+      } else {
+        metricsChartContainer.innerHTML = "<p>Keine Daten für Referate verfügbar</p>";
+      }
+    }
+
   } catch (error) {
     console.error("Error during refresh:", error);
     const trendContainer = document.getElementById("viz-trend");

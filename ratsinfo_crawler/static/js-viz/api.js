@@ -61,3 +61,22 @@ export async function fetchFraktionen(word) {
     return [];
   }
 }
+
+/**
+ * Fetch processing metrics for a given keyword
+ * @param {string} word - The keyword to search for
+ * @returns {Promise<Object>} - Object with avgDays, openCount, closedCount, totalCount, byReferat
+ */
+export async function fetchMetrics(word) {
+  try {
+    const res = await fetch(`/metrics?word=${encodeURIComponent(word)}`);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return null;
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching metrics:", error);
+    return null;
+  }
+}
