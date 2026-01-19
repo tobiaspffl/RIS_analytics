@@ -123,20 +123,37 @@ def compute_monthly_trend(file: str, words: list[str], typ_filter=None) -> pd.Da
     Args:
         typ_filter: List of Typ values to filter by (OR condition)
 
-    Returns a DataFrame with columns ['month', 'count'] sorted by month.
+    Returns a DataFrame with columns ['month', 'count', 'typ_breakdown'] sorted by month.
+    typ_breakdown is a dict mapping Typ -> count for that month.
     """
     rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
 
     if rows_with_words.empty:
-        return pd.DataFrame({"month": [], "count": []})
+        return pd.DataFrame({"month": [], "count": [], "typ_breakdown": []})
 
     rows_with_words["Gestellt am"] = pd.to_datetime(rows_with_words["Gestellt am"], errors="coerce")
     rows_with_words = rows_with_words[rows_with_words["Gestellt am"].notna()]
 
     rows_with_words["month"] = rows_with_words["Gestellt am"].dt.strftime("%Y-%m")
+    
+    # Group by month and Typ to get breakdown
+    typ_breakdown = rows_with_words.groupby(["month", "Typ"])["count"].sum().reset_index()
+    
+    # Create dictionary mapping for each month
+    breakdown_dict = {}
+    for _, row in typ_breakdown.iterrows():
+        month = row["month"]
+        if month not in breakdown_dict:
+            breakdown_dict[month] = {}
+        breakdown_dict[month][row["Typ"]] = int(row["count"])
+    
+    # Aggregate total counts per month
     monthly_trend = rows_with_words.groupby("month")["count"].sum().reset_index()
     monthly_trend = monthly_trend.sort_values("month")
-
+    
+    # Add typ_breakdown column
+    monthly_trend["typ_breakdown"] = monthly_trend["month"].map(breakdown_dict)
+    
     return monthly_trend
 
 
@@ -169,9 +186,24 @@ def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt vo
     rows_with_words = rows_with_words.explode(group_by, ignore_index=False)
     rows_with_words[group_by] = rows_with_words[group_by].str.strip()
 
+    # Group by name and Typ to get breakdown
+    typ_breakdown = rows_with_words.groupby([group_by, "Typ"])["count"].sum().reset_index()
+    
+    # Create dictionary mapping for each name
+    breakdown_dict = {}
+    for _, row in typ_breakdown.iterrows():
+        name = row[group_by]
+        if name not in breakdown_dict:
+            breakdown_dict[name] = {}
+        breakdown_dict[name][row["Typ"]] = int(row["count"])
+    
+    # Aggregate total counts per name
     agg = rows_with_words.groupby(group_by)["count"].sum().reset_index()
     agg = agg.rename(columns={group_by: "name"})
     agg = agg.sort_values("count", ascending=False)
+    
+    # Add typ_breakdown column
+    agg["typ_breakdown"] = agg["name"].map(breakdown_dict)
 
     return agg
 
@@ -233,6 +265,7 @@ def compute_processing_metrics(file: str, words: list[str], typ_filter=None) -> 
     # Group by Referat
     by_referat = []
     if "Zuständiges Referat" in closed_rows.columns:
+        # Calculate statistics
         referat_stats = (
             closed_rows.groupby("Zuständiges Referat")["processing_days"]
             .agg(["mean", "count"])
@@ -240,6 +273,19 @@ def compute_processing_metrics(file: str, words: list[str], typ_filter=None) -> 
         )
         referat_stats = referat_stats.rename(columns={"mean": "avgDays", "count": "count", "Zuständiges Referat": "referat"})
         referat_stats = referat_stats.sort_values("avgDays", ascending=False)
+        
+        # Add typ_breakdown for each referat
+        typ_breakdown_by_referat = closed_rows.groupby(["Zuständiges Referat", "Typ"]).size().reset_index(name="count")
+        breakdown_dict = {}
+        for _, row in typ_breakdown_by_referat.iterrows():
+            referat = row["Zuständiges Referat"]
+            if referat not in breakdown_dict:
+                breakdown_dict[referat] = {}
+            breakdown_dict[referat][row["Typ"]] = int(row["count"])
+        
+        # Add breakdown to stats
+        referat_stats["typ_breakdown"] = referat_stats["referat"].map(breakdown_dict)
+        
         by_referat = referat_stats.to_dict(orient="records")
 
     return {

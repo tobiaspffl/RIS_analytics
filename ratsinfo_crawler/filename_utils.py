@@ -34,6 +34,7 @@ def sanitize_filename(filename: str) -> str:
         'Ä': 'Ae',
         'Ö': 'Oe',
         'Ü': 'Ue',
+        
     }
     
     # Apply explicit replacements

@@ -184,9 +184,26 @@ export function renderTrendChart(trendData, selector, options = {}) {
         .attr("r", 6)
         .attr("fill", "#3b82f6");
 
+      // Build tooltip HTML with typ breakdown
+      let tooltipHTML = `<strong>${d.month}</strong><br/>`;
+      
+      if (d.typ_breakdown && Object.keys(d.typ_breakdown).length > 0) {
+        // Show breakdown by typ
+        const sortedTypes = Object.entries(d.typ_breakdown)
+          .sort((a, b) => b[1] - a[1]); // Sort by count descending
+        
+        sortedTypes.forEach(([typ, count]) => {
+          tooltipHTML += `${typ}: ${count}<br/>`;
+        });
+        tooltipHTML += `<strong>Gesamt: ${d.count}</strong>`;
+      } else {
+        // Fallback if no breakdown available
+        tooltipHTML += `Anträge: ${d.count}`;
+      }
+
       tooltip
         .style("display", "block")
-        .html(`<strong>${d.month}</strong><br/>Anträge: ${d.count}`)
+        .html(tooltipHTML)
         .style("left", event.pageX + 10 + "px")
         .style("top", event.pageY - 10 + "px");
     })
@@ -504,9 +521,20 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
         .style("opacity", 0.8)
         .attr("filter", "drop-shadow(0px 2px 4px rgba(0,0,0,0.2))");
 
+      let tooltipHTML = `<strong>${d.name}</strong><br/>`;
+      if (d.typ_breakdown && Object.keys(d.typ_breakdown).length > 0) {
+        const sortedTypes = Object.entries(d.typ_breakdown).sort((a, b) => b[1] - a[1]);
+        sortedTypes.forEach(([typ, count]) => {
+          tooltipHTML += `${typ}: ${count}<br/>`;
+        });
+        tooltipHTML += `<strong>Gesamt: ${d.count}</strong>`;
+      } else {
+        tooltipHTML += `Anträge: ${d.count}`;
+      }
+      
       tooltip
         .style("display", "block")
-        .html(`<strong>${d.name}</strong><br/>Anträge: ${d.count}`)
+        .html(tooltipHTML)
         .style("left", event.pageX + 10 + "px")
         .style("top", event.pageY - 10 + "px");
     })
@@ -837,9 +865,20 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
         .style("opacity", 0.8)
         .attr("filter", "drop-shadow(0px 2px 4px rgba(0,0,0,0.2))");
 
+      let tooltipHTML = `<strong>${d.referat}</strong><br/>Ø ${Math.round(d.avgDays)} Tage<br/>`;
+      if (d.typ_breakdown && Object.keys(d.typ_breakdown).length > 0) {
+        const sortedTypes = Object.entries(d.typ_breakdown).sort((a, b) => b[1] - a[1]);
+        sortedTypes.forEach(([typ, count]) => {
+          tooltipHTML += `${typ}: ${count}<br/>`;
+        });
+        tooltipHTML += `<strong>Gesamt: ${d.count}</strong>`;
+      } else {
+        tooltipHTML += `Anträge: ${d.count}`;
+      }
+      
       tooltip
         .style("display", "block")
-        .html(`<strong>${d.referat}</strong><br/>Ø ${Math.round(d.avgDays)} Tage<br/>Anträge: ${d.count}`)
+        .html(tooltipHTML)
         .style("left", event.pageX + 10 + "px")
         .style("top", event.pageY - 10 + "px");
     })
