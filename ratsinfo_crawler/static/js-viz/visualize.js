@@ -601,7 +601,7 @@ export function renderKPICards(metrics, selector, options = {}) {
 
   // Create KPI cards container
   const cardsContainer = document.createElement("div");
-  cardsContainer.style.cssText = "display: flex; gap: 20px; flex-wrap: wrap; padding: 20px; justify-content: center;";
+  cardsContainer.style.cssText = "display: flex; gap: 20px; flex-wrap: nowrap; padding: 20px; justify-content: center;";
 
   // KPI 1: Average processing time
   const avgCard = createKPICard(
@@ -635,10 +635,11 @@ export function renderKPICards(metrics, selector, options = {}) {
     "📝"
   );
 
-  cardsContainer.appendChild(avgCard);
+  // Append in order: Total, Open, Closed, Average
+  cardsContainer.appendChild(totalCard);
   cardsContainer.appendChild(openCard);
   cardsContainer.appendChild(closedCard);
-  cardsContainer.appendChild(totalCard);
+  cardsContainer.appendChild(avgCard);
 
   // Add title if searchTerm provided
   if (searchTerm) {
