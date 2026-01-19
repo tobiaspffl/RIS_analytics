@@ -39,7 +39,7 @@ def extract_keywords_tfidf(file: str, top_n: int = 10) -> list[str]:
             'münchen', 'stadtrat', 'fraktion', 'rathaus', "muenchen", "oberbürgermeister", 
             "oberbuergermeister", "stadträtin", "stadraetin", "antrag", "anträge", "antraege", 
             "stadtraetin", "landeshauptstadt", "stadt", "bürgerservice", "buergerservice",
-            "herr", "frau", "damen", "herren", "herrn"
+            "herr", "frau", "damen", "herren", "herrn", "dieter", "stadtrates"
         }
         
         # Combine all document content

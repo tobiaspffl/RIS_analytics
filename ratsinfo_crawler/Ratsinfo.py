@@ -7,7 +7,11 @@ MIN_OCCURRENCES_PER_DOC = 1
 
 
 def extract_fraktion(text):
-    """Versucht, die Fraktion(en) aus dem Text zu extrahieren"""
+    """
+    Extracts multiple factions/persons from text.
+    Handles comma-separated lists within text patterns.
+    Returns a list of individual factions/persons.
+    """
     if not text:
         return []
     
@@ -26,8 +30,17 @@ def extract_fraktion(text):
     if matches:
         fraktionen.extend([m.replace('-', ' ').title() for m in matches if m not in fraktionen])
     
+    # Split by comma to handle multiple factions/persons in the same line
+    # e.g. "Die Linke / Die PARTEI Stadtratsfraktion München, Fraktion Die Grünen - Rosa Liste"
+    # or "Herr StR Manuel Pretzl, Frau StRin Alexandra Gaßmann, ..."
+    all_fraktionen = []
+    for f in fraktionen:
+        # Split by comma, strip whitespace
+        parts = [p.strip() for p in f.split(',')]
+        all_fraktionen.extend(parts)
+    
     # Duplikate entfernen und bereinigen
-    fraktionen = list(set(f for f in fraktionen if f and len(f) > 3))
+    fraktionen = list(set(f for f in all_fraktionen if f and len(f) > 3))
     
     return fraktionen
 
@@ -102,8 +115,9 @@ def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt vo
     Compute aggregated counts per faction/submitter for the given search words.
 
     - Finds matching documents via find_words_frequency
-    - Groups by the provided column (default 'Gestellt von')
-    - Sums the 'count' per group and sorts descending by count
+    - Splits comma-separated entries in the group_by column (e.g., multiple submitters per document)
+    - Groups by individual submitter/faction and sums counts
+    - Sorts descending by count
 
     Returns a DataFrame with columns [name, count].
     """
@@ -115,6 +129,12 @@ def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt vo
     # Ensure group_by column exists
     if group_by not in rows_with_words.columns:
         return pd.DataFrame({"name": [], "count": []})
+
+    # Explode on comma-separated values to count each faction/person individually
+    rows_with_words = rows_with_words.copy()
+    rows_with_words[group_by] = rows_with_words[group_by].astype(str).str.split(',')
+    rows_with_words = rows_with_words.explode(group_by, ignore_index=False)
+    rows_with_words[group_by] = rows_with_words[group_by].str.strip()
 
     agg = rows_with_words.groupby(group_by)["count"].sum().reset_index()
     agg = agg.rename(columns={group_by: "name"})
@@ -198,13 +218,15 @@ def compute_processing_metrics(file: str, words: list[str]) -> dict:
 def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Gestellt von") -> pd.DataFrame:
     """
     Compute share of proposals per faction (group_by) that mention the given words.
+    
+    Handles comma-separated submitters by expanding each document into one row per submitter.
 
     Returns a DataFrame with columns:
     [name, share, count, total]
 
     - name: the faction/submitter
-    - count: number of matching documents for the keyword(s)
-    - total: total number of documents for that faction
+    - count: number of matching documents for the keyword(s) where this faction is listed
+    - total: total number of documents where this faction is listed (across all proposals)
     - share: count / total (float in [0,1])
     """
     # Read full dataset to compute totals per faction
@@ -212,6 +234,12 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
 
     if group_by not in df_all.columns:
         return pd.DataFrame({"name": [], "share": [], "count": [], "total": []})
+
+    # Explode on comma-separated values for totals
+    df_all = df_all.copy()
+    df_all[group_by] = df_all[group_by].astype(str).str.split(',')
+    df_all = df_all.explode(group_by, ignore_index=False)
+    df_all[group_by] = df_all[group_by].str.strip()
 
     # Compute totals per faction across all documents
     totals = df_all.groupby(group_by).size().reset_index(name="total")
@@ -223,6 +251,12 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
         # No matches: return factions with zero counts (filtered out later)
         matched_counts = pd.DataFrame({group_by: [], "count": []})
     else:
+        # Explode on comma-separated values for matches
+        rows_with_words = rows_with_words.copy()
+        rows_with_words[group_by] = rows_with_words[group_by].astype(str).str.split(',')
+        rows_with_words = rows_with_words.explode(group_by, ignore_index=False)
+        rows_with_words[group_by] = rows_with_words[group_by].str.strip()
+
         matched_counts = (
             rows_with_words.groupby(group_by)["count"].sum().reset_index()
         )
