@@ -49,12 +49,14 @@ def extract_keywords_tfidf(file: str, top_n: int = 10) -> list[str]:
             'münchen', 'stadtrat', 'fraktion', 'rathaus', "muenchen", "oberbürgermeister", 
             "oberbuergermeister", "stadträtin", "stadraetin", "antrag", "anträge", "antraege", 
             "stadtraetin", "landeshauptstadt", "stadt", "bürgerservice", "buergerservice",
-            "herr", "frau", "damen", "herren", "herrn", "dieter", "stadtrates", 
+            "herr", "frau", "damen", "herren", "herrn", "dieter", "stadtrates", "referat",
+            "sitzungsvorlage", "sitzungsvorlage", "tagesordnung", "öffentlich", "oeffentlich", "marienplatz",
             "reiter", "zimmer", "liste", "begründung", "münchner", "diese", "welchen", "vielen",
             "https", "hans", "welche", "können", "partei", "kann", "ziffer", "telefon", "soll", 
             "bereits", "datum", "sehr", "ihre", "ihrem", "ihren", "ihres", "unser", "unsere",
             "unter", "wurden", "werden", "werden", "möchten", "moechten", "möchte", "moechte",
-            "bitte", "fragen", "fragen", "innen", "alle"
+            "bitte", "fragen", "fragen", "innen", "alle", "allen", "aller", "allenfalls", "folgenden"
+
 
         }
         
