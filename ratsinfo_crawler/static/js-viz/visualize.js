@@ -59,7 +59,8 @@ export function renderTrendChart(trendData, selector, options = {}) {
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [0, 0, width, height])
-    .style("background-color", "#fafafa");
+    .style("display", "block")
+    .style("margin", "0 auto");
 
   // Create group for chart
   const g = svg
@@ -289,7 +290,9 @@ export function renderBarChart(documents, selector, options = {}) {
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    .attr("viewBox", [0, 0, width, height]);
+    .attr("viewBox", [0, 0, width, height])
+    .style("display", "block")
+    .style("margin", "0 auto");
 
   const g = svg
     .append("g")
@@ -412,7 +415,8 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [0, 0, width, height])
-    .style("background-color", "#fafafa");
+    .style("display", "block")
+    .style("margin", "0 auto");
 
   // Create group for chart
   const g = svg
@@ -601,7 +605,7 @@ export function renderKPICards(metrics, selector, options = {}) {
 
   // Create KPI cards container
   const cardsContainer = document.createElement("div");
-  cardsContainer.style.cssText = "display: flex; gap: 20px; flex-wrap: nowrap; padding: 20px; justify-content: center;";
+  cardsContainer.style.cssText = "display: flex; gap: 20px; flex-wrap: nowrap;";
 
   // KPI 1: Average processing time
   const avgCard = createKPICard(
@@ -659,15 +663,22 @@ function createKPICard(label, value, color, icon) {
   const card = document.createElement("div");
   card.style.cssText = `
     background: white;
-    border-radius: 8px;
-    padding: 20px;
-    min-width: 180px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 24px;
+    flex: 1;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border: 1px solid #e5e7eb;
     border-left: 4px solid ${color};
-    transition: transform 0.2s;
+    transition: all 0.3s ease;
   `;
-  card.onmouseenter = () => card.style.transform = "translateY(-4px)";
-  card.onmouseleave = () => card.style.transform = "translateY(0)";
+  card.onmouseenter = () => {
+    card.style.transform = "translateY(-2px)";
+    card.style.boxShadow = "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)";
+  };
+  card.onmouseleave = () => {
+    card.style.transform = "translateY(0)";
+    card.style.boxShadow = "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)";
+  };
 
   const iconEl = document.createElement("div");
   iconEl.textContent = icon;
@@ -738,7 +749,8 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [0, 0, width, height])
-    .style("background-color", "#fafafa");
+    .style("display", "block")
+    .style("margin", "0 auto");
 
   // Create group for chart
   const g = svg
@@ -947,7 +959,8 @@ export function renderFraktionShareChart(data, selector, options = {}) {
     .attr("width", width)
     .attr("height", height)
     .attr("viewBox", [0, 0, width, height])
-    .style("background-color", "#fafafa");
+    .style("display", "block")
+    .style("margin", "0 auto");
 
   const g = svg
     .append("g")

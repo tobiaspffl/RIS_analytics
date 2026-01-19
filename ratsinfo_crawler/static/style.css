@@ -1,196 +1,421 @@
-.example-btn:nth-child(1) {
-  background: #e0f2fe;
-  color: #0369a1;
-  border-color: #bae6fd;
-}
-.example-btn:nth-child(2) {
-  background: #fef9c3;
-  color: #b45309;
-  border-color: #fde68a;
-}
-.example-btn:nth-child(3) {
-  background: #fce7f3;
-  color: #be185d;
-  border-color: #fbcfe8;
-}
-.example-btn:nth-child(4) {
-  background: #dcfce7;
-  color: #15803d;
-  border-color: #bbf7d0;
-}
-.example-btn:nth-child(5) {
-  background: #fee2e2;
-  color: #b91c1c;
-  border-color: #fecaca;
-}
+/* ========================================
+   München Stadtrat Analytics - Modern Design
+   ======================================== */
+
+/* CSS Variables for theming */
 :root {
-  --primary: #2563eb;
-  --text: #111827;
-  --muted: #6b7280;
-  --border: #e5e7eb;
+  /* Primary Colors - Munich Blue Palette */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-900: #1e3a8a;
+  
+  /* Neutral Colors */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  /* Accent Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
-body {
-  font-family: system-ui, sans-serif;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  color: var(--text);
-}
+/* ========================================
+   Base Styles
+   ======================================== */
 
-h1 {
-  font-size: 32px;
-  margin-bottom: 24px;
-}
-
-.search-bar {
-  display: flex;
-  gap: 12px;
-  width: 100%;
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-input, button {
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
-  padding: 10px 12px;
-  border-radius: 6px;
+  line-height: 1.6;
+  color: var(--gray-900);
+  background: linear-gradient(to bottom, var(--gray-50) 0%, white 400px);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-input {
-  border: 1px solid var(--border);
-  flex: 1;
-}
+/* ========================================
+   Hero Section
+   ======================================== */
 
-button {
-  background: var(--primary);
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-#visualization {
-  margin-top: 40px;
-}
-
-.viz-container {
-  margin-bottom: 60px;
-  padding: 20px;
-  background-color: #f9fafb;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-}
-
-/* Hide empty visualization containers */
-.viz-container:empty {
-  display: none;
-  margin: 0;
-  padding: 0;
-}
-
-.viz-container svg {
-  max-width: 100%;
-  height: auto;
-}
-
-/* D3 Chart Styling */
-.axis {
-  font-size: 12px;
-}
-
-.axis-label {
-  font-size: 14px;
-  fill: var(--text);
-}
-
-.chart-title {
-  font-family: system-ui, sans-serif;
-}
-
-.grid {
-  stroke: var(--border);
-}
-
-.dot {
-  transition: r 0.2s ease;
-}
-
-.dot:hover {
-  r: 6;
-  filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.5));
-}
-
-.bar {
-  transition: opacity 0.2s ease;
-}
-
-.bar:hover {
-  opacity: 0.8;
-  filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.5));
-}
-
-.banner {
+.hero {
   width: 100%;
-  height: 220px;                 /* controls banner height */
+  height: 320px;
+  position: relative;
   background-image: url("skyline_banner.jpg");
-  background-size: cover;        /* fill area */
-  background-position: center;   /* center image */
-  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: var(--spacing-2xl);
+  overflow: hidden;
+}
 
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(29, 78, 216, 0.85) 0%,
+    rgba(37, 99, 235, 0.75) 50%,
+    rgba(59, 130, 246, 0.65) 100%
+  );
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
-  padding-left: 32px;
-  margin-bottom: 40px;
+  justify-content: center;
 }
 
-.banner h1 {
+.hero-content {
+  text-align: center;
   color: white;
-  font-size: 36px;
-  background: rgba(0, 0, 0, 0.4); /* readable text overlay */
-  padding: 10px 16px;
-  border-radius: 8px;
+  padding: var(--spacing-xl);
+  max-width: 800px;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  opacity: 0.95;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================================
+   Container & Layout
+   ======================================== */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-xl);
+}
+
+/* ========================================
+   Search Section
+   ======================================== */
+
+.search-section {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: var(--spacing-2xl);
+  border: 1px solid var(--gray-200);
+}
+
+.section-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.section-description {
+  font-size: 1rem;
+  color: var(--gray-600);
+  line-height: 1.5;
+}
+
+/* Quick Filters */
+.quick-filters {
+  margin-bottom: var(--spacing-xl);
+}
+
+.filter-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .example-searches {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  gap: var(--spacing-sm);
 }
 
 .example-btn {
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  color: #111827;
-  padding: 8px 14px;
-  border-radius: 999px; /* pill shape */
+  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  color: var(--gray-700);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
 .example-btn:hover {
-  background: #e5e7eb;
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+  color: var(--primary-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Loading and error states */
-#example-searches .loading,
-#example-searches .error {
-  font-size: 14px;
-  color: var(--muted);
-  padding: 12px;
+.example-btn:active {
+  transform: translateY(0);
 }
 
-#example-searches .error {
-  color: #b91c1c;
+.loading-indicator {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  font-style: italic;
 }
 
-.keyword-info {
-  font-size: 14px;
-  color: var(--muted);
-  margin-top: -12px;
-  margin-bottom: 16px;
+/* Search Bar */
+.search-bar {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  pointer-events: none;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  font-size: 1rem;
+  border: 2px solid var(--gray-300);
+  border-radius: var(--radius-lg);
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+#searchInput::placeholder {
+  color: var(--gray-400);
+}
+
+.search-btn {
+  padding: 0.875rem 2rem;
+  background: var(--primary-600);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  background: var(--primary-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.search-btn:active {
+  transform: translateY(0);
+}
+
+/* Date Range Info */
+.date-range-info {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--primary-500);
+}
+
+/* ========================================
+   Visualizations
+   ======================================== */
+
+.visualizations {
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* KPI Section */
+.kpi-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  gap: var(--spacing-xl);
+}
+
+.chart-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-200);
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.chart-card:empty {
+  display: none;
+}
+
+.chart-card svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ========================================
+   D3 Chart Styling
+   ======================================== */
+
+.axis {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+}
+
+.axis-label {
+  font-size: 13px;
+  font-weight: 500;
+  fill: var(--gray-700);
+}
+
+.chart-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.grid {
+  stroke: var(--gray-200);
+  stroke-opacity: 0.7;
+}
+
+.dot {
+  transition: all 0.2s ease;
+}
+
+.bar {
+  transition: all 0.2s ease;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.footer {
+  text-align: center;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  color: var(--gray-500);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--gray-200);
+  margin-top: var(--spacing-2xl);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+@media (max-width: 768px) {
+  .hero {
+    height: 240px;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .search-section {
+    padding: var(--spacing-lg);
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .search-bar {
+    flex-direction: column;
+  }
+  
+  .search-btn {
+    width: 100%;
+  }
+  
+  .chart-card {
+    padding: var(--spacing-md);
+  }
 }

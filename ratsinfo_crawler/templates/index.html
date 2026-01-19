@@ -1,60 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <title>Search Visualization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>München Stadtrat Analytics</title>
     <link rel="stylesheet" href="../static/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
 
   <body>
 
-    <div class="banner">
-      <h1>What does Munich work on?</h1>
-    </div>
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="hero-overlay">
+        <div class="hero-content">
+          <h1 class="hero-title">What does Munich work on?</h1>
+          <p class="hero-subtitle">Visualisierung und Analyse von Stadtratsanträgen</p>
+        </div>
+      </div>
+    </header>
 
-    <h1>Search Keyword</h1>
-
-    <p class="keyword-info">Die am häufigsten vorkommenden Themen in den Stadtrats-Anträgen:</p>
-
-
-    <div class="example-searches" id="example-searches" data-count="6">
-      <!-- Buttons will be dynamically generated here -->
-      <p class="loading">Loading keywords...</p>
-    </div>
-
-     <!-- <div class="example-searches">
-      <button class="example-btn" data-keyword="Klima">Klima</button>
-      <button class="example-btn" data-keyword="Mieten">Mieten</button>
-      <button class="example-btn" data-keyword="Migranten">Migranten</button>
-      <button class="example-btn" data-keyword="Wehrpflicht">Wehrpflicht</button>
-      <button class="example-btn" data-keyword="Fahrradweg">Fahrradweg</button>
-    </div> -->
-
-    <div class="search-bar">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Enter keywords..."
-      />
-      <button id="searchBtn">Search</button>
-    </div>
-
-    <!-- Date range display -->
-    <div id="date-range-display" style="text-align: left; padding: 10px; color: #666; font-size: 13px;">
-      <!-- Will be populated by JavaScript -->
-    </div>
-
-    <!-- D3 visualizations will be rendered here -->
-    <div id="visualization">
-      <div id="viz-kpi"></div>
-
-      <div id="viz-trend" class="viz-container"></div>
-      <div id="viz-fraktionen" class="viz-container"></div>
-      <div id="viz-fraktionen-share" class="viz-container"></div>
-      <div id="viz-topdocs" class="viz-container"></div>
+    <!-- Main Container -->
+    <main class="container">
       
-      <div id="viz-metrics-chart"></div>
-    </div>
+      <!-- Search Section -->
+      <section class="search-section">
+        <div class="section-header">
+          <h2 class="section-title">Themen durchsuchen</h2>
+          <p class="section-description">Erkunden Sie die häufigsten Themen in Münchner Stadtratsanträgen oder suchen Sie nach einem spezifischen Stichwort</p>
+        </div>
+
+        <!-- Quick Filter Tags -->
+        <div class="quick-filters">
+          <label class="filter-label">Beliebte Themen:</label>
+          <div class="example-searches" id="example-searches" data-count="6">
+            <span class="loading-indicator">Wird geladen...</span>
+          </div>
+        </div>
+
+        <!-- Search Input -->
+        <div class="search-bar">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M19 19L14.65 14.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Suchbegriff eingeben..."
+              autocomplete="off"
+            />
+          </div>
+          <button id="searchBtn" class="search-btn">
+            <span>Suchen</span>
+          </button>
+        </div>
+
+        <!-- Date Range Info -->
+        <div id="date-range-display" class="date-range-info">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Visualizations -->
+      <section class="visualizations" id="visualization">
+        
+        <!-- KPI Cards -->
+        <div id="viz-kpi" class="kpi-section"></div>
+
+        <!-- Charts Grid -->
+        <div class="charts-grid">
+          <div id="viz-trend" class="chart-card"></div>
+          <div id="viz-fraktionen" class="chart-card"></div>
+          <div id="viz-fraktionen-share" class="chart-card"></div>
+          <div id="viz-topdocs" class="chart-card"></div>
+          <div id="viz-metrics-chart" class="chart-card"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
+    </footer>
 
     <!-- Load D3.js library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -62,7 +94,7 @@
     <!-- Load keyword loader script -->
     <script src="../static/keyword-loader.js"></script>
 
-    <!-- Load main application with ES modules (bundled under static/js) -->
+    <!-- Load main application with ES modules -->
     <script type="module" src="../static/js-viz/main.js"></script>
   </body>
 </html>
