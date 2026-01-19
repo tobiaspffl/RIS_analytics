@@ -99,3 +99,21 @@ export async function fetchMetrics(word) {
     return null;
   }
 }
+
+/**
+ * Fetch the date range of all proposals in the dataset
+ * @returns {Promise<Object>} - Object with minDate and maxDate in YYYY-MM-DD format
+ */
+export async function fetchDateRange() {
+  try {
+    const res = await fetch(`/date-range`);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return { minDate: null, maxDate: null };
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching date range:", error);
+    return { minDate: null, maxDate: null };
+  }
+}

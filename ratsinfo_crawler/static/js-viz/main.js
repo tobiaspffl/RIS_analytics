@@ -10,7 +10,7 @@
 
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics } from './api.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -41,17 +41,7 @@ const visualization = document.getElementById("visualization");
 async function refresh() {
   const word = searchInput.value.trim();
   
-  if (!word) {
-    // Do not destroy containers; show message inside trend container
-    const trendContainer = document.getElementById("viz-trend");
-    const fraktionenContainer = document.getElementById("viz-fraktionen");
-    const docsContainer = document.getElementById("viz-topdocs");
-    if (trendContainer) trendContainer.innerHTML = "<p>Please enter a search term</p>";
-    if (fraktionenContainer) fraktionenContainer.innerHTML = "";
-    if (docsContainer) docsContainer.innerHTML = "";
-    return;
-  }
-
+  // Allow empty word to show all proposals
   state.currentWord = word;
 
   // Show loading state in containers
@@ -82,7 +72,8 @@ async function refresh() {
       promises.push(Promise.resolve(null));
     }
 
-    if (state.showFraktionenShare) {
+    // Only fetch share when word is provided (semantically makes no sense without keyword)
+    if (state.showFraktionenShare && word) {
       promises.push(fetchFraktionenShare(word));
     } else {
       promises.push(Promise.resolve(null));
@@ -105,7 +96,7 @@ async function refresh() {
       if (trendData && trendData.length > 0) {
         const prepared = prepareTrendData(trendData);
         renderTrendChart(prepared, "#viz-trend", {
-          title: `Anträge pro Monat`,
+          title: word ? `Anträge pro Monat` : `Alle Anträge pro Monat`,
           searchTerm: word,
           width: 900,
           height: 400
@@ -121,7 +112,7 @@ async function refresh() {
     if (state.showFraktionen) {
       if (fraktionenData && fraktionenData.length > 0) {
         renderFraktionChart(fraktionenData, "#viz-fraktionen", {
-          title: `Fraktionsbeteiligung`,
+          title: word ? `Fraktionsbeteiligung` : `Fraktionsbeteiligung (alle Anträge)`,
           searchTerm: word,
           width: 900,
           height: 400,
@@ -135,7 +126,8 @@ async function refresh() {
     }
 
     // Render fraktionen share chart
-    if (state.showFraktionenShare) {
+    if (state.showFraktionenShare && word) {
+      // Only show share when keyword is provided
       if (fraktionenShareData && fraktionenShareData.length > 0) {
         renderFraktionShareChart(fraktionenShareData, "#viz-fraktionen-share", {
           title: `Anteil thematisierte Anträge`,
@@ -148,6 +140,7 @@ async function refresh() {
         fraktionenShareContainer.innerHTML = "<p>No faction share data available</p>";
       }
     } else {
+      // Hide share chart when no keyword
       fraktionenShareContainer.innerHTML = "";
     }
 
@@ -189,7 +182,8 @@ async function refresh() {
       if (metrics && metrics.byReferat && metrics.byReferat.length > 0) {
         renderProcessingTimeChart(metrics.byReferat, "#viz-metrics-chart", { 
           searchTerm: word,
-          limit: 10 
+          limit: 10,
+          title: word ? "Bearbeitungsdauer nach Referat" : "Bearbeitungsdauer nach Referat (alle Anträge)"
         });
       } else {
         metricsChartContainer.innerHTML = "<p>Keine Daten für Referate verfügbar</p>";
@@ -246,8 +240,64 @@ document.getElementById("toggle-topdocs")?.addEventListener("change", (e) => {
 });
 */
 
-// Initialize - show info on load (without removing containers)
+// Initialize - load all proposals data on page load
 const initTrendContainer = document.getElementById("viz-trend");
 if (initTrendContainer) {
-  initTrendContainer.innerHTML = "<p>Enter a keyword to begin searching and visualizing the data.</p>";
+  initTrendContainer.innerHTML = "<p>Loading initial data...</p>";
 }
+
+// Load all proposals on page load
+document.addEventListener("DOMContentLoaded", () => {
+  loadDateRange();
+  // Trigger refresh with empty search to show all proposals
+  refresh();
+});
+
+/**
+ * Load and display date range on page load
+ */
+async function loadDateRange() {
+  const dateRangeDisplay = document.getElementById("date-range-display");
+  if (!dateRangeDisplay) return;
+
+  const dateRange = await fetchDateRange();
+  
+  if (dateRange.minDate && dateRange.maxDate) {
+    // Parse dates
+    const minDate = new Date(dateRange.minDate + "T00:00:00");
+    const maxDate = new Date(dateRange.maxDate + "T00:00:00");
+    
+    // Format in German locale
+    const formatter = new Intl.DateTimeFormat('de-DE', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+    
+    const minFormatted = formatter.format(minDate);
+    const maxFormatted = formatter.format(maxDate);
+    
+    // Check if same year
+    const sameYear = minDate.getFullYear() === maxDate.getFullYear();
+    
+    let displayText;
+    if (sameYear) {
+      // Same year: "25. Januar bis 01. März 2025"
+      const minWithoutYear = new Intl.DateTimeFormat('de-DE', {
+        day: 'numeric',
+        month: 'long'
+      }).format(minDate);
+      displayText = `Anträge im Zeitraum von ${minWithoutYear} bis ${maxFormatted}`;
+    } else {
+      // Different years: "25. Januar 2025 bis 01. März 2026"
+      displayText = `Anträge im Zeitraum von ${minFormatted} bis ${maxFormatted}`;
+    }
+    
+    dateRangeDisplay.textContent = displayText;
+  } else {
+    dateRangeDisplay.textContent = "Datumbereich konnte nicht ermittelt werden";
+  }
+}
+
+// Load date range when page is ready
+document.addEventListener("DOMContentLoaded", loadDateRange);

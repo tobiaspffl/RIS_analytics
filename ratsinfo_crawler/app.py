@@ -37,15 +37,13 @@ def get_dataframe():
 def trend():
     """
     Returns monthly aggregated count for a given keyword.
-    Query params: word (required)
+    Query params: word (optional) - if empty, shows all proposals
     Response: [ {month: "2024-01", count: 5}, {month: "2024-02", count: 8}, ... ]
     """
-    word = request.args.get("word", type=str)
-    if not word:
-        return jsonify([])
+    word = request.args.get("word", type=str, default="")
     
     # Delegate aggregation to analysis module
-    monthly_trend = ri.compute_monthly_trend("data.csv", [word])
+    monthly_trend = ri.compute_monthly_trend("data.csv", [word] if word else [])
     
     # Convert to list of dicts
     result = monthly_trend.to_dict(orient="records")
@@ -54,11 +52,9 @@ def trend():
 # Route to return aggregated fraktionen (submitter/faction) counts
 @app.route("/fraktionen", methods=["GET"])
 def fraktionen():
-    word = request.args.get("word", type=str)
-    if not word:
-        return jsonify([])
+    word = request.args.get("word", type=str, default="")
 
-    agg = ri.compute_fraktionen("data.csv", [word])
+    agg = ri.compute_fraktionen("data.csv", [word] if word else [])
     return jsonify(agg.to_dict(orient="records"))
 
 
@@ -78,7 +74,7 @@ def fraktionen_share():
 def metrics():
     """
     Returns processing time metrics for a given keyword.
-    Query params: word (required)
+    Query params: word (optional) - if empty, shows metrics for all proposals
     Response: {
         avgDays: float | null,
         openCount: int,
@@ -87,18 +83,24 @@ def metrics():
         byReferat: [{referat: str, avgDays: float, count: int}, ...]
     }
     """
-    word = request.args.get("word", type=str)
-    if not word:
-        return jsonify({
-            "avgDays": None,
-            "openCount": 0,
-            "closedCount": 0,
-            "totalCount": 0,
-            "byReferat": []
-        })
+    word = request.args.get("word", type=str, default="")
     
-    metrics_data = ri.compute_processing_metrics("data.csv", [word])
+    metrics_data = ri.compute_processing_metrics("data.csv", [word] if word else [])
     return jsonify(metrics_data)
+
+
+# Route to return the date range of all proposals
+@app.route("/date-range", methods=["GET"])
+def date_range():
+    """
+    Returns the earliest and latest proposal dates in the dataset.
+    Response: {
+        minDate: "YYYY-MM-DD" | null,
+        maxDate: "YYYY-MM-DD" | null
+    }
+    """
+    date_range_data = ri.compute_date_range("data.csv")
+    return jsonify(date_range_data)
 
 
 if __name__ == "__main__":

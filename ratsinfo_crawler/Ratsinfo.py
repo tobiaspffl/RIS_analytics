@@ -72,6 +72,18 @@ def find_word_occurrences(file, word):
 
 
 def find_words_frequency(file, words):
+    """
+    Find documents matching the given words.
+    If words list is empty, returns all documents with count=1.
+    """
+    # If no words provided, return all documents
+    if not words or all(not w for w in words):
+        df = pd.read_csv(file)
+        df["occurrences"] = 0
+        df["count"] = 1
+        total_word_count = len(df)
+        return df, total_word_count
+    
     dfs = []
 
     total_word_count = 0
@@ -273,3 +285,34 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
     merged = merged.sort_values("share", ascending=False)
 
     return merged
+
+
+def compute_date_range(file: str) -> dict:
+    """
+    Compute the date range of all proposals in the dataset.
+    
+    Returns a dict with:
+    {
+        "minDate": "YYYY-MM-DD" | None,
+        "maxDate": "YYYY-MM-DD" | None
+    }
+    """
+    try:
+        df = pd.read_csv(file)
+        if df.empty or "Gestellt am" not in df.columns:
+            return {"minDate": None, "maxDate": None}
+        
+        # Parse dates and filter valid ones
+        dates = pd.to_datetime(df["Gestellt am"], errors="coerce")
+        valid_dates = dates.dropna()
+        
+        if valid_dates.empty:
+            return {"minDate": None, "maxDate": None}
+        
+        min_date = valid_dates.min().strftime("%Y-%m-%d")
+        max_date = valid_dates.max().strftime("%Y-%m-%d")
+        
+        return {"minDate": min_date, "maxDate": max_date}
+    except Exception as e:
+        print(f"Error computing date range: {e}")
+        return {"minDate": None, "maxDate": None}
