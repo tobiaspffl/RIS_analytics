@@ -71,14 +71,24 @@ def find_word_occurrences(file, word):
     return rows_with_word, total_word_count
 
 
-def find_words_frequency(file, words):
+def find_words_frequency(file, words, typ_filter=None):
     """
     Find documents matching the given words.
     If words list is empty, returns all documents with count=1.
+    
+    Args:
+        file: Path to CSV file
+        words: List of keywords to search for
+        typ_filter: List of Typ values to filter by (OR condition), None = no filter
     """
     # If no words provided, return all documents
     if not words or all(not w for w in words):
         df = pd.read_csv(file)
+        
+        # Apply Typ filter if provided
+        if typ_filter:
+            df = df[df["Typ"].isin(typ_filter)]
+        
         df["occurrences"] = 0
         df["count"] = 1
         total_word_count = len(df)
@@ -94,10 +104,15 @@ def find_words_frequency(file, words):
 
     rows_all = pd.concat(dfs, ignore_index=True)
     rows_with_words = rows_all.drop_duplicates()
+    
+    # Apply Typ filter if provided
+    if typ_filter:
+        rows_with_words = rows_with_words[rows_with_words["Typ"].isin(typ_filter)]
+    
     return rows_with_words, total_word_count
 
 
-def compute_monthly_trend(file: str, words: list[str]) -> pd.DataFrame:
+def compute_monthly_trend(file: str, words: list[str], typ_filter=None) -> pd.DataFrame:
     """
     Compute monthly aggregated counts for the given search words.
 
@@ -105,9 +120,12 @@ def compute_monthly_trend(file: str, words: list[str]) -> pd.DataFrame:
     'Gestellt am' column to datetime, filters invalid dates, derives a
     YYYY-MM month string and aggregates the 'count' per month.
 
+    Args:
+        typ_filter: List of Typ values to filter by (OR condition)
+
     Returns a DataFrame with columns ['month', 'count'] sorted by month.
     """
-    rows_with_words, _ = find_words_frequency(file, words)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
 
     if rows_with_words.empty:
         return pd.DataFrame({"month": [], "count": []})
@@ -122,7 +140,7 @@ def compute_monthly_trend(file: str, words: list[str]) -> pd.DataFrame:
     return monthly_trend
 
 
-def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt von") -> pd.DataFrame:
+def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt von", typ_filter=None) -> pd.DataFrame:
     """
     Compute aggregated counts per faction/submitter for the given search words.
 
@@ -131,9 +149,12 @@ def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt vo
     - Groups by individual submitter/faction and sums counts
     - Sorts descending by count
 
+    Args:
+        typ_filter: List of Typ values to filter by (OR condition)
+
     Returns a DataFrame with columns [name, count].
     """
-    rows_with_words, _ = find_words_frequency(file, words)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
 
     if rows_with_words.empty:
         return pd.DataFrame({"name": [], "count": []})
@@ -155,7 +176,7 @@ def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt vo
     return agg
 
 
-def compute_processing_metrics(file: str, words: list[str]) -> dict:
+def compute_processing_metrics(file: str, words: list[str], typ_filter=None) -> dict:
     """
     Compute processing time metrics for the given search words.
     
@@ -164,6 +185,9 @@ def compute_processing_metrics(file: str, words: list[str]) -> dict:
     - Number of open proposals (no "Erledigt am" date)
     - Number of closed proposals
     - Processing time breakdown by "Zuständiges Referat"
+    
+    Args:
+        typ_filter: List of Typ values to filter by (OR condition)
     
     Returns a dict with:
     {
@@ -174,7 +198,7 @@ def compute_processing_metrics(file: str, words: list[str]) -> dict:
         "byReferat": [{"referat": str, "avgDays": float, "count": int}, ...]
     }
     """
-    rows_with_words, _ = find_words_frequency(file, words)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
 
     if rows_with_words.empty:
         return {
@@ -227,11 +251,14 @@ def compute_processing_metrics(file: str, words: list[str]) -> dict:
     }
 
 
-def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Gestellt von") -> pd.DataFrame:
+def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Gestellt von", typ_filter=None) -> pd.DataFrame:
     """
     Compute share of proposals per faction (group_by) that mention the given words.
     
     Handles comma-separated submitters by expanding each document into one row per submitter.
+
+    Args:
+        typ_filter: List of Typ values to filter by (OR condition)
 
     Returns a DataFrame with columns:
     [name, share, count, total]
@@ -243,6 +270,10 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
     """
     # Read full dataset to compute totals per faction
     df_all = pd.read_csv(file)
+    
+    # Apply Typ filter if provided
+    if typ_filter:
+        df_all = df_all[df_all["Typ"].isin(typ_filter)]
 
     if group_by not in df_all.columns:
         return pd.DataFrame({"name": [], "share": [], "count": [], "total": []})
@@ -257,7 +288,7 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
     totals = df_all.groupby(group_by).size().reset_index(name="total")
 
     # Compute matched counts per faction for given words
-    rows_with_words, _ = find_words_frequency(file, words)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
 
     if rows_with_words.empty or group_by not in rows_with_words.columns:
         # No matches: return factions with zero counts (filtered out later)
@@ -316,3 +347,24 @@ def compute_date_range(file: str) -> dict:
     except Exception as e:
         print(f"Error computing date range: {e}")
         return {"minDate": None, "maxDate": None}
+
+
+def get_available_typen(file: str) -> list:
+    """
+    Get all unique Typ values from the dataset.
+    
+    Returns a sorted list of unique Typ values (strings).
+    """
+    try:
+        df = pd.read_csv(file)
+        if df.empty or "Typ" not in df.columns:
+            return []
+        
+        # Get unique values, remove NaN, convert to list, and sort
+        typen = df["Typ"].dropna().unique().tolist()
+        typen.sort()
+        
+        return typen
+    except Exception as e:
+        print(f"Error getting available Typen: {e}")
+        return []

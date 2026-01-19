@@ -10,7 +10,7 @@
 
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange } from './api.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -26,7 +26,8 @@ const state = {
   showTrend: true,
   showFraktionen: true,
   showFraktionenShare: true,
-  showTopDocs: false
+  showTopDocs: false,
+  selectedTypen: [] // Array of selected Typ values
 };
 
 // DOM Elements
@@ -43,6 +44,9 @@ async function refresh() {
   
   // Allow empty word to show all proposals
   state.currentWord = word;
+  
+  // Get selected typ filter (null if none or all selected)
+  const typFilter = state.selectedTypen.length > 0 ? state.selectedTypen : null;
 
   // Show loading state in containers
   const trendContainer = document.getElementById("viz-trend");
@@ -61,20 +65,20 @@ async function refresh() {
     const promises = [];
     
     if (state.showTrend) {
-      promises.push(fetchTrend(word));
+      promises.push(fetchTrend(word, typFilter));
     } else {
       promises.push(Promise.resolve(null));
     }
 
     if (state.showFraktionen) {
-      promises.push(fetchFraktionen(word));
+      promises.push(fetchFraktionen(word, typFilter));
     } else {
       promises.push(Promise.resolve(null));
     }
 
     // Only fetch share when word is provided (semantically makes no sense without keyword)
     if (state.showFraktionenShare && word) {
-      promises.push(fetchFraktionenShare(word));
+      promises.push(fetchFraktionenShare(word, typFilter));
     } else {
       promises.push(Promise.resolve(null));
     }
@@ -86,7 +90,7 @@ async function refresh() {
     }
 
     // Fetch metrics data
-    promises.push(fetchMetrics(word));
+    promises.push(fetchMetrics(word, typFilter));
 
     const [trendData, fraktionenData, fraktionenShareData, documentsData, metrics] = await Promise.all(promises);
     // Containers sind bereits oben initialisiert
@@ -301,3 +305,97 @@ async function loadDateRange() {
 
 // Load date range when page is ready
 document.addEventListener("DOMContentLoaded", loadDateRange);
+
+/**
+ * Load and initialize Typ filter checkboxes
+ */
+async function loadTypFilter() {
+  const container = document.getElementById("typ-filter-checkboxes");
+  if (!container) return;
+
+  const typen = await fetchAvailableTypen();
+  
+  if (typen.length === 0) {
+    container.innerHTML = "<p style='color: #999;'>Keine Typen verfügbar</p>";
+    return;
+  }
+
+  // Clear loading indicator
+  container.innerHTML = "";
+
+  // Create checkbox for each typ
+  typen.forEach(typ => {
+    const label = document.createElement("label");
+    label.className = "typ-checkbox-label";
+    
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = typ;
+    checkbox.className = "typ-checkbox";
+    checkbox.checked = false; // Start with all unchecked (= show all)
+    
+    checkbox.addEventListener("change", () => {
+      updateTypFilter();
+    });
+    
+    const span = document.createElement("span");
+    span.textContent = typ;
+    
+    label.appendChild(checkbox);
+    label.appendChild(span);
+    container.appendChild(label);
+  });
+
+  // Add event listeners for control buttons
+  const selectAllBtn = document.getElementById("selectAllTypBtn");
+  const clearAllBtn = document.getElementById("clearAllTypBtn");
+  
+  if (selectAllBtn) {
+    selectAllBtn.addEventListener("click", () => {
+      const checkboxes = document.querySelectorAll(".typ-checkbox");
+      checkboxes.forEach(cb => cb.checked = true);
+      updateTypFilter();
+    });
+  }
+  
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", () => {
+      const checkboxes = document.querySelectorAll(".typ-checkbox");
+      checkboxes.forEach(cb => cb.checked = false);
+      updateTypFilter();
+    });
+  }
+}
+
+/**
+ * Update state.selectedTypen based on checked checkboxes and refresh
+ */
+function updateTypFilter() {
+  const checkboxes = document.querySelectorAll(".typ-checkbox");
+  const selected = Array.from(checkboxes)
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
+  
+  state.selectedTypen = selected;
+  refresh();
+}
+
+// Initialize typ filter when page loads
+document.addEventListener("DOMContentLoaded", loadTypFilter);
+
+/**
+ * Toggle Typ Filter visibility
+ */
+function initTypFilterToggle() {
+  const toggleBtn = document.getElementById("typFilterToggle");
+  const filterSection = document.querySelector(".typ-filter-section");
+  
+  if (toggleBtn && filterSection) {
+    toggleBtn.addEventListener("click", () => {
+      filterSection.classList.toggle("collapsed");
+    });
+  }
+}
+
+// Initialize toggle functionality
+document.addEventListener("DOMContentLoaded", initTypFilterToggle);

@@ -37,13 +37,19 @@ def get_dataframe():
 def trend():
     """
     Returns monthly aggregated count for a given keyword.
-    Query params: word (optional) - if empty, shows all proposals
+    Query params: 
+        word (optional) - if empty, shows all proposals
+        typ (optional) - comma-separated list of Typ values to filter by
     Response: [ {month: "2024-01", count: 5}, {month: "2024-02", count: 8}, ... ]
     """
     word = request.args.get("word", type=str, default="")
+    typ_param = request.args.get("typ", type=str, default="")
+    
+    # Parse comma-separated typ values
+    typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
     
     # Delegate aggregation to analysis module
-    monthly_trend = ri.compute_monthly_trend("data.csv", [word] if word else [])
+    monthly_trend = ri.compute_monthly_trend("data.csv", [word] if word else [], typ_filter=typ_filter)
     
     # Convert to list of dicts
     result = monthly_trend.to_dict(orient="records")
@@ -53,8 +59,12 @@ def trend():
 @app.route("/fraktionen", methods=["GET"])
 def fraktionen():
     word = request.args.get("word", type=str, default="")
+    typ_param = request.args.get("typ", type=str, default="")
+    
+    # Parse comma-separated typ values
+    typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
 
-    agg = ri.compute_fraktionen("data.csv", [word] if word else [])
+    agg = ri.compute_fraktionen("data.csv", [word] if word else [], typ_filter=typ_filter)
     return jsonify(agg.to_dict(orient="records"))
 
 
@@ -62,10 +72,15 @@ def fraktionen():
 @app.route("/fraktionen_share", methods=["GET"])
 def fraktionen_share():
     word = request.args.get("word", type=str)
+    typ_param = request.args.get("typ", type=str, default="")
+    
     if not word:
         return jsonify([])
+    
+    # Parse comma-separated typ values
+    typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
 
-    agg_share = ri.compute_fraktionen_share("data.csv", [word])
+    agg_share = ri.compute_fraktionen_share("data.csv", [word], typ_filter=typ_filter)
     return jsonify(agg_share.to_dict(orient="records"))
 
 
@@ -74,7 +89,9 @@ def fraktionen_share():
 def metrics():
     """
     Returns processing time metrics for a given keyword.
-    Query params: word (optional) - if empty, shows metrics for all proposals
+    Query params: 
+        word (optional) - if empty, shows metrics for all proposals
+        typ (optional) - comma-separated list of Typ values to filter by
     Response: {
         avgDays: float | null,
         openCount: int,
@@ -84,8 +101,12 @@ def metrics():
     }
     """
     word = request.args.get("word", type=str, default="")
+    typ_param = request.args.get("typ", type=str, default="")
     
-    metrics_data = ri.compute_processing_metrics("data.csv", [word] if word else [])
+    # Parse comma-separated typ values
+    typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
+    
+    metrics_data = ri.compute_processing_metrics("data.csv", [word] if word else [], typ_filter=typ_filter)
     return jsonify(metrics_data)
 
 
@@ -101,6 +122,17 @@ def date_range():
     """
     date_range_data = ri.compute_date_range("data.csv")
     return jsonify(date_range_data)
+
+
+# Route to return available Typ values
+@app.route("/available-typen", methods=["GET"])
+def available_typen():
+    """
+    Returns all unique Typ values present in the dataset.
+    Response: ["Antrag", "Anfrage", "Dringlichkeitsantrag", ...]
+    """
+    typen = ri.get_available_typen("data.csv")
+    return jsonify(typen)
 
 
 if __name__ == "__main__":

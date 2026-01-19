@@ -294,6 +294,137 @@ body {
   border-left: 3px solid var(--primary-500);
 }
 
+/* Typ Filter Section */
+.typ-filter-section {
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--gray-200);  transition: margin-bottom 0.3s ease;
+}
+
+.typ-filter-section.collapsed {
+  margin-bottom: var(--spacing-xs);
+}
+.typ-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  padding: var(--spacing-sm) 0;
+  margin-bottom: var(--spacing-md);
+}
+
+.typ-filter-header:hover .filter-label {
+  color: var(--primary-600);
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  color: var(--gray-600);
+}
+
+.toggle-btn:hover {
+  background: var(--gray-100);
+  color: var(--primary-600);
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.typ-filter-section.collapsed .toggle-icon {
+  transform: rotate(-90deg);
+}
+
+.typ-filter-content {
+  max-height: 500px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.typ-filter-section.collapsed .typ-filter-content {
+  max-height: 0;
+  opacity: 0;
+}
+.typ-filter-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.filter-control-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  color: var(--gray-700);
+}
+
+.filter-control-btn:hover {
+  background: var(--gray-200);
+  border-color: var(--gray-400);
+}
+
+.filter-control-btn:active {
+  transform: scale(0.98);
+}
+
+.typ-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
+.typ-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  user-select: none;
+}
+
+.typ-checkbox-label:hover {
+  background: var(--primary-50);
+  border-color: var(--primary-300);
+}
+
+.typ-checkbox {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary-600);
+}
+
+.typ-checkbox:checked + span {
+  font-weight: 600;
+  color: var(--primary-700);
+}
+
 /* ========================================
    Visualizations
    ======================================== */

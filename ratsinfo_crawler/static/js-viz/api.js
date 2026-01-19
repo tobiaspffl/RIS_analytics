@@ -8,11 +8,16 @@
 /**
  * Fetch trend data (monthly aggregated counts) for a given keyword
  * @param {string} word - The keyword to search for
+ * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
  * @returns {Promise<Array>} - Array of {month, count} objects
  */
-export async function fetchTrend(word) {
+export async function fetchTrend(word, typFilter = null) {
   try {
-    const res = await fetch(`/trend?word=${encodeURIComponent(word)}`);
+    let url = `/trend?word=${encodeURIComponent(word)}`;
+    if (typFilter && typFilter.length > 0) {
+      url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    const res = await fetch(url);
     if (!res.ok) {
       console.error(`API error: ${res.status}`);
       return [];
@@ -46,11 +51,16 @@ export async function fetchDocuments(word) {
 /**
  * Fetch fraktionen (party/faction) data for a given keyword
  * @param {string} word - The keyword to search for
+ * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
  * @returns {Promise<Array>} - Array of {name, count} objects
  */
-export async function fetchFraktionen(word) {
+export async function fetchFraktionen(word, typFilter = null) {
   try {
-    const res = await fetch(`/fraktionen?word=${encodeURIComponent(word)}`);
+    let url = `/fraktionen?word=${encodeURIComponent(word)}`;
+    if (typFilter && typFilter.length > 0) {
+      url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    const res = await fetch(url);
     if (!res.ok) {
       console.error(`API error: ${res.status}`);
       return [];
@@ -65,11 +75,16 @@ export async function fetchFraktionen(word) {
 /**
  * Fetch faction share data for a given keyword
  * @param {string} word - The keyword to search for
+ * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
  * @returns {Promise<Array>} - Array of {name, share, count, total}
  */
-export async function fetchFraktionenShare(word) {
+export async function fetchFraktionenShare(word, typFilter = null) {
   try {
-    const res = await fetch(`/fraktionen_share?word=${encodeURIComponent(word)}`);
+    let url = `/fraktionen_share?word=${encodeURIComponent(word)}`;
+    if (typFilter && typFilter.length > 0) {
+      url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    const res = await fetch(url);
     if (!res.ok) {
       console.error(`API error: ${res.status}`);
       return [];
@@ -84,11 +99,16 @@ export async function fetchFraktionenShare(word) {
 /**
  * Fetch processing metrics for a given keyword
  * @param {string} word - The keyword to search for
+ * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
  * @returns {Promise<Object>} - Object with avgDays, openCount, closedCount, totalCount, byReferat
  */
-export async function fetchMetrics(word) {
+export async function fetchMetrics(word, typFilter = null) {
   try {
-    const res = await fetch(`/metrics?word=${encodeURIComponent(word)}`);
+    let url = `/metrics?word=${encodeURIComponent(word)}`;
+    if (typFilter && typFilter.length > 0) {
+      url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    const res = await fetch(url);
     if (!res.ok) {
       console.error(`API error: ${res.status}`);
       return null;
@@ -115,5 +135,23 @@ export async function fetchDateRange() {
   } catch (error) {
     console.error("Error fetching date range:", error);
     return { minDate: null, maxDate: null };
+  }
+}
+
+/**
+ * Fetch available Typ values from the dataset
+ * @returns {Promise<Array<string>>} - Array of Typ strings
+ */
+export async function fetchAvailableTypen() {
+  try {
+    const res = await fetch(`/available-typen`);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return [];
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching available typen:", error);
+    return [];
   }
 }
