@@ -8,7 +8,7 @@
  * - App state management
  */
 
-import { t } from '../i18n.js';
+import { t, getCurrentLang } from '../i18n.js';
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
 import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen } from './api.js';
@@ -264,6 +264,7 @@ document.addEventListener("languageChanged", () => {
   if (state.currentWord !== undefined) {
     refresh();
     loadDateRange(); // Also update date range text
+    updateTypFilterLabels(); // Update Typ filter labels
   }
 });
 
@@ -281,8 +282,10 @@ async function loadDateRange() {
     const minDate = new Date(dateRange.minDate + "T00:00:00");
     const maxDate = new Date(dateRange.maxDate + "T00:00:00");
     
-    // Format in German locale
-    const formatter = new Intl.DateTimeFormat('de-DE', {
+    // Format based on current language
+    const lang = getCurrentLang();
+    const locale = lang === 'en' ? 'en-US' : 'de-DE';
+    const formatter = new Intl.DateTimeFormat(locale, {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
@@ -297,7 +300,7 @@ async function loadDateRange() {
     let displayText;
     if (sameYear) {
       // Same year: "25. Januar bis 01. März 2025"
-      const minWithoutYear = new Intl.DateTimeFormat('de-DE', {
+      const minWithoutYear = new Intl.DateTimeFormat(locale, {
         day: 'numeric',
         month: 'long'
       }).format(minDate);
@@ -315,6 +318,17 @@ async function loadDateRange() {
 
 // Load date range when page is ready
 document.addEventListener("DOMContentLoaded", loadDateRange);
+
+/**
+ * Reload Typ filter labels when language changes
+ */
+function updateTypFilterLabels() {
+  const labels = document.querySelectorAll('.typ-checkbox-label span[data-i18n]');
+  labels.forEach(label => {
+    const key = label.getAttribute('data-i18n');
+    label.textContent = t(key);
+  });
+}
 
 /**
  * Load and initialize Typ filter checkboxes
@@ -349,7 +363,10 @@ async function loadTypFilter() {
     });
     
     const span = document.createElement("span");
-    span.textContent = typ;
+    // Translate typ name if translation exists, otherwise use original
+    const translationKey = `typ.${typ}`;
+    span.textContent = t(translationKey);
+    span.setAttribute('data-i18n', translationKey);
     
     label.appendChild(checkbox);
     label.appendChild(span);

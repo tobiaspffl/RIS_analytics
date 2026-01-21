@@ -58,6 +58,8 @@ export const translations = {
     'chart.axis.share': 'Anteil (%)',
     'chart.axis.days': 'Durchschnittliche Tage',
     'chart.axis.referat': 'Referat',
+    'chart.axis.timeperiod': 'Zeitraum',
+    'chart.axis.avgdays.full': 'Durchschnittliche Bearbeitungsdauer (Tage)',
     'chart.label.proposals': 'Anträge',
     'chart.label.total': 'Gesamt',
     'chart.label.keyword': 'Mit Stichwort',
@@ -74,6 +76,13 @@ export const translations = {
     'kpi.avgdays.title': 'Ø Bearbeitungszeit',
     'kpi.avgdays.description': 'Tage',
     'kpi.avgdays.na': 'k.A.',
+    
+    // Typ Filter Values
+    'typ.Antrag': 'Antrag',
+    'typ.Anfrage': 'Anfrage',
+    'typ.Dringlichkeitsantrag': 'Dringlichkeitsantrag',
+    'typ.Ergänzungsantrag': 'Ergänzungsantrag',
+    'typ.Änderungsantrag': 'Änderungsantrag',
     
     // Footer
     'footer.copyright': '© 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle',
@@ -179,6 +188,8 @@ export const translations = {
     'chart.axis.share': 'Share (%)',
     'chart.axis.days': 'Average Days',
     'chart.axis.referat': 'Department',
+    'chart.axis.timeperiod': 'Time Period',
+    'chart.axis.avgdays.full': 'Average Processing Time (Days)',
     'chart.label.proposals': 'Proposals',
     'chart.label.total': 'Total',
     'chart.label.keyword': 'With Keyword',
@@ -195,6 +206,13 @@ export const translations = {
     'kpi.avgdays.title': 'Avg. Processing Time',
     'kpi.avgdays.description': 'Days',
     'kpi.avgdays.na': 'N/A',
+    
+    // Typ Filter Values
+    'typ.Antrag': 'Proposal',
+    'typ.Anfrage': 'Inquiry',
+    'typ.Dringlichkeitsantrag': 'Urgent Proposal',
+    'typ.Ergänzungsantrag': 'Supplementary Proposal',
+    'typ.Änderungsantrag': 'Amendment Proposal',
     
     // Footer
     'footer.copyright': '© 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle',

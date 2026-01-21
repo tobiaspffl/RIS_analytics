@@ -18,6 +18,18 @@ function capitalizeFirstLetter(word) {
 }
 
 /**
+ * Helper function to translate Typ values
+ * @param {string} typ - The typ value (e.g., "Antrag", "Anfrage")
+ * @returns {string} Translated typ or original if no translation exists
+ */
+function translateTyp(typ) {
+  const key = `typ.${typ}`;
+  const translation = t(key);
+  // If translation key is returned as-is, use original typ
+  return translation === key ? typ : translation;
+}
+
+/**
  * Render a line chart for monthly trend data
  * @param {Array} trendData - Array of {month, count, date} objects (use prepareTrendData)
  * @param {string} selector - CSS selector for container (e.g., "#viz-trend")
@@ -195,12 +207,12 @@ export function renderTrendChart(trendData, selector, options = {}) {
           .sort((a, b) => b[1] - a[1]); // Sort by count descending
         
         sortedTypes.forEach(([typ, count]) => {
-          tooltipHTML += `${typ}: ${count}<br/>`;
+          tooltipHTML += `${translateTyp(typ)}: ${count}<br/>`;
         });
-        tooltipHTML += `<strong>Gesamt: ${d.count}</strong>`;
+        tooltipHTML += `<strong>${t('chart.label.total')}: ${d.count}</strong>`;
       } else {
         // Fallback if no breakdown available
-        tooltipHTML += `Anträge: ${d.count}`;
+        tooltipHTML += `${t('chart.label.proposals')}: ${d.count}`;
       }
 
       tooltip
@@ -233,7 +245,7 @@ export function renderTrendChart(trendData, selector, options = {}) {
     .attr("class", "axis-label")
     .style("font-size", "13px")
     .style("fill", "#666")
-    .text("Zeitraum");
+    .text(t('chart.axis.timeperiod'));
 
   // Y-Axis label
   svg
@@ -527,9 +539,9 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
       if (d.typ_breakdown && Object.keys(d.typ_breakdown).length > 0) {
         const sortedTypes = Object.entries(d.typ_breakdown).sort((a, b) => b[1] - a[1]);
         sortedTypes.forEach(([typ, count]) => {
-          tooltipHTML += `${typ}: ${count}<br/>`;
+          tooltipHTML += `${translateTyp(typ)}: ${count}<br/>`;
         });
-        tooltipHTML += `<strong>Gesamt: ${d.count}</strong>`;
+        tooltipHTML += `<strong>${t('chart.label.total')}: ${d.count}</strong>`;
       } else {
         tooltipHTML += `Anträge: ${d.count}`;
       }
@@ -867,15 +879,15 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
         .style("opacity", 0.8)
         .attr("filter", "drop-shadow(0px 2px 4px rgba(0,0,0,0.2))");
 
-      let tooltipHTML = `<strong>${d.referat}</strong><br/>Ø ${Math.round(d.avgDays)} Tage<br/>`;
+      let tooltipHTML = `<strong>${d.referat}</strong><br/>Ø ${Math.round(d.avgDays)} ${t('kpi.avgdays.description')}<br/>`;
       if (d.typ_breakdown && Object.keys(d.typ_breakdown).length > 0) {
         const sortedTypes = Object.entries(d.typ_breakdown).sort((a, b) => b[1] - a[1]);
         sortedTypes.forEach(([typ, count]) => {
-          tooltipHTML += `${typ}: ${count}<br/>`;
+          tooltipHTML += `${translateTyp(typ)}: ${count}<br/>`;
         });
-        tooltipHTML += `<strong>Gesamt: ${d.count}</strong>`;
+        tooltipHTML += `<strong>${t('chart.label.total')}: ${d.count}</strong>`;
       } else {
-        tooltipHTML += `Anträge: ${d.count}`;
+        tooltipHTML += `${t('chart.label.proposals')}: ${d.count}`;
       }
       
       tooltip
@@ -921,7 +933,7 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
     .attr("class", "axis-label")
     .style("font-size", "13px")
     .style("fill", "#666")
-    .text("Durchschnittliche Bearbeitungsdauer (Tage)");
+    .text(t('chart.axis.avgdays.full'));
 
   // Y-Axis label
   svg
