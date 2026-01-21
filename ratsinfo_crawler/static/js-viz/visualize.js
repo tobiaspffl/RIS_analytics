@@ -7,6 +7,8 @@
  * - Accepts optional configuration
  */
 
+import { t, getCurrentLang } from '../i18n.js';
+
 /**
  * Helper function to capitalize first letter of a word
  */
@@ -27,7 +29,7 @@ function capitalizeFirstLetter(word) {
  */
 export function renderTrendChart(trendData, selector, options = {}) {
   const {
-    title = "Anträge pro Monat",
+    title = t('chart.trend.title'),
     width = 900,
     height = 400,
     searchTerm = ""
@@ -43,7 +45,7 @@ export function renderTrendChart(trendData, selector, options = {}) {
   container.innerHTML = "";
 
   if (!trendData || trendData.length === 0) {
-    container.innerHTML = "<p style='text-align:center; padding:40px; color:#666;'>Keine Daten verfügbar</p>";
+    container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-data')}</p>`;
     return;
   }
 
@@ -243,7 +245,7 @@ export function renderTrendChart(trendData, selector, options = {}) {
     .attr("class", "axis-label")
     .style("font-size", "13px")
     .style("fill", "#666")
-    .text("Anzahl Anträge");
+    .text(t('chart.axis.count'));
 
   // Title
   const titleText = searchTerm
@@ -274,7 +276,7 @@ export function renderTrendChart(trendData, selector, options = {}) {
  */
 export function renderBarChart(documents, selector, options = {}) {
   const {
-    title = "Top Dokumente",
+    title = t('chart.topdocs.title'),
     width = 900,
     height = 400,
     limit = 20
@@ -289,7 +291,7 @@ export function renderBarChart(documents, selector, options = {}) {
   container.innerHTML = "";
 
   if (!documents || documents.length === 0) {
-    container.innerHTML = "<p>No data available</p>";
+    container.innerHTML = `<p>${t('error.no-data')}</p>`;
     return;
   }
 
@@ -395,7 +397,7 @@ export function renderBarChart(documents, selector, options = {}) {
  */
 export function renderFraktionChart(fraktionen, selector, options = {}) {
   const {
-    title = "Fraktionsbeteiligung",
+    title = t('chart.fraktionen.title'),
     width = 900,
     height = 400,
     limit = 15,
@@ -411,7 +413,7 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
   container.innerHTML = "";
 
   if (!fraktionen || fraktionen.length === 0) {
-    container.innerHTML = "<p style='text-align:center; padding:40px; color:#666;'>Keine Daten verfügbar</p>";
+    container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-data')}</p>`;
     return;
   }
 
@@ -575,7 +577,7 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .attr("class", "axis-label")
     .style("font-size", "13px")
     .style("fill", "#666")
-    .text("Anzahl Anträge");
+    .text(t('chart.axis.count'));
 
   // Y-Axis label
   svg
@@ -586,7 +588,7 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .attr("class", "axis-label")
     .style("font-size", "13px")
     .style("fill", "#666")
-    .text("Fraktion");
+    .text(t('chart.axis.faction'));
 
   // Title
   const titleText = searchTerm
@@ -627,7 +629,7 @@ export function renderKPICards(metrics, selector, options = {}) {
   container.innerHTML = "";
 
   if (!metrics) {
-    container.innerHTML = "<p style='text-align:center; padding:20px; color:#666;'>Keine Metriken verfügbar</p>";
+    container.innerHTML = `<p style='text-align:center; padding:20px; color:#666;'>${t('error.no-metrics')}</p>`;
     return;
   }
 
@@ -637,15 +639,15 @@ export function renderKPICards(metrics, selector, options = {}) {
 
   // KPI 1: Average processing time
   const avgCard = createKPICard(
-    "Ø Bearbeitungsdauer",
-    metrics.avgDays !== null ? `${Math.round(metrics.avgDays)} Tage` : "N/A",
+    t('kpi.avgdays.title'),
+    metrics.avgDays !== null ? `${Math.round(metrics.avgDays)} ${t('kpi.avgdays.description')}` : t('kpi.avgdays.na'),
     "#3b82f6",
     "📊"
   );
 
   // KPI 2: Open requests
   const openCard = createKPICard(
-    "Offene Anträge",
+    t('kpi.open.title'),
     metrics.openCount || 0,
     "#f59e0b",
     "⏳"
@@ -653,7 +655,7 @@ export function renderKPICards(metrics, selector, options = {}) {
 
   // KPI 3: Closed requests
   const closedCard = createKPICard(
-    "Erledigte Anträge",
+    t('kpi.closed.title'),
     metrics.closedCount || 0,
     "#10b981",
     "✅"
@@ -661,7 +663,7 @@ export function renderKPICards(metrics, selector, options = {}) {
 
   // KPI 4: Total requests
   const totalCard = createKPICard(
-    "Gesamt Anträge",
+    t('kpi.total.title'),
     metrics.totalCount || 0,
     "#6366f1",
     "📝"
@@ -740,7 +742,7 @@ function createKPICard(label, value, color, icon) {
  */
 export function renderProcessingTimeChart(data, selector, options = {}) {
   const {
-    title = "Bearbeitungsdauer nach Referat",
+    title = t('chart.metrics.title'),
     width = 900,
     height = 400,
     limit = 10,
@@ -756,7 +758,7 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
   container.innerHTML = "";
 
   if (!data || data.length === 0) {
-    container.innerHTML = "<p style='text-align:center; padding:40px; color:#666;'>Keine Daten verfügbar</p>";
+    container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-referate')}</p>`;
     return;
   }
 
@@ -962,7 +964,7 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
  */
 export function renderFraktionShareChart(data, selector, options = {}) {
   const {
-    title = "Anteil thematisierte Anträge",
+    title = t('chart.share.title'),
     width = 900,
     height = 400,
     limit = 15,
@@ -978,7 +980,7 @@ export function renderFraktionShareChart(data, selector, options = {}) {
   container.innerHTML = "";
 
   if (!data || data.length === 0) {
-    container.innerHTML = "<p style='text-align:center; padding:40px; color:#666;'>Keine Daten verfügbar</p>";
+    container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-data')}</p>`;
     return;
   }
 

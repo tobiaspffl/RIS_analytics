@@ -15,9 +15,13 @@
     <!-- Hero Section -->
     <header class="hero">
       <div class="hero-overlay">
+        <div class="language-switcher">
+          <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+          <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+        </div>
         <div class="hero-content">
-          <h1 class="hero-title">What does Munich work on?</h1>
-          <p class="hero-subtitle">Visualisierung und Analyse von Stadtratsanträgen</p>
+          <h1 class="hero-title" data-i18n="hero.title">What does Munich work on?</h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">Visualisierung und Analyse von Stadtratsanträgen</p>
         </div>
       </div>
     </header>
@@ -28,17 +32,17 @@
       <!-- Search Section -->
       <section class="search-section">
         <div class="section-header">
-          <h2 class="section-title">Themen durchsuchen</h2>
-          <p class="section-description">Erkunden Sie die häufigsten Themen in Münchner Stadtratsanträgen oder suchen Sie nach einem spezifischen Stichwort</p>
+          <h2 class="section-title" data-i18n="search.title">Themen durchsuchen</h2>
+          <p class="section-description" data-i18n="search.description">Erkunden Sie die häufigsten Themen in Münchner Stadtratsanträgen oder suchen Sie nach einem spezifischen Stichwort</p>
         </div>
 
         <!-- Quick Filter Tags -->
         <div class="quick-filters">
-          <label class="filter-label">Beliebte Themen:</label>
-          <p style="font-size: 12px; color: #bbb;"> (Es werden hier die am meisten vorkommenden Keywords mit Hilfe von spacy gefiltert, gecached und angezeigt, exclusive der in keyword_extractor.py ausgeschlossenen stop words) </p>
+          <label class="filter-label" data-i18n="search.popular">Beliebte Themen:</label>
+          <p style="font-size: 12px; color: #bbb;" data-i18n="search.popular.note"> (Es werden hier die am meisten vorkommenden Keywords mit Hilfe von spacy gefiltert, gecached und angezeigt, exclusive der in keyword_extractor.py ausgeschlossenen stop words) </p>
 
           <div class="example-searches" id="example-searches" data-count="16">
-            <span class="loading-indicator">Wird geladen...</span>
+            <span class="loading-indicator" data-i18n="loading.indicator">Wird geladen...</span>
           </div>
         </div>
 
@@ -52,20 +56,21 @@
             <input
               type="text"
               id="searchInput"
+              data-i18n-placeholder="search.placeholder"
               placeholder="Suchbegriff eingeben..."
               autocomplete="off"
             />
           </div>
           <button id="searchBtn" class="search-btn">
-            <span>Suchen</span>
+            <span data-i18n="search.button">Suchen</span>
           </button>
         </div>
 
         <!-- Typ Filter -->
         <div class="typ-filter-section">
           <div class="typ-filter-header" id="typFilterToggle">
-            <label class="filter-label">Antragstyp filtern:</label>
-            <button class="toggle-btn" aria-label="Filter ein-/ausblenden">
+            <label class="filter-label" data-i18n="filter.type.label">Antragstyp filtern:</label>
+            <button class="toggle-btn" data-i18n-aria="filter.toggle.aria" aria-label="Filter ein-/ausblenden">
               <svg class="toggle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -74,7 +79,7 @@
           <div id="typ-filter-content" class="typ-filter-content">
             <div id="typ-filter-checkboxes" class="typ-checkboxes">
               <!-- Will be populated by JavaScript -->
-              <span class="loading-indicator">Wird geladen...</span>
+              <span class="loading-indicator" data-i18n="loading.indicator">Wird geladen...</span>
             </div>
           </div>
         </div>
@@ -106,11 +111,11 @@
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
+        <p data-i18n="footer.copyright">&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
         <div class="footer-links">
-          <a href="{{ url_for('legal') }}#impressum">Impressum</a>
-          <a href="{{ url_for('legal') }}#datenschutz">Datenschutzerkl&auml;rung</a>
-          <a href="{{ url_for('legal') }}#haftung">Haftungsausschluss</a>
+          <a href="{{ url_for('legal') }}#impressum" data-i18n="footer.imprint">Impressum</a>
+          <a href="{{ url_for('legal') }}#datenschutz" data-i18n="footer.privacy">Datenschutzerkl&auml;rung</a>
+          <a href="{{ url_for('legal') }}#haftung" data-i18n="footer.disclaimer">Haftungsausschluss</a>
         </div>
       </div>
     </footer>
@@ -118,8 +123,11 @@
     <!-- Load D3.js library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
+    <!-- Load language switcher -->
+    <script type="module" src="../static/language-switcher.js"></script>
+
     <!-- Load keyword loader script -->
-    <script src="../static/keyword-loader.js"></script>
+    <script type="module" src="../static/keyword-loader.js"></script>
 
     <!-- Load main application with ES modules -->
     <script type="module" src="../static/js-viz/main.js"></script>

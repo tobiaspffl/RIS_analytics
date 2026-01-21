@@ -12,19 +12,23 @@
   <body>
     <header class="legal-hero">
       <div class="legal-hero-content">
-        <p class="legal-eyebrow">München Stadtrat Analytics</p>
-        <h1>Rechtliche Hinweise</h1>
-        <p class="legal-lead">Informationen zu Impressum, Datenschutz und Haftung für die nicht-kommerzielle Lehr-/Demonstrations-Webseite.</p>
+        <div class="language-switcher">
+          <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+          <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+        </div>
+        <p class="legal-eyebrow" data-i18n="legal.eyebrow">München Stadtrat Analytics</p>
+        <h1 data-i18n="legal.title">Rechtliche Hinweise</h1>
+        <p class="legal-lead" data-i18n="legal.lead">Informationen zu Impressum, Datenschutz und Haftung für die nicht-kommerzielle Lehr-/Demonstrations-Webseite.</p>
         <div class="legal-hero-actions">
-          <a class="legal-link" href="/">Zur Startseite</a>
+          <a class="legal-link" href="/" data-i18n="legal.back">Zur Startseite</a>
         </div>
       </div>
     </header>
 
     <main class="container legal-page">
       <section id="impressum" class="legal-card">
-        <h2>Impressum (§ 5 TMG)</h2>
-        <p>Betreiber der Webseite (Lehr-/Demonstrationszwecke, nicht kommerziell):</p>
+        <h2 data-i18n="legal.imprint.title">Impressum (§ 5 TMG)</h2>
+        <p data-i18n="legal.imprint.intro">Betreiber der Webseite (Lehr-/Demonstrationszwecke, nicht kommerziell):</p>
         <ul class="legal-list">
           <li>Name: Tobias Pfeifle</li>
           <li>Anschrift: Ameisenbühl 1, 91282 Betzenstein, Deutschland</li>
@@ -36,68 +40,71 @@
       </section>
 
       <section id="datenschutz" class="legal-card">
-        <h2>Datenschutzerklärung (DSGVO)</h2>
+        <h2 data-i18n="legal.privacy.title">Datenschutzerklärung (DSGVO)</h2>
         <div class="legal-subsection">
-          <h3>1. Verantwortliche Stelle</h3>
+          <h3 data-i18n="legal.privacy.1.title">1. Verantwortliche Stelle</h3>
           <p>Tobias Pfeifle, Ameisenbühl 1, 91282 Betzenstein, Deutschland, tobias.pfeifle@tum.de</p>
         </div>
         <div class="legal-subsection">
-          <h3>2. Zweck der Webseite</h3>
-          <p>Lehr- und Demonstrationszwecke im Rahmen eines Hochschulkurses; keine kommerzielle Nutzung.</p>
+          <h3 data-i18n="legal.privacy.2.title">2. Zweck der Webseite</h3>
+          <p data-i18n="legal.privacy.2.text">Lehr- und Demonstrationszwecke im Rahmen eines Hochschulkurses; keine kommerzielle Nutzung.</p>
         </div>
         <div class="legal-subsection">
-          <h3>3. Erhobene Daten</h3>
+          <h3 data-i18n="legal.privacy.3.title">3. Erhobene Daten</h3>
           <ul class="legal-list">
-            <li>Serverseitige Logfiles: z. B. IP-Adresse, Datum/Uhrzeit des Zugriffs, abgerufene Ressource, übertragene Datenmenge, User-Agent.</li>
-            <li>Keine Cookies, kein Tracking, kein Kontaktformular, keine Veröffentlichung personenbezogener Daten.</li>
+            <li data-i18n="legal.privacy.3.item1">Serverseitige Logfiles: z. B. IP-Adresse, Datum/Uhrzeit des Zugriffs, abgerufene Ressource, übertragene Datenmenge, User-Agent.</li>
+            <li data-i18n="legal.privacy.3.item2">Keine Cookies, kein Tracking, kein Kontaktformular, keine Veröffentlichung personenbezogener Daten.</li>
           </ul>
         </div>
         <div class="legal-subsection">
-          <h3>4. Rechtsgrundlage</h3>
-          <p>Bereitstellung der Webseite und IT-Sicherheit gemäß Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherem Betrieb).</p>
+          <h3 data-i18n="legal.privacy.4.title">4. Rechtsgrundlage</h3>
+          <p data-i18n="legal.privacy.4.text">Bereitstellung der Webseite und IT-Sicherheit gemäß Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherem Betrieb).</p>
         </div>
         <div class="legal-subsection">
-          <h3>5. Speicherdauer</h3>
-          <p>Logfiles werden nur so lange gespeichert, wie es für Betrieb, Sicherheit und Fehleranalyse erforderlich ist; anschließende Löschung oder Anonymisierung.</p>
+          <h3 data-i18n="legal.privacy.5.title">5. Speicherdauer</h3>
+          <p data-i18n="legal.privacy.5.text">Logfiles werden nur so lange gespeichert, wie es für Betrieb, Sicherheit und Fehleranalyse erforderlich ist; anschließende Löschung oder Anonymisierung.</p>
         </div>
         <div class="legal-subsection">
-          <h3>6. Weitergabe an Dritte</h3>
+          <h3 data-i18n="legal.privacy.6.title">6. Weitergabe an Dritte</h3>
           <p>Keine Weitergabe personenbezogener Daten. Hosting erfolgt bei [Name Hosting-Anbieter]; Datenverarbeitung erfolgt im Rahmen eines Auftragsverhältnisses.</p>
         </div>
         <div class="legal-subsection">
-          <h3>7. Betroffenenrechte</h3>
+          <h3 data-i18n="legal.privacy.7.title">7. Betroffenenrechte</h3>
           <p>Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch sowie Datenübertragbarkeit nach Maßgabe der DSGVO. Zur Ausübung der Rechte: [E-Mail-Adresse].</p>
         </div>
         <div class="legal-subsection">
-          <h3>8. Datensicherheit</h3>
-          <p>Angemessene technische und organisatorische Maßnahmen zum Schutz vor unbefugtem Zugriff und Missbrauch.</p>
+          <h3 data-i18n="legal.privacy.8.title">8. Datensicherheit</h3>
+          <p data-i18n="legal.privacy.8.text">Angemessene technische und organisatorische Maßnahmen zum Schutz vor unbefugtem Zugriff und Missbrauch.</p>
         </div>
         <div class="legal-subsection">
-          <h3>9. Aktualität</h3>
+          <h3 data-i18n="legal.privacy.9.title">9. Aktualität</h3>
           <p>Diese Datenschutzerklärung wird bei Bedarf aktualisiert; Stand: [Datum einsetzen].</p>
         </div>
       </section>
 
       <section id="haftung" class="legal-card">
-        <h2>Haftungsausschluss (Disclaimer) für Auswertungen und Visualisierungen</h2>
+        <h2 data-i18n="legal.disclaimer.title">Haftungsausschluss (Disclaimer) für Auswertungen und Visualisierungen</h2>
         <ul class="legal-list">
-          <li>Die bereitgestellten Daten, Auswertungen und Visualisierungen dienen ausschließlich Lehr- und Demonstrationszwecken.</li>
-          <li>Es wird keine Gewähr für Richtigkeit, Vollständigkeit oder Aktualität der dargestellten Inhalte übernommen.</li>
-          <li>Eine Nutzung der Informationen erfolgt auf eigenes Risiko; Haftungsansprüche sind ausgeschlossen, sofern kein vorsätzliches oder grob fahrlässiges Verhalten vorliegt.</li>
-          <li>Externe Links werden sorgfältig geprüft; für Inhalte externer Seiten sind ausschließlich deren Betreiber verantwortlich.</li>
+          <li data-i18n="legal.disclaimer.item1">Die bereitgestellten Daten, Auswertungen und Visualisierungen dienen ausschließlich Lehr- und Demonstrationszwecken.</li>
+          <li data-i18n="legal.disclaimer.item2">Es wird keine Gewähr für Richtigkeit, Vollständigkeit oder Aktualität der dargestellten Inhalte übernommen.</li>
+          <li data-i18n="legal.disclaimer.item3">Eine Nutzung der Informationen erfolgt auf eigenes Risiko; Haftungsansprüche sind ausgeschlossen, sofern kein vorsätzliches oder grob fahrlässiges Verhalten vorliegt.</li>
+          <li data-i18n="legal.disclaimer.item4">Externe Links werden sorgfältig geprüft; für Inhalte externer Seiten sind ausschließlich deren Betreiber verantwortlich.</li>
         </ul>
       </section>
     </main>
 
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
+        <p data-i18n="footer.copyright">&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
         <div class="footer-links">
-          <a href="{{ url_for('legal') }}#impressum">Impressum</a>
-          <a href="{{ url_for('legal') }}#datenschutz">Datenschutzerkl&auml;rung</a>
-          <a href="{{ url_for('legal') }}#haftung">Haftungsausschluss</a>
+          <a href="{{ url_for('legal') }}#impressum" data-i18n="footer.imprint">Impressum</a>
+          <a href="{{ url_for('legal') }}#datenschutz" data-i18n="footer.privacy">Datenschutzerkl&auml;rung</a>
+          <a href="{{ url_for('legal') }}#haftung" data-i18n="footer.disclaimer">Haftungsausschluss</a>
         </div>
       </div>
     </footer>
+    
+    <!-- Load language switcher -->
+    <script type="module" src="../static/language-switcher.js"></script>
   </body>
 </html>

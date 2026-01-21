@@ -2,6 +2,8 @@
  * Load top keywords from backend and dynamically create example search buttons
  */
 
+import { t } from './i18n.js';
+
 // Central suggestions count (fallback). Can be overridden via
 // data-count on the element with id="example-searches" in index.html.
 const TOP_KEYWORD_COUNT = 8;
@@ -20,7 +22,7 @@ async function loadTopKeywords() {
     container.innerHTML = ''; // Clear loading message
     
     if (!data.keywords || data.keywords.length === 0) {
-      container.innerHTML = '<p class="error">No keywords found</p>';
+      container.innerHTML = `<p class="error">${t('error.no-keywords')}</p>`;
       return;
     }
     
@@ -44,9 +46,12 @@ async function loadTopKeywords() {
   } catch (error) {
     console.error('Error loading keywords:', error);
     document.getElementById('example-searches').innerHTML = 
-      '<p class="error">Failed to load keywords</p>';
+      `<p class="error">${t('error.keywords')}</p>`;
   }
 }
 
 // Load keywords when page loads
 document.addEventListener('DOMContentLoaded', loadTopKeywords);
+
+// Reload keywords when language changes (to update error messages if any)
+document.addEventListener('languageChanged', loadTopKeywords);

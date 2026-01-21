@@ -8,6 +8,7 @@
  * - App state management
  */
 
+import { t } from '../i18n.js';
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
 import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen } from './api.js';
@@ -55,7 +56,7 @@ async function refresh() {
   const docsContainer = document.getElementById("viz-topdocs");
 
   if (trendContainer && fraktionenContainer && fraktionenShareContainer && docsContainer) {
-    trendContainer.innerHTML = "<p>Loading data...</p>";
+    trendContainer.innerHTML = `<p>${t('loading.data')}</p>`;
     fraktionenContainer.innerHTML = "";
     fraktionenShareContainer.innerHTML = "";
     docsContainer.innerHTML = "";
@@ -100,13 +101,13 @@ async function refresh() {
       if (trendData && trendData.length > 0) {
         const prepared = prepareTrendData(trendData);
         renderTrendChart(prepared, "#viz-trend", {
-          title: word ? `Anträge pro Monat` : `Alle Anträge pro Monat`,
+          title: word ? t('chart.trend.title') : t('chart.trend.title.all'),
           searchTerm: word,
           width: 900,
           height: 400
         });
       } else {
-        trendContainer.innerHTML = "<p>No trend data available</p>";
+        trendContainer.innerHTML = `<p>${t('error.no-trend')}</p>`;
       }
     } else {
       trendContainer.innerHTML = "";
@@ -116,14 +117,14 @@ async function refresh() {
     if (state.showFraktionen) {
       if (fraktionenData && fraktionenData.length > 0) {
         renderFraktionChart(fraktionenData, "#viz-fraktionen", {
-          title: word ? `Fraktionsbeteiligung` : `Fraktionsbeteiligung (alle Anträge)`,
+          title: word ? t('chart.fraktionen.title') : t('chart.fraktionen.title.all'),
           searchTerm: word,
           width: 900,
           height: 400,
           limit: 15
         });
       } else {
-        fraktionenContainer.innerHTML = "<p>No faction data available</p>";
+        fraktionenContainer.innerHTML = `<p>${t('error.no-faction')}</p>`;
       }
     } else {
       fraktionenContainer.innerHTML = "";
@@ -134,14 +135,14 @@ async function refresh() {
       // Only show share when keyword is provided
       if (fraktionenShareData && fraktionenShareData.length > 0) {
         renderFraktionShareChart(fraktionenShareData, "#viz-fraktionen-share", {
-          title: `Anteil thematisierte Anträge`,
+          title: t('chart.share.title'),
           searchTerm: word,
           width: 900,
           height: 400,
           limit: 15
         });
       } else {
-        fraktionenShareContainer.innerHTML = "<p>No faction share data available</p>";
+        fraktionenShareContainer.innerHTML = `<p>${t('error.no-faction-share')}</p>`;
       }
     } else {
       // Hide share chart when no keyword
@@ -154,17 +155,17 @@ async function refresh() {
         const topDocs = getTopDocuments(documentsData, 20);
         if (topDocs.length > 0) {
           renderBarChart(topDocs, "#viz-topdocs", {
-            title: `Top 20 Dokumente`,
+            title: t('chart.topdocs.title'),
             searchTerm: word,
             width: 900,
             height: 400,
             limit: 20
           });
         } else {
-          docsContainer.innerHTML = "<p>No documents found</p>";
+          docsContainer.innerHTML = `<p>${t('error.no-documents')}</p>`;
         }
       } else {
-        docsContainer.innerHTML = "<p>No document data available</p>";
+        docsContainer.innerHTML = `<p>${t('error.no-documents')}</p>`;
       }
     } else {
       docsContainer.innerHTML = "";
@@ -176,7 +177,7 @@ async function refresh() {
       if (metrics) {
         renderKPICards(metrics, "#viz-kpi", { searchTerm: word });
       } else {
-        kpiContainer.innerHTML = "<p>Keine Metriken verfügbar</p>";
+        kpiContainer.innerHTML = `<p>${t('error.no-metrics')}</p>`;
       }
     }
 
@@ -187,10 +188,10 @@ async function refresh() {
         renderProcessingTimeChart(metrics.byReferat, "#viz-metrics-chart", { 
           searchTerm: word,
           limit: 10,
-          title: word ? "Bearbeitungsdauer nach Referat" : "Bearbeitungsdauer nach Referat (alle Anträge)"
+          title: word ? t('chart.metrics.title') : t('chart.metrics.title.all')
         });
       } else {
-        metricsChartContainer.innerHTML = "<p>Keine Daten für Referate verfügbar</p>";
+        metricsChartContainer.innerHTML = `<p>${t('error.no-referate')}</p>`;
       }
     }
 
@@ -199,7 +200,7 @@ async function refresh() {
     const trendContainer = document.getElementById("viz-trend");
     const fraktionenContainer = document.getElementById("viz-fraktionen");
     const docsContainer = document.getElementById("viz-topdocs");
-    if (trendContainer) trendContainer.innerHTML = "<p>Error loading data. Check console for details.</p>";
+    if (trendContainer) trendContainer.innerHTML = `<p>${t('error.loading')}</p>`;
     if (fraktionenContainer) fraktionenContainer.innerHTML = "";
     if (docsContainer) docsContainer.innerHTML = "";
   }
@@ -247,7 +248,7 @@ document.getElementById("toggle-topdocs")?.addEventListener("change", (e) => {
 // Initialize - load all proposals data on page load
 const initTrendContainer = document.getElementById("viz-trend");
 if (initTrendContainer) {
-  initTrendContainer.innerHTML = "<p>Loading initial data...</p>";
+  initTrendContainer.innerHTML = `<p>${t('loading.initial')}</p>`;
 }
 
 // Load all proposals on page load
@@ -255,6 +256,15 @@ document.addEventListener("DOMContentLoaded", () => {
   loadDateRange();
   // Trigger refresh with empty search to show all proposals
   refresh();
+});
+
+// Re-render charts when language changes
+document.addEventListener("languageChanged", () => {
+  // Re-run refresh to update all chart labels and texts
+  if (state.currentWord !== undefined) {
+    refresh();
+    loadDateRange(); // Also update date range text
+  }
 });
 
 /**
@@ -291,10 +301,10 @@ async function loadDateRange() {
         day: 'numeric',
         month: 'long'
       }).format(minDate);
-      displayText = `Anträge im Zeitraum von ${minWithoutYear} bis ${maxFormatted}`;
+      displayText = `${t('daterange.prefix')} ${minWithoutYear} ${t('daterange.to')} ${maxFormatted}`;
     } else {
       // Different years: "25. Januar 2025 bis 01. März 2026"
-      displayText = `Anträge im Zeitraum von ${minFormatted} bis ${maxFormatted}`;
+      displayText = `${t('daterange.prefix')} ${minFormatted} ${t('daterange.to')} ${maxFormatted}`;
     }
     
     dateRangeDisplay.textContent = displayText;

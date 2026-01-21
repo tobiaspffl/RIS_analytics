@@ -540,6 +540,56 @@ body {
 }
 
 /* ========================================
+   Language Switcher
+   ======================================== */
+
+.language-switcher {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.lang-btn {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.lang-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.lang-btn.active {
+  background: white;
+  color: var(--primary-700);
+  border-color: white;
+}
+
+.lang-btn:active {
+  transform: translateY(0);
+}
+
+/* Language switcher in legal hero */
+.legal-hero .language-switcher {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+/* ========================================
    Legal Page
    ======================================== */
 
@@ -690,5 +740,15 @@ body {
 
   .legal-page {
     padding: 0 var(--spacing-lg);
+  }
+  
+  .language-switcher {
+    top: 16px;
+    right: 16px;
+  }
+  
+  .lang-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
   }
 }
