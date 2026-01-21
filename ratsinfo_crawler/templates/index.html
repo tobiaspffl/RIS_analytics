@@ -105,7 +105,14 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p>&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
+      <div class="footer-content">
+        <p>&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
+        <div class="footer-links">
+          <a href="{{ url_for('legal') }}#impressum">Impressum</a>
+          <a href="{{ url_for('legal') }}#datenschutz">Datenschutzerkl&auml;rung</a>
+          <a href="{{ url_for('legal') }}#haftung">Haftungsausschluss</a>
+        </div>
+      </div>
     </footer>
 
     <!-- Load D3.js library -->

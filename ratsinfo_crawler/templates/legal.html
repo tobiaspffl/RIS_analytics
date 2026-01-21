@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rechtliche Hinweise | München Stadtrat Analytics</title>
+    <link rel="stylesheet" href="../static/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="legal-hero">
+      <div class="legal-hero-content">
+        <p class="legal-eyebrow">München Stadtrat Analytics</p>
+        <h1>Rechtliche Hinweise</h1>
+        <p class="legal-lead">Informationen zu Impressum, Datenschutz und Haftung für die nicht-kommerzielle Lehr-/Demonstrations-Webseite.</p>
+        <div class="legal-hero-actions">
+          <a class="legal-link" href="/">Zur Startseite</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container legal-page">
+      <section id="impressum" class="legal-card">
+        <h2>Impressum (§ 5 TMG)</h2>
+        <p>Betreiber der Webseite (Lehr-/Demonstrationszwecke, nicht kommerziell):</p>
+        <ul class="legal-list">
+          <li>Name: Tobias Pfeifle</li>
+          <li>Anschrift: Ameisenbühl 1, 91282 Betzenstein, Deutschland</li>
+          <li>Hochschule: Technische Universität München</li>
+          <li>Kontakt: tobias.pfeifle@tum.de</li>
+          <li>Verantwortlich für den Inhalt: Tobias Pfeifle, erreichbar unter den oben genannten Kontaktdaten</li>
+          <!-- <li>Hosting: [Name Hosting-Anbieter], [Anschrift Hosting-Anbieter, falls erforderlich]</li> -->
+        </ul>
+      </section>
+
+      <section id="datenschutz" class="legal-card">
+        <h2>Datenschutzerklärung (DSGVO)</h2>
+        <div class="legal-subsection">
+          <h3>1. Verantwortliche Stelle</h3>
+          <p>Tobias Pfeifle, Ameisenbühl 1, 91282 Betzenstein, Deutschland, tobias.pfeifle@tum.de</p>
+        </div>
+        <div class="legal-subsection">
+          <h3>2. Zweck der Webseite</h3>
+          <p>Lehr- und Demonstrationszwecke im Rahmen eines Hochschulkurses; keine kommerzielle Nutzung.</p>
+        </div>
+        <div class="legal-subsection">
+          <h3>3. Erhobene Daten</h3>
+          <ul class="legal-list">
+            <li>Serverseitige Logfiles: z. B. IP-Adresse, Datum/Uhrzeit des Zugriffs, abgerufene Ressource, übertragene Datenmenge, User-Agent.</li>
+            <li>Keine Cookies, kein Tracking, kein Kontaktformular, keine Veröffentlichung personenbezogener Daten.</li>
+          </ul>
+        </div>
+        <div class="legal-subsection">
+          <h3>4. Rechtsgrundlage</h3>
+          <p>Bereitstellung der Webseite und IT-Sicherheit gemäß Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherem Betrieb).</p>
+        </div>
+        <div class="legal-subsection">
+          <h3>5. Speicherdauer</h3>
+          <p>Logfiles werden nur so lange gespeichert, wie es für Betrieb, Sicherheit und Fehleranalyse erforderlich ist; anschließende Löschung oder Anonymisierung.</p>
+        </div>
+        <div class="legal-subsection">
+          <h3>6. Weitergabe an Dritte</h3>
+          <p>Keine Weitergabe personenbezogener Daten. Hosting erfolgt bei [Name Hosting-Anbieter]; Datenverarbeitung erfolgt im Rahmen eines Auftragsverhältnisses.</p>
+        </div>
+        <div class="legal-subsection">
+          <h3>7. Betroffenenrechte</h3>
+          <p>Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch sowie Datenübertragbarkeit nach Maßgabe der DSGVO. Zur Ausübung der Rechte: [E-Mail-Adresse].</p>
+        </div>
+        <div class="legal-subsection">
+          <h3>8. Datensicherheit</h3>
+          <p>Angemessene technische und organisatorische Maßnahmen zum Schutz vor unbefugtem Zugriff und Missbrauch.</p>
+        </div>
+        <div class="legal-subsection">
+          <h3>9. Aktualität</h3>
+          <p>Diese Datenschutzerklärung wird bei Bedarf aktualisiert; Stand: [Datum einsetzen].</p>
+        </div>
+      </section>
+
+      <section id="haftung" class="legal-card">
+        <h2>Haftungsausschluss (Disclaimer) für Auswertungen und Visualisierungen</h2>
+        <ul class="legal-list">
+          <li>Die bereitgestellten Daten, Auswertungen und Visualisierungen dienen ausschließlich Lehr- und Demonstrationszwecken.</li>
+          <li>Es wird keine Gewähr für Richtigkeit, Vollständigkeit oder Aktualität der dargestellten Inhalte übernommen.</li>
+          <li>Eine Nutzung der Informationen erfolgt auf eigenes Risiko; Haftungsansprüche sind ausgeschlossen, sofern kein vorsätzliches oder grob fahrlässiges Verhalten vorliegt.</li>
+          <li>Externe Links werden sorgfältig geprüft; für Inhalte externer Seiten sind ausschließlich deren Betreiber verantwortlich.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
+        <div class="footer-links">
+          <a href="{{ url_for('legal') }}#impressum">Impressum</a>
+          <a href="{{ url_for('legal') }}#datenschutz">Datenschutzerkl&auml;rung</a>
+          <a href="{{ url_for('legal') }}#haftung">Haftungsausschluss</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

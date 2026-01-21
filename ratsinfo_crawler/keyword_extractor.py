@@ -54,8 +54,9 @@ def extract_keywords_tfidf(file: str, top_n: int = 10) -> list[str]:
             "reiter", "zimmer", "liste", "begründung", "münchner", "diese", "welchen", "vielen",
             "https", "hans", "welche", "können", "partei", "kann", "ziffer", "telefon", "soll", 
             "bereits", "datum", "sehr", "ihre", "ihrem", "ihren", "ihres", "unser", "unsere",
-            "unter", "wurden", "werden", "werden", "möchten", "moechten", "möchte", "moechte",
+            "unter", "wurden", "werden", "werden", "möchten", "moechten", "möchte", "moechte", "rings",
             "bitte", "fragen", "fragen", "innen", "alle", "allen", "aller", "allenfalls", "folgenden"
+
 
 
         }

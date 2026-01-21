@@ -135,5 +135,11 @@ def available_typen():
     return jsonify(typen)
 
 
+# Route for legal information (Impressum, Datenschutz, Haftung)
+@app.route("/rechtliches", methods=["GET"])
+def legal():
+    return render_template("legal.html")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
