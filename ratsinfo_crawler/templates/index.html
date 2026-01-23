@@ -39,7 +39,7 @@
         <!-- Quick Filter Tags -->
         <div class="quick-filters">
           <label class="filter-label" data-i18n="search.popular">Beliebte Themen:</label>
-          <p style="font-size: 12px; color: #bbb;" data-i18n="search.popular.note"> (Es werden hier die am meisten vorkommenden Keywords mit Hilfe von spacy gefiltert, gecached und angezeigt, exclusive der in keyword_extractor.py ausgeschlossenen stop words) </p>
+          <!-- <p style="font-size: 12px; color: #bbb;" data-i18n="search.popular.note"> (Es werden hier die am meisten vorkommenden Keywords mit Hilfe von spacy gefiltert, gecached und angezeigt, exclusive der in keyword_extractor.py ausgeschlossenen stop words) </p> -->
 
           <div class="example-searches" id="example-searches" data-count="16">
             <span class="loading-indicator" data-i18n="loading.indicator">Wird geladen...</span>
@@ -116,6 +116,7 @@
           <a href="{{ url_for('legal') }}#impressum" data-i18n="footer.imprint">Impressum</a>
           <a href="{{ url_for('legal') }}#datenschutz" data-i18n="footer.privacy">Datenschutzerkl&auml;rung</a>
           <a href="{{ url_for('legal') }}#haftung" data-i18n="footer.disclaimer">Haftungsausschluss</a>
+          <a href="{{ url_for('methodik') }}" data-i18n="footer.methodology">Methodik</a>
         </div>
       </div>
     </footer>

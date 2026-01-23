@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Methodik & Transparenz | München Stadtrat Analytics</title>
+    <link rel="stylesheet" href="../static/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="legal-hero">
+      <div class="legal-hero-content">
+        <div class="language-switcher">
+          <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+          <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+        </div>
+        <p class="legal-eyebrow" data-i18n="methodology.eyebrow">München Stadtrat Analytics</p>
+        <h1 data-i18n="methodology.title">Methodik & Transparenz</h1>
+        <p class="legal-lead" data-i18n="methodology.lead">So entstehen die Zahlen: von der Datenerhebung bis zur Auswertung.</p>
+        <div class="legal-hero-actions">
+          <a class="legal-link" href="/" data-i18n="methodology.back">Zur Startseite</a>
+          <!-- <a class="legal-link" href="/rechtliches">Rechtliche Hinweise</a> -->
+        </div>
+      </div>
+    </header>
+
+    <main class="container legal-page">
+      <section class="legal-card">
+        <h2 data-i18n="methodology.datasources.title">1. Datenquellen</h2>
+        <ul class="legal-list">
+          <li data-i18n="methodology.datasources.1">Basis ist die öffentlich zugängliche Ratsinformations-Plattform der Stadt München.</li>
+          <li data-i18n="methodology.datasources.2">Dokumente werden per Crawler geladen und in <code>data.csv</code> abgelegt (Spalten u. a.: Drucksachen-Nr., Titel, Typ, Gestellt am, Erledigt am, Gestellt von, Zuständiges Referat, document_content).</li>
+          <li data-i18n="methodology.datasources.3">Personen- und Fraktionsnamen stammen ausschließlich aus den veröffentlichten Dokumenten.</li>
+        </ul>
+      </section>
+
+      <section class="legal-card">
+        <h2 data-i18n="methodology.preprocessing.title">2. Vorverarbeitung</h2>
+        <ul class="legal-list">
+          <li data-i18n="methodology.preprocessing.1">Alle Texte werden als String gespeichert, Datumsspalten in Datumsformate konvertiert (ungültige Daten werden verworfen).</li>
+          <li data-i18n="methodology.preprocessing.2">Keine automatische Korrektur oder Normalisierung des Inhalts; eventuelle OCR-/Formatierungsartefakte bleiben bestehen.</li>
+          <li data-i18n="methodology.preprocessing.3">Optional können Filter nach Antragstyp (<code>typ_filter</code>) angewandt werden (OR-Logik über ausgewählte Typen).</li>
+        </ul>
+      </section>
+
+      <section class="legal-card">
+        <h2 data-i18n="methodology.search.title">3. Such- und Zählregeln</h2>
+        <ul class="legal-list">
+          <li data-i18n="methodology.search.1">Suche erfolgt regex-basiert, case-insensitive, pro Suchwort.</li>
+          <li data-i18n="methodology.search.2"><strong>Schwelle:</strong> <code>MIN_OCCURRENCES_PER_DOC = 1</code>. Ein Dokument zählt als Treffer, sobald das Suchwort mindestens einmal vorkommt.</li>
+          <li data-i18n="methodology.search.3"><strong>Binär pro Dokument:</strong> Ein Dokument trägt maximal 1 zum Zähler bei, auch wenn das Wort mehrfach vorkommt.</li>
+          <li data-i18n="methodology.search.4"><strong>Theme-Expansion (aktiv):</strong> Suchbegriffe werden über <code>THEME_MAP</code> um thematisch verwandte Phrasen erweitert (z. B. "Wohnen" → Wohnung, Miete, Zimmer ...). Dadurch steigen Trefferzahlen, weil Synonyme mitgezählt werden. Abschaltbar via <code>expand_with_themes=False</code>.</li>
+          <li data-i18n="methodology.search.5"><strong>Mehrere Suchwörter:</strong> Trefferlisten werden vereinigt (Union). <code>total_word_count</code> zählt jedes Dokument höchstens einmal über alle Suchbegriffe.</li>
+          <li data-i18n="methodology.search.6"><strong>Lemmatisierung:</strong> Für Theme-Expansion wird spaCy auf Lemmebene eingesetzt; die eigentliche Zählung bleibt regex-basiert.</li>
+        </ul>
+      </section>
+
+      <section class="legal-card">
+        <h2 data-i18n="methodology.theme.title">4. Theme-Expansion und semantische Suche</h2>
+        <p data-i18n="methodology.theme.subtitle"><strong>Wie ein Suchbegriff zu mehreren Suchbegriffen wird:</strong></p>
+        <p data-i18n="methodology.theme.intro">
+          Um die Suchergebnisse zu verbessern, gibt es die Möglichkeit, mit einem Suchbegriff automatisch verwandte Begriffe zu finden. Dieses System heißt <strong>Theme-Expansion</strong> und funktioniert folgendermaßen:
+        </p>
+        <ul class="legal-list">
+          <li data-i18n="methodology.theme.list.1">Der Nutzer klickt einen Theme-Button (z. B. „Wohnen") auf der Startseite oder gibt einen Suchbegriff ein.</li>
+          <li data-i18n="methodology.theme.list.2">Das System prüft, ob dieser Begriff einem <strong>Theme in der THEME_MAP</strong> entspricht oder einer der zugeordneten Phrasen.</li>
+          <li data-i18n="methodology.theme.list.3">Falls ja: Alle Phrasen dieses Themes werden zur Suche hinzugefügt. Z. B. werden bei „Wohnen" automatisch auch „Wohnung", „Miete", „Mietspiegel", etc. gesucht.</li>
+          <li data-i18n="methodology.theme.list.4">Die Regex-basierte Suche wird dann für <strong>jeden dieser expandierten Begriffe</strong> durchgeführt.</li>
+          <li data-i18n="methodology.theme.list.5">Die Ergebnisse werden zusammengefasst (Union), sodass jedes Dokument maximal einmal gezählt wird.</li>
+        </ul>
+        <p data-i18n="methodology.theme.technical">
+          <strong>Technischer Hintergrund:</strong> Die Theme-Expansion ist lexikon-basiert (rule-based) und nutzt <strong>spaCy</strong> auf Lemma-Ebene für die Erkennung von Themenbegriffen in Texten. Die eigentliche Zählung bleibt regex-basiert für optimale Performance. Die Theme-Expansion ist standardmäßig aktiviert, kann aber über <code>expand_with_themes=False</code> deaktiviert werden.
+        </p>
+
+        <h3 data-i18n="methodology.theme.themes.title">Verfügbare Themes und ihre Suchbegriffe</h3>
+        <p data-i18n="methodology.theme.themes.intro">Hier ist eine Übersicht aller Themes und ihrer zugeordneten Suchbegriffe:</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>🏠 Wohnen</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.housing">Wohnung, Miete, Mietspiegel, Wohnraum, Zimmer, Vermietung, Untermiete</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>🚌 Mobilitaet</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.mobility">ÖPNV, Bus, Tram, Straßenbahn, U-Bahn, S-Bahn, Fahrrad, Radweg, Parkplatz</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>📚 Bildung</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.education">Schule, Kita, Kindergarten, Universität, Hochschule, Ausbildung</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>🌍 Umwelt</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.environment">Klimaschutz, CO2, Emissionen, Nachhaltigkeit, Energiewende, Solaranlagen, Grünflächen, Parks, Bäume, Begrünung, Abfallwirtschaft, Recycling</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>🤝 Soziales</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.social">Sozialhilfe, Grundsicherung, Armut, Obdachlosigkeit, Migration, Integration, Flüchtlinge, Chancengleichheit, Familien</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>🎭 Kultur</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.culture">Theater, Museen, Kunstförderung, Kulturzentren, Bibliotheken, Kulturelle Vielfalt, Denkmalschutz, Architektur</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>⚕️ Gesundheit</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.health">Krankenhäuser, Ärzte, Gesundheitsversorgung, Psychiatrie, Pflege, Altenbetreuung, Behindertenbetreuung, Pandemie</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>💼 Wirtschaft</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.economy">Arbeitsmarkt, Arbeitsplätze, Unternehmensförderung, Gewerbebetriebe, Handwerk, Startups, Fachkräftemangel</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>🚔 Sicherheit</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.security">Polizei, Feuerwehr, Kriminalität, Ordnung, Sauberkeit, Verkehrssicherheit, Prävention</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>⚽ Sport</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.sports">Sportanlagen, Freizeiteinrichtungen, Schwimmbäder, Spielplätze, Sportförderung, Jugendangebote</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>💻 Digitalisierung</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.digitalization">Breitband, Glasfaser, 5G, Smart City, Digitalisierung, IT-Infrastruktur, Online-Dienste</p>
+          </div>
+          
+          <div style="border-left: 4px solid #0066cc; padding-left: 1rem;">
+            <h4>🔌 Versorgung</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;" data-i18n="methodology.theme.themes.supply">Wasser, Energieversorgung, Tierschutz, Kinderrechte, Verbraucherschutz</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="legal-card">
+        <h2 data-i18n="methodology.evaluations.title">5. Auswertungen</h2>
+        <ul class="legal-list">
+          <li data-i18n="methodology.evaluations.1"><strong>Trend:</strong> Gruppierung nach Monat (YYYY-MM) und Summe der binären <code>count</code>-Spalte; optionale Typ-Breakdowns.</li>
+          <li data-i18n="methodology.evaluations.2"><strong>Fraktionen/Einreicher:</strong> Feld <code>Gestellt von</code> wird an Kommata gesplittet, pro Name summiert; optional Typ-Breakdowns.</li>
+          <li data-i18n="methodology.evaluations.3"><strong>Anteil pro Fraktion:</strong> Verhältnis (Treffer / alle Dokumente je Fraktion), Null-Divisionen werden entfernt.</li>
+          <li data-i18n="methodology.evaluations.4"><strong>KPI Verarbeitung:</strong> Durchschnittliche Bearbeitungszeit (Erledigt am − Gestellt am) nur für erledigte Vorgänge; offene/geschlossene Zähler basieren auf Vorhandensein des Erledigt-Datums; Referats-Breakdown über erledigte Vorgänge.</li>
+        </ul>
+      </section>
+
+      <section class="legal-card">
+        <h2 data-i18n="methodology.visualization.title">6. Visualisierung</h2>
+        <ul class="legal-list">
+          <li data-i18n="methodology.visualization.1">Frontend nutzt D3.js; Daten werden über JSON-Endpunkte aus Flask geladen.</li>
+          <li data-i18n="methodology.visualization.2">Keine clientseitige Nachfilterung außer Darstellung (Tooltips, Sortierungen auf Basis der gelieferten Aggregationen).</li>
+        </ul>
+      </section>
+
+      <section class="legal-card">
+        <h2 data-i18n="methodology.limits.title">7. Grenzen & Bias</h2>
+        <ul class="legal-list">
+          <li data-i18n="methodology.limits.1">Regex- und Theme-Expansion können Über- oder Unterzählungen verursachen (z. B. Teilwörter, fehlende Synonyme).</li>
+          <li data-i18n="methodology.limits.2">Binäre Zählung ignoriert Mehrfachnennungen innerhalb eines Dokuments.</li>
+          <li data-i18n="methodology.limits.3">Qualität der Ergebnisse hängt von Datenvollständigkeit und Richtigkeit der Quelle ab.</li>
+          <li data-i18n="methodology.limits.4">Kein automatisches Entfernen von Stoppwörtern in der Zählung; Theme-Expansion ist kuratiert und kann unvollständig sein.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p data-i18n="footer.copyright">&copy; 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle</p>
+        <div class="footer-links">
+          <a href="{{ url_for('legal') }}#impressum" data-i18n="footer.imprint">Impressum</a>
+          <a href="{{ url_for('legal') }}#datenschutz" data-i18n="footer.privacy">Datenschutzerklärung</a>
+          <a href="{{ url_for('legal') }}#haftung" data-i18n="footer.disclaimer">Haftungsausschluss</a>
+          <a href="{{ url_for('methodik') }}" data-i18n="footer.methodology">Methodik</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="../static/language-switcher.js"></script>
+  </body>
+</html>

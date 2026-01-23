@@ -59,6 +59,54 @@ function translateTyp(typ) {
 }
 
 /**
+ * Add a small info badge (top-right) that links to the methodology page
+ * @param {HTMLElement} container - Chart container
+ * @param {string} href - Target URL
+ * @param {string} title - Tooltip/aria label
+ */
+function addInfoBadge(container, href = "/methodik#zaehlregeln", title) {
+  if (!container) return;
+  // Keep layout intact; only set position if not already defined
+  if (!container.style.position) {
+    container.style.position = "relative";
+  }
+
+  // Remove existing badge to avoid duplicates on re-render
+  const existing = container.querySelector(".info-badge");
+  if (existing) existing.remove();
+
+  const badge = document.createElement("a");
+  badge.className = "info-badge";
+  badge.href = href;
+  const label = title || t('badge.methodology');
+  badge.title = label;
+  badge.setAttribute("aria-label", label);
+  badge.textContent = "i";
+  badge.style.cssText = `
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    border: 1px solid #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    background: #f8fafc;
+    text-decoration: none;
+    z-index: 5;
+  `;
+  badge.onmouseenter = () => { badge.style.background = "#e2e8f0"; };
+  badge.onmouseleave = () => { badge.style.background = "#f8fafc"; };
+
+  container.appendChild(badge);
+}
+
+/**
  * Render a line chart for monthly trend data
  * @param {Array} trendData - Array of {month, count, date} objects (use prepareTrendData)
  * @param {string} selector - CSS selector for container (e.g., "#viz-trend")
@@ -87,8 +135,11 @@ export function renderTrendChart(trendData, selector, options = {}) {
 
   if (!trendData || trendData.length === 0) {
     container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-data')}</p>`;
+    addInfoBadge(container);
     return;
   }
+
+  addInfoBadge(container);
 
   // Margins
   const margin = { top: 40, right: 30, bottom: 50, left: 70 };
@@ -333,8 +384,11 @@ export function renderBarChart(documents, selector, options = {}) {
 
   if (!documents || documents.length === 0) {
     container.innerHTML = `<p>${t('error.no-data')}</p>`;
+    addInfoBadge(container);
     return;
   }
+
+  addInfoBadge(container);
 
   const topDocs = documents
     .filter(d => typeof d.count === "number" && d.count > 0)
@@ -370,18 +424,15 @@ export function renderBarChart(documents, selector, options = {}) {
     .nice()
     .range([chartHeight, 0]);
 
-  // X-Axis (just numbers)
   g.append("g")
     .attr("transform", `translate(0,${chartHeight})`)
     .call(d3.axisBottom(xScale).tickFormat(d => (Number(d) + 1).toString()))
     .attr("class", "axis x-axis");
 
-  // Y-Axis
   g.append("g")
     .call(d3.axisLeft(yScale))
     .attr("class", "axis y-axis");
 
-  // Bars
   g.selectAll(".bar")
     .data(topDocs)
     .join("rect")
@@ -394,16 +445,16 @@ export function renderBarChart(documents, selector, options = {}) {
     .append("title")
     .text(d => `${d.name}: ${d.count}`);
 
-  // X-Axis label
   svg
     .append("text")
     .attr("x", width / 2)
     .attr("y", height - 5)
     .attr("text-anchor", "middle")
     .attr("class", "axis-label")
-    .text("Dokument Index");
+    .style("font-size", "13px")
+    .style("fill", "#666")
+    .text(t('chart.axis.count'));
 
-  // Y-Axis label
   svg
     .append("text")
     .attr("transform", "rotate(-90)")
@@ -411,9 +462,10 @@ export function renderBarChart(documents, selector, options = {}) {
     .attr("x", -(height / 2))
     .attr("text-anchor", "middle")
     .attr("class", "axis-label")
-    .text("Vorkommen (count)");
+    .style("font-size", "13px")
+    .style("fill", "#666")
+    .text(t('chart.axis.keyword'));
 
-  // Title
   svg
     .append("text")
     .attr("x", width / 2)
@@ -455,10 +507,12 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
 
   if (!fraktionen || fraktionen.length === 0) {
     container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-data')}</p>`;
+    addInfoBadge(container);
     return;
   }
 
-  // Filter and sort data
+  addInfoBadge(container);
+
   const topFraktionen = fraktionen
     .filter(f => typeof f.count === "number" && f.count > 0)
     .sort((a, b) => b.count - a.count)
@@ -468,7 +522,6 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
-  // Create SVG
   const svg = d3
     .select(selector)
     .append("svg")
@@ -478,12 +531,10 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .style("display", "block")
     .style("margin", "0 auto");
 
-  // Create group for chart
   const g = svg
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  // Scales - for horizontal bar chart, X is linear (count), Y is band (fraktion names)
   const xScale = d3
     .scaleLinear()
     .domain([0, d3.max(topFraktionen, d => d.count)])
@@ -496,41 +547,31 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .range([0, chartHeight])
     .padding(0.3);
 
-  // Add grid lines (vertical)
   g.append("g")
     .attr("class", "grid")
     .attr("stroke", "#e5e7eb")
     .attr("stroke-dasharray", "4")
     .attr("opacity", 0.7)
-    .call(
-      d3
-        .axisBottom(xScale)
-        .tickSize(chartHeight)
-        .tickFormat("")
-    )
+    .call(d3.axisBottom(xScale).tickSize(chartHeight).tickFormat(""))
     .select(".domain")
     .remove();
 
-  // X-Axis (bottom, for counts)
   g.append("g")
     .attr("transform", `translate(0,${chartHeight})`)
     .call(d3.axisBottom(xScale))
     .attr("class", "axis x-axis")
     .style("font-size", "12px");
 
-  // Y-Axis (left, for fraktion names)
   g.append("g")
     .call(d3.axisLeft(yScale))
     .attr("class", "axis y-axis")
     .style("font-size", "12px");
 
-  // Create color scale using global faction color map
   const colorScale = d3
     .scaleOrdinal()
     .domain(topFraktionen.map(d => d.name))
     .range(topFraktionen.map(d => getFraktionColor(d.name)));
 
-  // Create tooltip
   const tooltip = d3
     .select("body")
     .append("div")
@@ -545,7 +586,6 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .style("display", "none")
     .style("z-index", "1000");
 
-  // Add bars
   g.selectAll(".bar")
     .data(topFraktionen)
     .join("rect")
@@ -596,7 +636,6 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
       tooltip.style("display", "none");
     });
 
-  // Add value labels on bars (right side)
   g.selectAll(".bar-label")
     .data(topFraktionen)
     .join("text")
@@ -609,7 +648,6 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .attr("font-weight", "500")
     .text(d => d.count);
 
-  // X-Axis label
   svg
     .append("text")
     .attr("x", width / 2)
@@ -620,7 +658,6 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .style("fill", "#666")
     .text(t('chart.axis.count'));
 
-  // Y-Axis label
   svg
     .append("text")
     .attr("x", 15)
@@ -631,7 +668,6 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .style("fill", "#666")
     .text(t('chart.axis.faction'));
 
-  // Title
   const titleText = searchTerm
     ? `${title}: "${capitalizeFirstLetter(searchTerm)}"`
     : title;
@@ -660,6 +696,7 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
  */
 export function renderKPICards(metrics, selector, options = {}) {
   const { searchTerm = "" } = options;
+  const infoLink = { href: "/methodik#zaehlregeln", title: t('badge.methodology') };
 
   const container = document.querySelector(selector);
   if (!container) {
@@ -683,7 +720,8 @@ export function renderKPICards(metrics, selector, options = {}) {
     t('kpi.avgdays.title'),
     metrics.avgDays !== null ? `${Math.round(metrics.avgDays)} ${t('kpi.avgdays.description')}` : t('kpi.avgdays.na'),
     "#3b82f6",
-    "📊"
+    "📊",
+    infoLink
   );
 
   // KPI 2: Open requests
@@ -691,7 +729,8 @@ export function renderKPICards(metrics, selector, options = {}) {
     t('kpi.open.title'),
     metrics.openCount || 0,
     "#f59e0b",
-    "⏳"
+    "⏳",
+    infoLink
   );
 
   // KPI 3: Closed requests
@@ -699,7 +738,8 @@ export function renderKPICards(metrics, selector, options = {}) {
     t('kpi.closed.title'),
     metrics.closedCount || 0,
     "#10b981",
-    "✅"
+    "✅",
+    infoLink
   );
 
   // KPI 4: Total requests
@@ -707,7 +747,8 @@ export function renderKPICards(metrics, selector, options = {}) {
     t('kpi.total.title'),
     metrics.totalCount || 0,
     "#6366f1",
-    "📝"
+    "📝",
+    infoLink
   );
 
   // Append in order: Total, Open, Closed, Average
@@ -730,7 +771,7 @@ export function renderKPICards(metrics, selector, options = {}) {
 /**
  * Helper function to create a single KPI card
  */
-function createKPICard(label, value, color, icon) {
+function createKPICard(label, value, color, icon, infoLink) {
   const card = document.createElement("div");
   card.style.cssText = `
     background: white;
@@ -741,6 +782,7 @@ function createKPICard(label, value, color, icon) {
     border: 1px solid #e5e7eb;
     border-left: 4px solid ${color};
     transition: all 0.3s ease;
+    position: relative;
   `;
   card.onmouseenter = () => {
     card.style.transform = "translateY(-2px)";
@@ -754,6 +796,34 @@ function createKPICard(label, value, color, icon) {
   const iconEl = document.createElement("div");
   iconEl.textContent = icon;
   iconEl.style.cssText = "font-size: 32px; margin-bottom: 10px;";
+
+  if (infoLink && infoLink.href) {
+    const info = document.createElement("a");
+    info.href = infoLink.href;
+    info.title = infoLink.title;
+    info.setAttribute("aria-label", infoLink.title);
+    info.textContent = "i";
+    info.style.cssText = `
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      background: #f8fafc;
+      text-decoration: none;
+    `;
+    info.onmouseenter = () => { info.style.background = "#e2e8f0"; };
+    info.onmouseleave = () => { info.style.background = "#f8fafc"; };
+    card.appendChild(info);
+  }
 
   const labelEl = document.createElement("div");
   labelEl.textContent = label;
@@ -800,8 +870,11 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
 
   if (!data || data.length === 0) {
     container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-referate')}</p>`;
+    addInfoBadge(container);
     return;
   }
+
+  addInfoBadge(container);
 
   // Filter and sort data
   const topReferats = data

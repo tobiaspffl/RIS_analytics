@@ -1,9 +1,202 @@
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
+from functools import lru_cache
+
+# spaCy wird vorausgesetzt (siehe venv). Bei fehlender Installation würde ein ImportError hochgehen.
+import spacy
+from spacy.matcher import PhraseMatcher
+SPACY_AVAILABLE = True
 
 # Central parameter: minimum occurrences in a document to count as a hit
 MIN_OCCURRENCES_PER_DOC = 1
+
+# Rule-based theme lexicon for lightweight topic tagging and query expansion.
+# You can extend or edit this map to reflect your domain vocabulary.
+THEME_MAP = {
+    "Wohnen": [
+        "Wohnung",
+        "Miete",
+        "Mietspiegel",
+        "Wohnraum",
+        "Zimmer",
+        "Vermietung",
+        "Untermiete",
+    ],
+    "Mobilitaet": [
+        "ÖPNV",
+        "Bus",
+        "Tram",
+        "Straßenbahn",
+        "U-Bahn",
+        "S-Bahn",
+        "Fahrrad",
+        "Radweg",
+        "Parkplatz",
+    ],
+    "Bildung": [
+        "Schule",
+        "Kita",
+        "Kindergarten",
+        "Universität",
+        "Hochschule",
+        "Ausbildung",
+    ],
+    "Umwelt": [
+        "Klimaschutz",
+        "CO2",
+        "Emissionen",
+        "Nachhaltigkeit",
+        "Energiewende",
+        "Solaranlagen",
+        "Grünflächen",
+        "Parks",
+        "Bäume",
+        "Begrünung",
+        "Abfallwirtschaft",
+        "Recycling",
+    ],
+    "Soziales": [
+        "Sozialhilfe",
+        "Grundsicherung",
+        "Armut",
+        "Obdachlosigkeit",
+        "Migration",
+        "Integration",
+        "Flüchtlinge",
+        "Chancengleichheit",
+        "Familien",
+    ],
+    "Kultur": [
+        "Theater",
+        "Museen",
+        "Kunstförderung",
+        "Kulturzentren",
+        "Bibliotheken",
+        "Kulturelle Vielfalt",
+        "Denkmalschutz",
+        "Architektur",
+    ],
+    "Gesundheit": [
+        "Krankenhäuser",
+        "Ärzte",
+        "Gesundheitsversorgung",
+        "Psychiatrie",
+        "Pflege",
+        "Altenbetreuung",
+        "Behindertenbetreuung",
+        "Pandemie",
+    ],
+    "Wirtschaft": [
+        "Arbeitsmarkt",
+        "Arbeitsplätze",
+        "Unternehmensförderung",
+        "Gewerbebetriebe",
+        "Handwerk",
+        "Startups",
+        "Fachkräftemangel",
+    ],
+    "Sicherheit": [
+        "Polizei",
+        "Feuerwehr",
+        "Kriminalität",
+        "Ordnung",
+        "Sauberkeit",
+        "Verkehrssicherheit",
+        "Prävention",
+    ],
+    "Sport": [
+        "Sportanlagen",
+        "Freizeiteinrichtungen",
+        "Schwimmbäder",
+        "Spielplätze",
+        "Sportförderung",
+        "Jugendangebote",
+    ],
+    "Digitalisierung": [
+        "Breitband",
+        "Glasfaser",
+        "5G",
+        "Smart City",
+        "Digitalisierung",
+        "IT-Infrastruktur",
+        "Online-Dienste",
+    ],
+    "Versorgung": [
+        "Wasser",
+        "Energieversorgung",
+        "Tierschutz",
+        "Kinderrechte",
+        "Verbraucherschutz",
+    ],
+}
+
+
+@lru_cache(maxsize=1)
+def _load_spacy_model(model_name: str = "de_core_news_md"):
+    """Load a German spaCy model once. Falls back to small model if needed."""
+    if not SPACY_AVAILABLE:
+        return None
+    try:
+        return spacy.load(model_name)
+    except OSError:
+        try:
+            return spacy.load("de_core_news_sm")
+        except OSError:
+            return None
+
+
+@lru_cache(maxsize=1)
+def _build_theme_matcher():
+    """Create a PhraseMatcher that matches theme phrases on lemma level."""
+    nlp = _load_spacy_model()
+    if not nlp or not PhraseMatcher:
+        return None, None
+    matcher = PhraseMatcher(nlp.vocab, attr="LEMMA")
+    for theme, phrases in THEME_MAP.items():
+        docs = [nlp.make_doc(p) for p in phrases]
+        matcher.add(theme, docs)
+    return nlp, matcher
+
+
+def _expand_search_terms_with_themes(words, theme_map=None):
+    """Expand user search terms with themed phrases (lexicon-based, no ML)."""
+    theme_map = theme_map or THEME_MAP
+    expanded = set()
+    for word in words:
+        if not word:
+            continue
+        expanded.add(word)
+        lower_word = word.lower()
+        for theme, phrases in theme_map.items():
+            theme_lower = theme.lower()
+            phrase_lowers = [p.lower() for p in phrases]
+            # If the user searches for the theme name or any of its phrases, include all phrases.
+            if lower_word == theme_lower or lower_word in phrase_lowers:
+                expanded.update(phrases)
+                expanded.add(theme)
+    return list(expanded)
+
+
+def _detect_themes_in_text(text: str):
+    """Return a list of theme names detected in the given text using spaCy."""
+    nlp, matcher = _build_theme_matcher()
+    if not nlp or not matcher:
+        return []
+    doc = nlp(text or "")
+    matches = matcher(doc)
+    themes = {doc.vocab.strings[m_id] for m_id, _, _ in matches}
+    return sorted(themes)
+
+
+def _annotate_themes(df: pd.DataFrame, text_col: str = "document_content"):
+    """Annotate a dataframe with a new column 'themes_detected' (list of themes)."""
+    if text_col not in df.columns:
+        df["themes_detected"] = [[] for _ in range(len(df))]
+        return df
+    df = df.copy()
+    df["themes_detected"] = df[text_col].astype(str).apply(_detect_themes_in_text)
+    return df
 
 
 def extract_fraktion(text):
@@ -49,8 +242,10 @@ def find_word_occurrences(file, word):
     """
     Count documents that mention the word at least MIN_OCCURRENCES_PER_DOC times.
     Each document contributes at most 1 to the count (binary hit per doc).
+
+    Note: This is still regex-based for speed. Theme expansion happens one
+    level up in find_words_frequency.
     """
-    print(word)
     df = pd.read_csv(file)
 
     df["document_content"] = df["document_content"].astype(str)
@@ -71,44 +266,60 @@ def find_word_occurrences(file, word):
     return rows_with_word, total_word_count
 
 
-def find_words_frequency(file, words, typ_filter=None):
+def find_words_frequency(file, words, typ_filter=None, expand_with_themes=True, annotate_themes=False):
     """
-    Find documents matching the given words.
-    If words list is empty, returns all documents with count=1.
-    
+    Find documents matching the given words (binary per document).
+
+    Enhancements:
+    - Optional theme-based query expansion (lexicon-driven, no ML): if a user
+      searches for a theme name (e.g., "Wohnen") or one of its phrases
+      (e.g., "Miete"), we expand the search to all phrases under that theme.
+    - Optional theme annotation per document using spaCy PhraseMatcher.
+
     Args:
-        file: Path to CSV file
-        words: List of keywords to search for
-        typ_filter: List of Typ values to filter by (OR condition), None = no filter
+        file: Path to CSV file.
+        words: List of keywords to search for.
+        typ_filter: List of Typ values to filter by (OR condition), None = no filter.
+        expand_with_themes: Expand search terms using THEME_MAP when True.
+        annotate_themes: Attach a 'themes_detected' column with matched themes when True.
     """
-    # If no words provided, return all documents
-    if not words or all(not w for w in words):
+    # Expand search intent via THEME_MAP to catch related phrases.
+    search_terms = words or []
+    if expand_with_themes:
+        search_terms = _expand_search_terms_with_themes(search_terms)
+
+    # If after expansion no words are left, return all documents with count=1.
+    if not search_terms or all(not w for w in search_terms):
         df = pd.read_csv(file)
-        
-        # Apply Typ filter if provided
         if typ_filter:
             df = df[df["Typ"].isin(typ_filter)]
-        
         df["occurrences"] = 0
         df["count"] = 1
         total_word_count = len(df)
+        if annotate_themes:
+            df = _annotate_themes(df)
         return df, total_word_count
-    
+
     dfs = []
 
-    total_word_count = 0
-    for word in words:
-        rows_with_word,word_count = find_word_occurrences(file, word)
+    # Run the classic regex-based finder for each (possibly expanded) term.
+    for word in search_terms:
+        rows_with_word, _ = find_word_occurrences(file, word)
         dfs.append(rows_with_word)
-        total_word_count += word_count
 
     rows_all = pd.concat(dfs, ignore_index=True)
     rows_with_words = rows_all.drop_duplicates()
-    
-    # Apply Typ filter if provided
+
     if typ_filter:
         rows_with_words = rows_with_words[rows_with_words["Typ"].isin(typ_filter)]
-    
+
+    # Optional inline theme annotation for downstream use/inspection.
+    if annotate_themes:
+        rows_with_words = _annotate_themes(rows_with_words)
+
+    # Total count now counts jedes Dokument höchstens einmal über alle Suchbegriffe (Union).
+    total_word_count = len(rows_with_words)
+
     return rows_with_words, total_word_count
 
 

@@ -135,10 +135,29 @@ def available_typen():
     return jsonify(typen)
 
 
+# Route to return available themes from THEME_MAP
+@app.route("/api/themes", methods=["GET"])
+def get_themes():
+    """
+    Returns all available themes from the THEME_MAP.
+    Response: {
+        "themes": ["Wohnen", "Mobilitaet", "Bildung", "Umwelt", ...]
+    }
+    """
+    themes = list(ri.THEME_MAP.keys())
+    return jsonify({"themes": themes})
+
+
 # Route for legal information (Impressum, Datenschutz, Haftung)
 @app.route("/rechtliches", methods=["GET"])
 def legal():
     return render_template("legal.html")
+
+
+# Route for methodology/transparency page
+@app.route("/methodik", methods=["GET"])
+def methodik():
+    return render_template("methodology.html")
 
 
 if __name__ == "__main__":
