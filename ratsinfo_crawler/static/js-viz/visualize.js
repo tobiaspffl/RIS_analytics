@@ -10,6 +10,35 @@
 import { t, getCurrentLang } from '../i18n.js';
 
 /**
+ * Global color mapping for factions/parties
+ * Ensures consistent colors across all charts
+ */
+const fraktionColorMap = new Map();
+// Extended color palette - each color used only once, no duplicates
+const colorPalette = [
+  '#1a9850', '#d73027', '#f46d43', '#fdae61', '#a6d96a',
+  '#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854',
+  '#e6194b', '#3cb44b', '#ffe119', '#f58231', '#fabebe', 
+  '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf',
+  '#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5',
+  '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#9467bd',
+  '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#8c564b',
+];
+
+/**
+ * Get or assign a color for a faction
+ * Each color from palette is used exactly once, cycling through if needed
+ */
+function getFraktionColor(fraktionName) {
+  if (!fraktionColorMap.has(fraktionName)) {
+    // Assign next available color from palette
+    const colorIndex = fraktionColorMap.size % colorPalette.length;
+    fraktionColorMap.set(fraktionName, colorPalette[colorIndex]);
+  }
+  return fraktionColorMap.get(fraktionName);
+}
+
+/**
  * Helper function to capitalize first letter of a word
  */
 function capitalizeFirstLetter(word) {
@@ -495,11 +524,11 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .attr("class", "axis y-axis")
     .style("font-size", "12px");
 
-  // Create color scale for bars
+  // Create color scale using global faction color map
   const colorScale = d3
     .scaleOrdinal()
     .domain(topFraktionen.map(d => d.name))
-    .range(d3.schemeSet2);
+    .range(topFraktionen.map(d => getFraktionColor(d.name)));
 
   // Create tooltip
   const tooltip = d3
@@ -1061,10 +1090,11 @@ export function renderFraktionShareChart(data, selector, options = {}) {
     .attr("class", "axis y-axis")
     .style("font-size", "12px");
 
+  // Create color scale using global faction color map
   const colorScale = d3
     .scaleOrdinal()
     .domain(items.map(d => d.name))
-    .range(d3.schemeSet2);
+    .range(items.map(d => getFraktionColor(d.name)));
 
   // Tooltip
   const tooltip = d3
