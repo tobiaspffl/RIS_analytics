@@ -211,12 +211,22 @@ async function refresh() {
  */
 
 // Search button click
-searchBtn.addEventListener("click", refresh);
+searchBtn.addEventListener("click", () => {
+  refresh();
+  // Scroll to visualization section after a short delay to ensure rendering
+  setTimeout(() => {
+    visualization.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+});
 
 // Enter key in search input
 searchInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
     refresh();
+    // Scroll to visualization section after a short delay to ensure rendering
+    setTimeout(() => {
+      visualization.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }
 });
 
