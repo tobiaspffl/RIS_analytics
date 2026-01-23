@@ -1031,7 +1031,7 @@ export function renderFraktionShareChart(data, selector, options = {}) {
     .sort((a, b) => b.share - a.share)
     .slice(0, limit);
 
-  const margin = { top: 40, right: 30, bottom: 30, left: 200 };
+  const margin = { top: 40, right: 60, bottom: 30, left: 200 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
