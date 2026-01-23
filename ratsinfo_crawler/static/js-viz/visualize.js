@@ -341,7 +341,7 @@ export function renderBarChart(documents, selector, options = {}) {
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 
-  const margin = { top: 20, right: 30, bottom: 100, left: 60 };
+  const margin = { top: 20, right: 30, bottom: 110, left: 60 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
@@ -464,7 +464,7 @@ export function renderFraktionChart(fraktionen, selector, options = {}) {
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 
-  const margin = { top: 40, right: 30, bottom: 30, left: 200 };
+  const margin = { top: 40, right: 30, bottom: 50, left: 200 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
@@ -809,7 +809,7 @@ export function renderProcessingTimeChart(data, selector, options = {}) {
     .sort((a, b) => b.avgDays - a.avgDays)
     .slice(0, limit);
 
-  const margin = { top: 40, right: 30, bottom: 30, left: 250 };
+  const margin = { top: 40, right: 30, bottom: 50, left: 250 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
@@ -1031,7 +1031,7 @@ export function renderFraktionShareChart(data, selector, options = {}) {
     .sort((a, b) => b.share - a.share)
     .slice(0, limit);
 
-  const margin = { top: 40, right: 60, bottom: 30, left: 200 };
+  const margin = { top: 40, right: 60, bottom: 50, left: 200 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
