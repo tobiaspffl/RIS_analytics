@@ -35,7 +35,7 @@ export const translations = {
     // Loading & Errors
     'loading.indicator': 'Wird geladen...',
     'loading.initial': 'Loading initial data...',
-    'loading.data': 'Loading data...',
+    'loading.data': 'Loading data',
     'error.keywords': 'Failed to load keywords',
     'error.no-keywords': 'No keywords found',
     'error.loading': 'Error loading data. Check console for details.',
@@ -91,6 +91,9 @@ export const translations = {
     'typ.Dringlichkeitsantrag': 'Dringlichkeitsantrag',
     'typ.Ergänzungsantrag': 'Ergänzungsantrag',
     'typ.Änderungsantrag': 'Änderungsantrag',
+    'typ.Aktuelle Stunde': 'Aktuelle Stunde',
+    'typ.Fragestunde': 'Fragestunde',
+    'typ.Nachprüfungsantrag': 'Nachprüfungsantrag',
     
     // Footer
     'footer.copyright': '© 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle',
@@ -199,7 +202,7 @@ export const translations = {
     // Loading & Errors
     'loading.indicator': 'Loading...',
     'loading.initial': 'Loading initial data...',
-    'loading.data': 'Loading data...',
+    'loading.data': 'Loading data',
     'error.keywords': 'Failed to load keywords',
     'error.no-keywords': 'No keywords found',
     'error.loading': 'Error loading data. Check console for details.',
@@ -255,6 +258,9 @@ export const translations = {
     'typ.Dringlichkeitsantrag': 'Urgent Proposal',
     'typ.Ergänzungsantrag': 'Supplementary Proposal',
     'typ.Änderungsantrag': 'Amendment Proposal',
+    'typ.Aktuelle Stunde': 'Current Hour',
+    'typ.Fragestunde': 'Question Time',
+    'typ.Nachprüfungsantrag': 'Review Motion',
     
     // Footer
     'footer.copyright': '© 2026 Elena Zimmermann, Anna Labchir, Matthias Staritz, Tobias Pfeifle',

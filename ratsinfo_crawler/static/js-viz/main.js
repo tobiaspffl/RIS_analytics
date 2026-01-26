@@ -58,12 +58,17 @@ async function refresh() {
   const fraktionenContainer = document.getElementById("viz-fraktionen");
   const fraktionenShareContainer = document.getElementById("viz-fraktionen-share");
   const docsContainer = document.getElementById("viz-topdocs");
+  const metricsChartContainer = document.getElementById("viz-metrics-chart");
+  const kpiContainer = document.getElementById("viz-kpi");
 
   if (trendContainer && fraktionenContainer && fraktionenShareContainer && docsContainer) {
-    trendContainer.innerHTML = `<p>${t('loading.data')}</p>`;
-    fraktionenContainer.innerHTML = "";
-    fraktionenShareContainer.innerHTML = "";
-    docsContainer.innerHTML = "";
+    const loadingHTML = `<p class="loading-text loading-dots">${t('loading.data')}</p>`;
+    trendContainer.innerHTML = loadingHTML;
+    fraktionenContainer.innerHTML = loadingHTML;
+    fraktionenShareContainer.innerHTML = loadingHTML;
+    docsContainer.innerHTML = loadingHTML;
+    if (metricsChartContainer) metricsChartContainer.innerHTML = loadingHTML;
+    if (kpiContainer) kpiContainer.innerHTML = loadingHTML;
   }
 
   try {
@@ -204,9 +209,13 @@ async function refresh() {
     const trendContainer = document.getElementById("viz-trend");
     const fraktionenContainer = document.getElementById("viz-fraktionen");
     const docsContainer = document.getElementById("viz-topdocs");
+    const metricsChartContainer = document.getElementById("viz-metrics-chart");
+    const kpiContainer = document.getElementById("viz-kpi");
     if (trendContainer) trendContainer.innerHTML = `<p>${t('error.loading')}</p>`;
     if (fraktionenContainer) fraktionenContainer.innerHTML = "";
     if (docsContainer) docsContainer.innerHTML = "";
+    if (metricsChartContainer) metricsChartContainer.innerHTML = "";
+    if (kpiContainer) kpiContainer.innerHTML = "";
   }
 }
 
@@ -251,16 +260,32 @@ const dateFilterToggle = document.getElementById("dateFilterToggle");
 const dateFilterContent = document.getElementById("date-filter-content");
 
 if (dateFrom) {
-  dateFrom.addEventListener("change", () => {
+  // Use 'blur' instead of 'change' to avoid triggering on every keystroke during manual entry
+  dateFrom.addEventListener("blur", () => {
     state.dateFilter.from = dateFrom.value;
     refresh();
+  });
+  // Also trigger on Enter key
+  dateFrom.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      state.dateFilter.from = dateFrom.value;
+      refresh();
+    }
   });
 }
 
 if (dateTo) {
-  dateTo.addEventListener("change", () => {
+  // Use 'blur' instead of 'change' to avoid triggering on every keystroke during manual entry
+  dateTo.addEventListener("blur", () => {
     state.dateFilter.to = dateTo.value;
     refresh();
+  });
+  // Also trigger on Enter key
+  dateTo.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      state.dateFilter.to = dateTo.value;
+      refresh();
+    }
   });
 }
 
@@ -413,8 +438,10 @@ async function loadTypFilter() {
     });
     
     const span = document.createElement("span");
-    // Translate typ name if translation exists, otherwise use original
-    const translationKey = `typ.${typ}`;
+    // Remove "typ. " prefix if present in the data
+    const cleanTyp = typ.replace(/^typ\.\s*/i, "");
+    // Try to translate the cleaned typ name
+    const translationKey = `typ.${cleanTyp}`;
     span.textContent = t(translationKey);
     span.setAttribute('data-i18n', translationKey);
     

@@ -242,9 +242,19 @@ def _slice_by_date(df: pd.DataFrame, date_from: str | None, date_to: str | None)
     end_idx = len(df)
 
     if date_from:
-        start_idx = dates.searchsorted(pd.to_datetime(date_from))
+        try:
+            date_from_ts = pd.to_datetime(date_from)
+            start_idx = dates.searchsorted(date_from_ts)
+        except (pd.errors.OutOfBoundsDatetime, ValueError):
+            # Invalid date, skip filtering
+            pass
     if date_to:
-        end_idx = dates.searchsorted(pd.to_datetime(date_to), side="right")
+        try:
+            date_to_ts = pd.to_datetime(date_to)
+            end_idx = dates.searchsorted(date_to_ts, side="right")
+        except (pd.errors.OutOfBoundsDatetime, ValueError):
+            # Invalid date, skip filtering
+            pass
 
     return df.iloc[start_idx:end_idx]
 
@@ -393,20 +403,20 @@ def find_words_frequency(file, words, typ_filter=None, date_filter=None, expand_
     # Reuse the pre-sliced base_df to avoid re-loading/slicing inside find_word_occurrences
     def _process_word(word):
         # local copy to avoid side-effects
-        df_local = base_df.copy()
+        df_local = base_df.copy(deep=True)
         # reuse vectorized matching
         if not word or not isinstance(word, str) or word.strip() == "":
-            df_local["occurrences"] = 0
-            df_local["count"] = 0
+            df_local.loc[:, "occurrences"] = 0
+            df_local.loc[:, "count"] = 0
             return df_local[df_local["count"] > 0]
         try:
             pattern = re.compile(word, re.IGNORECASE)
         except (re.error, TypeError):
-            df_local["occurrences"] = 0
-            df_local["count"] = 0
+            df_local.loc[:, "occurrences"] = 0
+            df_local.loc[:, "count"] = 0
             return df_local[df_local["count"] > 0]
-        df_local["count"] = df_local["document_content"].astype(str).str.contains(pattern, na=False).astype(int)
-        df_local["occurrences"] = df_local["count"]
+        df_local.loc[:, "count"] = df_local["document_content"].astype(str).str.contains(pattern, na=False).astype(int)
+        df_local.loc[:, "occurrences"] = df_local.loc[:, "count"]
         return df_local[df_local["count"] > 0]
 
     with ThreadPoolExecutor(max_workers=4) as executor:
@@ -420,15 +430,7 @@ def find_words_frequency(file, words, typ_filter=None, date_filter=None, expand_
     if typ_filter:
         rows_with_words = rows_with_words[rows_with_words["Typ"].isin(typ_filter)]
 
-    # Apply date range filter
-    if date_filter:
-        rows_with_words["Gestellt am"] = pd.to_datetime(rows_with_words["Gestellt am"], errors="coerce")
-        if "from" in date_filter and date_filter["from"]:
-            date_from = pd.to_datetime(date_filter["from"])
-            rows_with_words = rows_with_words[rows_with_words["Gestellt am"] >= date_from]
-        if "to" in date_filter and date_filter["to"]:
-            date_to = pd.to_datetime(date_filter["to"])
-            rows_with_words = rows_with_words[rows_with_words["Gestellt am"] <= date_to]
+    # Date filtering already done via _slice_by_date, no need to re-filter
 
     # Optional inline theme annotation for downstream use/inspection.
     if annotate_themes:
