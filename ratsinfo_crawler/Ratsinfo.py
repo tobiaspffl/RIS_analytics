@@ -210,6 +210,11 @@ def _load_data_cached(file: str) -> pd.DataFrame:
     except (ValueError, KeyError):
         # If some columns don't exist, load all columns
         df = pd.read_csv(file)
+
+    # Normalize and sort dates once; NaT will be placed at the end
+    if "Gestellt am" in df.columns:
+        df["Gestellt am"] = pd.to_datetime(df["Gestellt am"], errors="coerce")
+        df = df.sort_values("Gestellt am").reset_index(drop=True)
     
     # Cache the data
     _data_cache[file] = {
@@ -218,6 +223,30 @@ def _load_data_cached(file: str) -> pd.DataFrame:
     }
     
     return df.copy()
+
+
+def _slice_by_date(df: pd.DataFrame, date_from: str | None, date_to: str | None) -> pd.DataFrame:
+    """Binary-search slice on sorted dates to reduce the working set."""
+    if "Gestellt am" not in df.columns:
+        return df
+
+    dates = df["Gestellt am"]
+
+    # Ensure monotonic increasing (sorting is done in _load_data_cached, but keep safety)
+    if not dates.is_monotonic_increasing:
+        dates = pd.to_datetime(dates, errors="coerce")
+        df = df.assign(**{"Gestellt am": dates}).sort_values("Gestellt am").reset_index(drop=True)
+        dates = df["Gestellt am"]
+
+    start_idx = 0
+    end_idx = len(df)
+
+    if date_from:
+        start_idx = dates.searchsorted(pd.to_datetime(date_from))
+    if date_to:
+        end_idx = dates.searchsorted(pd.to_datetime(date_to), side="right")
+
+    return df.iloc[start_idx:end_idx]
 
 
 def _detect_themes_in_text(text: str):
@@ -309,34 +338,8 @@ def find_word_occurrences(file, word):
     
     # Vectorized string matching (much faster than apply + lambda)
     df["count"] = df["document_content"].str.contains(pattern, na=False).astype(int)
+
     df["occurrences"] = df["count"]
-    total_word_count = int(df["count"].sum())
-    
-    return df[df["count"] > 0], total_word_count
-
-
-def find_word_occurrences_enh_option_2(file, word): # Occurrences per document == 1; binary count per document
-    # Handle invalid input
-    if not word or not isinstance(word, str) or word.strip() == "":
-        df = _load_data_cached(file)
-        df["document_content"] = df["document_content"].astype(str)
-        df["occurrences"] = 0
-        df["count"] = 0
-        return df[df["count"] > 0], 0
-    
-    df = _load_data_cached(file)
-    df["document_content"] = df["document_content"].astype(str)
-    
-    try:
-        pattern = re.compile(word, re.IGNORECASE)
-    except (re.error, TypeError):
-        # Invalid regex pattern - return empty result
-        df["occurrences"] = 0
-        df["count"] = 0
-        return df[df["count"] > 0], 0
-    
-    df["count"] = df["document_content"].str.contains(pattern, na=False).astype(int)
-    df["occurrences"] = df["count"]  # Für Rückwärtskompatibilität
     total_word_count = int(df["count"].sum())
     
     return df[df["count"] > 0], total_word_count
@@ -366,19 +369,16 @@ def find_words_frequency(file, words, typ_filter=None, date_filter=None, expand_
     if expand_with_themes:
         search_terms = _expand_search_terms_with_themes(search_terms)
 
+    # Load once, slice by date early (binary search on sorted dates)
+    base_df = _load_data_cached(file)
+    if date_filter and (date_filter.get("from") or date_filter.get("to")):
+        base_df = _slice_by_date(base_df, date_filter.get("from"), date_filter.get("to"))
+
     # If after expansion no words are left, return all documents with count=1.
     if not search_terms or all(not w for w in search_terms):
-        df = _load_data_cached(file)
+        df = base_df
         if typ_filter:
             df = df[df["Typ"].isin(typ_filter)]
-        if date_filter:
-            df["Gestellt am"] = pd.to_datetime(df["Gestellt am"], errors="coerce")
-            if "from" in date_filter and date_filter["from"]:
-                date_from = pd.to_datetime(date_filter["from"])
-                df = df[df["Gestellt am"] >= date_from]
-            if "to" in date_filter and date_filter["to"]:
-                date_to = pd.to_datetime(date_filter["to"])
-                df = df[df["Gestellt am"] <= date_to]
         df["occurrences"] = 0
         df["count"] = 1
         total_word_count = len(df)
@@ -390,11 +390,29 @@ def find_words_frequency(file, words, typ_filter=None, date_filter=None, expand_
 
     # Run regex-based finder for each (possibly expanded) term with parallel processing
     # Optimization 4: Process multiple search terms in parallel for faster execution
+    # Reuse the pre-sliced base_df to avoid re-loading/slicing inside find_word_occurrences
+    def _process_word(word):
+        # local copy to avoid side-effects
+        df_local = base_df.copy()
+        # reuse vectorized matching
+        if not word or not isinstance(word, str) or word.strip() == "":
+            df_local["occurrences"] = 0
+            df_local["count"] = 0
+            return df_local[df_local["count"] > 0]
+        try:
+            pattern = re.compile(word, re.IGNORECASE)
+        except (re.error, TypeError):
+            df_local["occurrences"] = 0
+            df_local["count"] = 0
+            return df_local[df_local["count"] > 0]
+        df_local["count"] = df_local["document_content"].astype(str).str.contains(pattern, na=False).astype(int)
+        df_local["occurrences"] = df_local["count"]
+        return df_local[df_local["count"] > 0]
+
     with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = {executor.submit(find_word_occurrences, file, word): word for word in search_terms}
+        futures = {executor.submit(_process_word, word): word for word in search_terms}
         for future in as_completed(futures):
-            rows_with_word, _ = future.result()
-            dfs.append(rows_with_word)
+            dfs.append(future.result())
 
     rows_all = pd.concat(dfs, ignore_index=True)
     rows_with_words = rows_all.drop_duplicates()
