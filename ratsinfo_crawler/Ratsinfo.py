@@ -9,7 +9,7 @@ from spacy.matcher import PhraseMatcher
 SPACY_AVAILABLE = True
 
 # Central parameter: minimum occurrences in a document to count as a hit
-MIN_OCCURRENCES_PER_DOC = 1
+MIN_OCCURRENCES_PER_DOC = 1 # nicht mehr relevant bei binary count per document
 
 # Rule-based theme lexicon for lightweight topic tagging and query expansion.
 # You can extend or edit this map to reflect your domain vocabulary.
@@ -246,6 +246,8 @@ def find_word_occurrences(file, word):
     Note: This is still regex-based for speed. Theme expansion happens one
     level up in find_words_frequency.
     """
+
+    return find_word_occurrences_enh_option_2(file, word) # delete if higher occurrence counts is wanted
     df = pd.read_csv(file)
 
     df["document_content"] = df["document_content"].astype(str)
@@ -264,6 +266,33 @@ def find_word_occurrences(file, word):
     # Only documents that meet the threshold
     rows_with_word = df[df["count"] > 0]
     return rows_with_word, total_word_count
+
+
+def find_word_occurrences_enh_option_2(file, word): # Occurrences per document == 1; binary count per document
+    # Handle invalid input
+    if not word or not isinstance(word, str) or word.strip() == "":
+        df = pd.read_csv(file)
+        df["document_content"] = df["document_content"].astype(str)
+        df["occurrences"] = 0
+        df["count"] = 0
+        return df[df["count"] > 0], 0
+    
+    df = pd.read_csv(file)  # oder mit usecols, wenn du alle Spalten kennst
+    df["document_content"] = df["document_content"].astype(str)
+    
+    try:
+        pattern = re.compile(word, re.IGNORECASE)
+    except (re.error, TypeError) as e:
+        # Invalid regex pattern - return empty result
+        df["occurrences"] = 0
+        df["count"] = 0
+        return df[df["count"] > 0], 0
+    
+    df["count"] = df["document_content"].str.contains(pattern, na=False).astype(int)
+    df["occurrences"] = df["count"]  # Für Rückwärtskompatibilität
+    total_word_count = int(df["count"].sum())
+    
+    return df[df["count"] > 0], total_word_count
 
 
 def find_words_frequency(file, words, typ_filter=None, expand_with_themes=True, annotate_themes=False):
