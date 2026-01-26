@@ -295,7 +295,7 @@ def find_word_occurrences_enh_option_2(file, word): # Occurrences per document =
     return df[df["count"] > 0], total_word_count
 
 
-def find_words_frequency(file, words, typ_filter=None, expand_with_themes=True, annotate_themes=False):
+def find_words_frequency(file, words, typ_filter=None, date_filter=None, expand_with_themes=True, annotate_themes=False):
     """
     Find documents matching the given words (binary per document).
 
@@ -304,11 +304,13 @@ def find_words_frequency(file, words, typ_filter=None, expand_with_themes=True, 
       searches for a theme name (e.g., "Wohnen") or one of its phrases
       (e.g., "Miete"), we expand the search to all phrases under that theme.
     - Optional theme annotation per document using spaCy PhraseMatcher.
+    - Optional date range filtering.
 
     Args:
         file: Path to CSV file.
         words: List of keywords to search for.
         typ_filter: List of Typ values to filter by (OR condition), None = no filter.
+        date_filter: Dict with "from" and/or "to" keys in YYYY-MM-DD format, None = no filter.
         expand_with_themes: Expand search terms using THEME_MAP when True.
         annotate_themes: Attach a 'themes_detected' column with matched themes when True.
     """
@@ -322,6 +324,14 @@ def find_words_frequency(file, words, typ_filter=None, expand_with_themes=True, 
         df = pd.read_csv(file)
         if typ_filter:
             df = df[df["Typ"].isin(typ_filter)]
+        if date_filter:
+            df["Gestellt am"] = pd.to_datetime(df["Gestellt am"], errors="coerce")
+            if "from" in date_filter and date_filter["from"]:
+                date_from = pd.to_datetime(date_filter["from"])
+                df = df[df["Gestellt am"] >= date_from]
+            if "to" in date_filter and date_filter["to"]:
+                date_to = pd.to_datetime(date_filter["to"])
+                df = df[df["Gestellt am"] <= date_to]
         df["occurrences"] = 0
         df["count"] = 1
         total_word_count = len(df)
@@ -342,6 +352,16 @@ def find_words_frequency(file, words, typ_filter=None, expand_with_themes=True, 
     if typ_filter:
         rows_with_words = rows_with_words[rows_with_words["Typ"].isin(typ_filter)]
 
+    # Apply date range filter
+    if date_filter:
+        rows_with_words["Gestellt am"] = pd.to_datetime(rows_with_words["Gestellt am"], errors="coerce")
+        if "from" in date_filter and date_filter["from"]:
+            date_from = pd.to_datetime(date_filter["from"])
+            rows_with_words = rows_with_words[rows_with_words["Gestellt am"] >= date_from]
+        if "to" in date_filter and date_filter["to"]:
+            date_to = pd.to_datetime(date_filter["to"])
+            rows_with_words = rows_with_words[rows_with_words["Gestellt am"] <= date_to]
+
     # Optional inline theme annotation for downstream use/inspection.
     if annotate_themes:
         rows_with_words = _annotate_themes(rows_with_words)
@@ -352,7 +372,7 @@ def find_words_frequency(file, words, typ_filter=None, expand_with_themes=True, 
     return rows_with_words, total_word_count
 
 
-def compute_monthly_trend(file: str, words: list[str], typ_filter=None) -> pd.DataFrame:
+def compute_monthly_trend(file: str, words: list[str], typ_filter=None, date_filter=None) -> pd.DataFrame:
     """
     Compute monthly aggregated counts for the given search words.
 
@@ -362,11 +382,12 @@ def compute_monthly_trend(file: str, words: list[str], typ_filter=None) -> pd.Da
 
     Args:
         typ_filter: List of Typ values to filter by (OR condition)
+        date_filter: Dict with "from" and/or "to" keys in YYYY-MM-DD format
 
     Returns a DataFrame with columns ['month', 'count', 'typ_breakdown'] sorted by month.
     typ_breakdown is a dict mapping Typ -> count for that month.
     """
-    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter, date_filter=date_filter)
 
     if rows_with_words.empty:
         return pd.DataFrame({"month": [], "count": [], "typ_breakdown": []})
@@ -397,7 +418,7 @@ def compute_monthly_trend(file: str, words: list[str], typ_filter=None) -> pd.Da
     return monthly_trend
 
 
-def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt von", typ_filter=None) -> pd.DataFrame:
+def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt von", typ_filter=None, date_filter=None) -> pd.DataFrame:
     """
     Compute aggregated counts per faction/submitter for the given search words.
 
@@ -408,10 +429,11 @@ def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt vo
 
     Args:
         typ_filter: List of Typ values to filter by (OR condition)
+        date_filter: Dict with "from" and/or "to" keys in YYYY-MM-DD format
 
     Returns a DataFrame with columns [name, count].
     """
-    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter, date_filter=date_filter)
 
     if rows_with_words.empty:
         return pd.DataFrame({"name": [], "count": []})
@@ -448,7 +470,7 @@ def compute_fraktionen(file: str, words: list[str], group_by: str = "Gestellt vo
     return agg
 
 
-def compute_processing_metrics(file: str, words: list[str], typ_filter=None) -> dict:
+def compute_processing_metrics(file: str, words: list[str], typ_filter=None, date_filter=None) -> dict:
     """
     Compute processing time metrics for the given search words.
     
@@ -460,6 +482,7 @@ def compute_processing_metrics(file: str, words: list[str], typ_filter=None) -> 
     
     Args:
         typ_filter: List of Typ values to filter by (OR condition)
+        date_filter: Dict with "from" and/or "to" keys in YYYY-MM-DD format
     
     Returns a dict with:
     {
@@ -470,7 +493,7 @@ def compute_processing_metrics(file: str, words: list[str], typ_filter=None) -> 
         "byReferat": [{"referat": str, "avgDays": float, "count": int}, ...]
     }
     """
-    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter, date_filter=date_filter)
 
     if rows_with_words.empty:
         return {
@@ -537,7 +560,7 @@ def compute_processing_metrics(file: str, words: list[str], typ_filter=None) -> 
     }
 
 
-def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Gestellt von", typ_filter=None) -> pd.DataFrame:
+def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Gestellt von", typ_filter=None, date_filter=None) -> pd.DataFrame:
     """
     Compute share of proposals per faction (group_by) that mention the given words.
     
@@ -545,6 +568,7 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
 
     Args:
         typ_filter: List of Typ values to filter by (OR condition)
+        date_filter: Dict with "from" and/or "to" keys in YYYY-MM-DD format
 
     Returns a DataFrame with columns:
     [name, share, count, total]
@@ -560,6 +584,16 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
     # Apply Typ filter if provided
     if typ_filter:
         df_all = df_all[df_all["Typ"].isin(typ_filter)]
+    
+    # Apply date filter if provided
+    if date_filter:
+        df_all["Gestellt am"] = pd.to_datetime(df_all["Gestellt am"], errors="coerce")
+        if "from" in date_filter and date_filter["from"]:
+            date_from = pd.to_datetime(date_filter["from"])
+            df_all = df_all[df_all["Gestellt am"] >= date_from]
+        if "to" in date_filter and date_filter["to"]:
+            date_to = pd.to_datetime(date_filter["to"])
+            df_all = df_all[df_all["Gestellt am"] <= date_to]
 
     if group_by not in df_all.columns:
         return pd.DataFrame({"name": [], "share": [], "count": [], "total": []})
@@ -574,7 +608,7 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
     totals = df_all.groupby(group_by).size().reset_index(name="total")
 
     # Compute matched counts per faction for given words
-    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter)
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter, date_filter=date_filter)
 
     if rows_with_words.empty or group_by not in rows_with_words.columns:
         # No matches: return factions with zero counts (filtered out later)

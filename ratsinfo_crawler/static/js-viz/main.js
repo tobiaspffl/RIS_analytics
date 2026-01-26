@@ -28,7 +28,8 @@ const state = {
   showFraktionen: true,
   showFraktionenShare: true,
   showTopDocs: false,
-  selectedTypen: [] // Array of selected Typ values
+  selectedTypen: [], // Array of selected Typ values
+  dateFilter: { from: "", to: "" } // Date range filter
 };
 
 // DOM Elements
@@ -48,6 +49,9 @@ async function refresh() {
   
   // Get selected typ filter (null if none or all selected)
   const typFilter = state.selectedTypen.length > 0 ? state.selectedTypen : null;
+  
+  // Get date filter (null if no dates selected)
+  const dateFilter = (state.dateFilter.from || state.dateFilter.to) ? state.dateFilter : null;
 
   // Show loading state in containers
   const trendContainer = document.getElementById("viz-trend");
@@ -66,20 +70,20 @@ async function refresh() {
     const promises = [];
     
     if (state.showTrend) {
-      promises.push(fetchTrend(word, typFilter));
+      promises.push(fetchTrend(word, typFilter, dateFilter));
     } else {
       promises.push(Promise.resolve(null));
     }
 
     if (state.showFraktionen) {
-      promises.push(fetchFraktionen(word, typFilter));
+      promises.push(fetchFraktionen(word, typFilter, dateFilter));
     } else {
       promises.push(Promise.resolve(null));
     }
 
     // Only fetch share when word is provided (semantically makes no sense without keyword)
     if (state.showFraktionenShare && word) {
-      promises.push(fetchFraktionenShare(word, typFilter));
+      promises.push(fetchFraktionenShare(word, typFilter, dateFilter));
     } else {
       promises.push(Promise.resolve(null));
     }
@@ -91,7 +95,7 @@ async function refresh() {
     }
 
     // Fetch metrics data
-    promises.push(fetchMetrics(word, typFilter));
+    promises.push(fetchMetrics(word, typFilter, dateFilter));
 
     const [trendData, fraktionenData, fraktionenShareData, documentsData, metrics] = await Promise.all(promises);
     // Containers sind bereits oben initialisiert
@@ -238,6 +242,42 @@ exampleBtns.forEach(btn => {
     refresh();
   });
 });
+
+// Date filter inputs
+const dateFrom = document.getElementById("dateFrom");
+const dateTo = document.getElementById("dateTo");
+const clearDateBtn = document.getElementById("clearDateFilter");
+const dateFilterToggle = document.getElementById("dateFilterToggle");
+const dateFilterContent = document.getElementById("date-filter-content");
+
+if (dateFrom) {
+  dateFrom.addEventListener("change", () => {
+    state.dateFilter.from = dateFrom.value;
+    refresh();
+  });
+}
+
+if (dateTo) {
+  dateTo.addEventListener("change", () => {
+    state.dateFilter.to = dateTo.value;
+    refresh();
+  });
+}
+
+if (clearDateBtn) {
+  clearDateBtn.addEventListener("click", () => {
+    state.dateFilter = { from: "", to: "" };
+    dateFrom.value = "";
+    dateTo.value = "";
+    refresh();
+  });
+}
+
+if (dateFilterToggle) {
+  dateFilterToggle.addEventListener("click", () => {
+    dateFilterContent.classList.toggle("expanded");
+  });
+}
 
 /**
  * Optional: Toggle functionality for visualizations
@@ -436,3 +476,28 @@ function initTypFilterToggle() {
 
 // Initialize toggle functionality
 document.addEventListener("DOMContentLoaded", initTypFilterToggle);
+
+/**
+ * Initialize date filter with min/max constraints based on dataset date range
+ */
+async function initDateFilter() {
+  const dateRange = await fetchDateRange();
+  
+  if (dateRange.minDate && dateRange.maxDate) {
+    const dateFromInput = document.getElementById("dateFrom");
+    const dateToInput = document.getElementById("dateTo");
+    
+    if (dateFromInput) {
+      dateFromInput.setAttribute("min", dateRange.minDate);
+      dateFromInput.setAttribute("max", dateRange.maxDate);
+    }
+    
+    if (dateToInput) {
+      dateToInput.setAttribute("min", dateRange.minDate);
+      dateToInput.setAttribute("max", dateRange.maxDate);
+    }
+  }
+}
+
+// Initialize date filter when page loads
+document.addEventListener("DOMContentLoaded", initDateFilter);

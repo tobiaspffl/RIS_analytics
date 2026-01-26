@@ -40,16 +40,29 @@ def trend():
     Query params: 
         word (optional) - if empty, shows all proposals
         typ (optional) - comma-separated list of Typ values to filter by
+        date_from (optional) - start date in YYYY-MM-DD format
+        date_to (optional) - end date in YYYY-MM-DD format
     Response: [ {month: "2024-01", count: 5}, {month: "2024-02", count: 8}, ... ]
     """
     word = request.args.get("word", type=str, default="")
     typ_param = request.args.get("typ", type=str, default="")
+    date_from = request.args.get("date_from", type=str, default="")
+    date_to = request.args.get("date_to", type=str, default="")
     
     # Parse comma-separated typ values
     typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
     
+    # Create date filter dict
+    date_filter = None
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["from"] = date_from
+        if date_to:
+            date_filter["to"] = date_to
+    
     # Delegate aggregation to analysis module
-    monthly_trend = ri.compute_monthly_trend("data.csv", [word] if word else [], typ_filter=typ_filter)
+    monthly_trend = ri.compute_monthly_trend("data.csv", [word] if word else [], typ_filter=typ_filter, date_filter=date_filter)
     
     # Convert to list of dicts
     result = monthly_trend.to_dict(orient="records")
@@ -60,11 +73,22 @@ def trend():
 def fraktionen():
     word = request.args.get("word", type=str, default="")
     typ_param = request.args.get("typ", type=str, default="")
+    date_from = request.args.get("date_from", type=str, default="")
+    date_to = request.args.get("date_to", type=str, default="")
     
     # Parse comma-separated typ values
     typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
 
-    agg = ri.compute_fraktionen("data.csv", [word] if word else [], typ_filter=typ_filter)
+    # Create date filter dict
+    date_filter = None
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["from"] = date_from
+        if date_to:
+            date_filter["to"] = date_to
+
+    agg = ri.compute_fraktionen("data.csv", [word] if word else [], typ_filter=typ_filter, date_filter=date_filter)
     return jsonify(agg.to_dict(orient="records"))
 
 
@@ -73,6 +97,8 @@ def fraktionen():
 def fraktionen_share():
     word = request.args.get("word", type=str)
     typ_param = request.args.get("typ", type=str, default="")
+    date_from = request.args.get("date_from", type=str, default="")
+    date_to = request.args.get("date_to", type=str, default="")
     
     if not word:
         return jsonify([])
@@ -80,7 +106,16 @@ def fraktionen_share():
     # Parse comma-separated typ values
     typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
 
-    agg_share = ri.compute_fraktionen_share("data.csv", [word], typ_filter=typ_filter)
+    # Create date filter dict
+    date_filter = None
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["from"] = date_from
+        if date_to:
+            date_filter["to"] = date_to
+
+    agg_share = ri.compute_fraktionen_share("data.csv", [word], typ_filter=typ_filter, date_filter=date_filter)
     return jsonify(agg_share.to_dict(orient="records"))
 
 
@@ -92,6 +127,8 @@ def metrics():
     Query params: 
         word (optional) - if empty, shows metrics for all proposals
         typ (optional) - comma-separated list of Typ values to filter by
+        date_from (optional) - start date in YYYY-MM-DD format
+        date_to (optional) - end date in YYYY-MM-DD format
     Response: {
         avgDays: float | null,
         openCount: int,
@@ -102,11 +139,22 @@ def metrics():
     """
     word = request.args.get("word", type=str, default="")
     typ_param = request.args.get("typ", type=str, default="")
+    date_from = request.args.get("date_from", type=str, default="")
+    date_to = request.args.get("date_to", type=str, default="")
     
     # Parse comma-separated typ values
     typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
     
-    metrics_data = ri.compute_processing_metrics("data.csv", [word] if word else [], typ_filter=typ_filter)
+    # Create date filter dict
+    date_filter = None
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["from"] = date_from
+        if date_to:
+            date_filter["to"] = date_to
+    
+    metrics_data = ri.compute_processing_metrics("data.csv", [word] if word else [], typ_filter=typ_filter, date_filter=date_filter)
     return jsonify(metrics_data)
 
 

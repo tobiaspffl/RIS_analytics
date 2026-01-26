@@ -9,13 +9,22 @@
  * Fetch trend data (monthly aggregated counts) for a given keyword
  * @param {string} word - The keyword to search for
  * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
+ * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
  * @returns {Promise<Array>} - Array of {month, count} objects
  */
-export async function fetchTrend(word, typFilter = null) {
+export async function fetchTrend(word, typFilter = null, dateFilter = null) {
   try {
     let url = `/trend?word=${encodeURIComponent(word)}`;
     if (typFilter && typFilter.length > 0) {
       url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    if (dateFilter) {
+      if (dateFilter.from) {
+        url += `&date_from=${encodeURIComponent(dateFilter.from)}`;
+      }
+      if (dateFilter.to) {
+        url += `&date_to=${encodeURIComponent(dateFilter.to)}`;
+      }
     }
     const res = await fetch(url);
     if (!res.ok) {
@@ -52,13 +61,22 @@ export async function fetchDocuments(word) {
  * Fetch fraktionen (party/faction) data for a given keyword
  * @param {string} word - The keyword to search for
  * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
+ * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
  * @returns {Promise<Array>} - Array of {name, count} objects
  */
-export async function fetchFraktionen(word, typFilter = null) {
+export async function fetchFraktionen(word, typFilter = null, dateFilter = null) {
   try {
     let url = `/fraktionen?word=${encodeURIComponent(word)}`;
     if (typFilter && typFilter.length > 0) {
       url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    if (dateFilter) {
+      if (dateFilter.from) {
+        url += `&date_from=${encodeURIComponent(dateFilter.from)}`;
+      }
+      if (dateFilter.to) {
+        url += `&date_to=${encodeURIComponent(dateFilter.to)}`;
+      }
     }
     const res = await fetch(url);
     if (!res.ok) {
@@ -76,13 +94,22 @@ export async function fetchFraktionen(word, typFilter = null) {
  * Fetch faction share data for a given keyword
  * @param {string} word - The keyword to search for
  * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
+ * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
  * @returns {Promise<Array>} - Array of {name, share, count, total}
  */
-export async function fetchFraktionenShare(word, typFilter = null) {
+export async function fetchFraktionenShare(word, typFilter = null, dateFilter = null) {
   try {
     let url = `/fraktionen_share?word=${encodeURIComponent(word)}`;
     if (typFilter && typFilter.length > 0) {
       url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    if (dateFilter) {
+      if (dateFilter.from) {
+        url += `&date_from=${encodeURIComponent(dateFilter.from)}`;
+      }
+      if (dateFilter.to) {
+        url += `&date_to=${encodeURIComponent(dateFilter.to)}`;
+      }
     }
     const res = await fetch(url);
     if (!res.ok) {
@@ -100,13 +127,22 @@ export async function fetchFraktionenShare(word, typFilter = null) {
  * Fetch processing metrics for a given keyword
  * @param {string} word - The keyword to search for
  * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
+ * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
  * @returns {Promise<Object>} - Object with avgDays, openCount, closedCount, totalCount, byReferat
  */
-export async function fetchMetrics(word, typFilter = null) {
+export async function fetchMetrics(word, typFilter = null, dateFilter = null) {
   try {
     let url = `/metrics?word=${encodeURIComponent(word)}`;
     if (typFilter && typFilter.length > 0) {
       url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    if (dateFilter) {
+      if (dateFilter.from) {
+        url += `&date_from=${encodeURIComponent(dateFilter.from)}`;
+      }
+      if (dateFilter.to) {
+        url += `&date_to=${encodeURIComponent(dateFilter.to)}`;
+      }
     }
     const res = await fetch(url);
     if (!res.ok) {

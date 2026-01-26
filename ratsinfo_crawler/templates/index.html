@@ -84,6 +84,33 @@
           </div>
         </div>
 
+        <!-- Date Range Filter -->
+        <div class="date-filter-section">
+          <div class="date-filter-header" id="dateFilterToggle">
+            <label class="filter-label" data-i18n="filter.date.label">Zeitraum filtern:</label>
+            <button class="toggle-btn">
+              <svg class="toggle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div id="date-filter-content" class="date-filter-content">
+            <div class="date-inputs">
+              <div class="date-input-group">
+                <label for="dateFrom" data-i18n="filter.date.from">Von:</label>
+                <input type="date" id="dateFrom" />
+              </div>
+              <div class="date-input-group">
+                <label for="dateTo" data-i18n="filter.date.to">Bis:</label>
+                <input type="date" id="dateTo" />
+              </div>
+              <button id="clearDateFilter" class="clear-btn" data-i18n="filter.date.clear">
+                Zurücksetzen
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Date Range Info -->
         <div id="date-range-display" class="date-range-info">
           <!-- Will be populated by JavaScript -->

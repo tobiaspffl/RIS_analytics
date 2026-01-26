@@ -22,6 +22,11 @@ export const translations = {
     // Filter Section
     'filter.type.label': 'Antragstyp filtern:',
     'filter.toggle.aria': 'Filter ein-/ausblenden',
+    'filter.date.label': 'Zeitraum filtern:',
+    'filter.date.from': 'Von:',
+    'filter.date.to': 'Bis:',
+    'filter.date.clear': 'Zurücksetzen',
+    'filter.date.invalid': 'Ungültiger Zeitraum',
     
     // Date Range
     'daterange.prefix': 'Daten von',
@@ -181,6 +186,11 @@ export const translations = {
     // Filter Section
     'filter.type.label': 'Filter by proposal type:',
     'filter.toggle.aria': 'Toggle filter',
+    'filter.date.label': 'Filter by date range:',
+    'filter.date.from': 'From:',
+    'filter.date.to': 'To:',
+    'filter.date.clear': 'Reset',
+    'filter.date.invalid': 'Invalid date range',
     
     // Date Range
     'daterange.prefix': 'Data from',

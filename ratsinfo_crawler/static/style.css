@@ -305,6 +305,116 @@ body {
 .typ-filter-section.collapsed {
   margin-bottom: var(--spacing-xs);
 }
+/* ========================================
+   Date Filter Section
+   ======================================== */
+
+.date-filter-section {
+  margin-bottom: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--gray-200);
+  transition: margin-bottom 0.3s ease;
+}
+
+.date-filter-section.collapsed {
+  margin-bottom: var(--spacing-xs);
+}
+
+.date-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  padding: var(--spacing-sm) 0;
+  margin-bottom: var(--spacing-md);
+}
+
+.date-filter-header:hover .filter-label {
+  color: var(--primary-600);
+}
+
+.date-filter-content {
+  max-height: 500px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.date-filter-section.collapsed .date-filter-content {
+  max-height: 0;
+  opacity: 0;
+}
+
+.date-inputs {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.date-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.date-input-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.date-input-group input[type="date"] {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.date-input-group input[type="date"]:hover {
+  border-color: var(--primary-400);
+}
+
+.date-input-group input[type="date"]:focus {
+  outline: none;
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+.clear-btn {
+  padding: 0.5rem 1rem;
+  background: var(--warning);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  align-self: flex-end;
+}
+
+.clear-btn:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.clear-btn:active {
+  transform: scale(0.98);
+}
+
+.date-filter-content.expanded {
+  display: block;
+}
 .typ-filter-header {
   display: flex;
   align-items: center;
