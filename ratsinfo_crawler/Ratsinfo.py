@@ -1,7 +1,9 @@
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
+import os
 from functools import lru_cache
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # spaCy wird vorausgesetzt (siehe venv). Bei fehlender Installation würde ein ImportError hochgehen.
 import spacy
@@ -10,6 +12,13 @@ SPACY_AVAILABLE = True
 
 # Central parameter: minimum occurrences in a document to count as a hit
 MIN_OCCURRENCES_PER_DOC = 1 # nicht mehr relevant bei binary count per document
+
+# Global cache for loaded CSV data (with file modification time tracking)
+_data_cache = {}
+
+# List of columns that are actually needed for the analysis
+REQUIRED_COLUMNS = ["document_content", "Gestellt am", "Typ", "Erledigt am", 
+                    "Zuständiges Referat", "Gestellt von"]
 
 # Rule-based theme lexicon for lightweight topic tagging and query expansion.
 # You can extend or edit this map to reflect your domain vocabulary.
@@ -178,6 +187,39 @@ def _expand_search_terms_with_themes(words, theme_map=None):
     return list(expanded)
 
 
+def _load_data_cached(file: str) -> pd.DataFrame:
+    """
+    Load CSV data and cache it. Cache is invalidated if the file is modified.
+    Only loads necessary columns to reduce memory footprint and load time.
+    Optimization 1: CSV caching | Optimization 2: Selective column loading
+    """
+    global _data_cache
+    
+    try:
+        current_mtime = os.path.getmtime(file)
+    except OSError:
+        current_mtime = None
+    
+    # Check if file is cached and hasn't been modified
+    if file in _data_cache and _data_cache[file]['mtime'] == current_mtime:
+        return _data_cache[file]['data'].copy()
+    
+    # Load only required columns if they exist, otherwise load all
+    try:
+        df = pd.read_csv(file, usecols=REQUIRED_COLUMNS)
+    except (ValueError, KeyError):
+        # If some columns don't exist, load all columns
+        df = pd.read_csv(file)
+    
+    # Cache the data
+    _data_cache[file] = {
+        'data': df,
+        'mtime': current_mtime
+    }
+    
+    return df.copy()
+
+
 def _detect_themes_in_text(text: str):
     """Return a list of theme names detected in the given text using spaCy."""
     nlp, matcher = _build_theme_matcher()
@@ -243,46 +285,51 @@ def find_word_occurrences(file, word):
     Count documents that mention the word at least MIN_OCCURRENCES_PER_DOC times.
     Each document contributes at most 1 to the count (binary hit per doc).
 
-    Note: This is still regex-based for speed. Theme expansion happens one
-    level up in find_words_frequency.
+    Note: Uses vectorized pandas operations for speed (Optimization 3).
+    Theme expansion happens one level up in find_words_frequency.
     """
-
-    return find_word_occurrences_enh_option_2(file, word) # delete if higher occurrence counts is wanted
-    df = pd.read_csv(file)
-
-    df["document_content"] = df["document_content"].astype(str)
-
-    pattern = re.compile(word, re.IGNORECASE)
-
-    # Raw occurrences per document
-    df["occurrences"] = df["document_content"].apply(lambda x: len(pattern.findall(x)))
-
-    # Binary count per document based on threshold
-    df["count"] = (df["occurrences"] >= MIN_OCCURRENCES_PER_DOC).astype(int)
-
-    # Total matching documents across the dataset (sum of binary counts)
-    total_word_count = int(df["count"].sum())
-
-    # Only documents that meet the threshold
-    rows_with_word = df[df["count"] > 0]
-    return rows_with_word, total_word_count
-
-
-def find_word_occurrences_enh_option_2(file, word): # Occurrences per document == 1; binary count per document
     # Handle invalid input
     if not word or not isinstance(word, str) or word.strip() == "":
-        df = pd.read_csv(file)
+        df = _load_data_cached(file)
         df["document_content"] = df["document_content"].astype(str)
         df["occurrences"] = 0
         df["count"] = 0
         return df[df["count"] > 0], 0
     
-    df = pd.read_csv(file)  # oder mit usecols, wenn du alle Spalten kennst
+    df = _load_data_cached(file)
     df["document_content"] = df["document_content"].astype(str)
     
     try:
         pattern = re.compile(word, re.IGNORECASE)
-    except (re.error, TypeError) as e:
+    except (re.error, TypeError):
+        # Invalid regex pattern - return empty result
+        df["occurrences"] = 0
+        df["count"] = 0
+        return df[df["count"] > 0], 0
+    
+    # Vectorized string matching (much faster than apply + lambda)
+    df["count"] = df["document_content"].str.contains(pattern, na=False).astype(int)
+    df["occurrences"] = df["count"]
+    total_word_count = int(df["count"].sum())
+    
+    return df[df["count"] > 0], total_word_count
+
+
+def find_word_occurrences_enh_option_2(file, word): # Occurrences per document == 1; binary count per document
+    # Handle invalid input
+    if not word or not isinstance(word, str) or word.strip() == "":
+        df = _load_data_cached(file)
+        df["document_content"] = df["document_content"].astype(str)
+        df["occurrences"] = 0
+        df["count"] = 0
+        return df[df["count"] > 0], 0
+    
+    df = _load_data_cached(file)
+    df["document_content"] = df["document_content"].astype(str)
+    
+    try:
+        pattern = re.compile(word, re.IGNORECASE)
+    except (re.error, TypeError):
         # Invalid regex pattern - return empty result
         df["occurrences"] = 0
         df["count"] = 0
@@ -321,7 +368,7 @@ def find_words_frequency(file, words, typ_filter=None, date_filter=None, expand_
 
     # If after expansion no words are left, return all documents with count=1.
     if not search_terms or all(not w for w in search_terms):
-        df = pd.read_csv(file)
+        df = _load_data_cached(file)
         if typ_filter:
             df = df[df["Typ"].isin(typ_filter)]
         if date_filter:
@@ -341,10 +388,13 @@ def find_words_frequency(file, words, typ_filter=None, date_filter=None, expand_
 
     dfs = []
 
-    # Run the classic regex-based finder for each (possibly expanded) term.
-    for word in search_terms:
-        rows_with_word, _ = find_word_occurrences(file, word)
-        dfs.append(rows_with_word)
+    # Run regex-based finder for each (possibly expanded) term with parallel processing
+    # Optimization 4: Process multiple search terms in parallel for faster execution
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = {executor.submit(find_word_occurrences, file, word): word for word in search_terms}
+        for future in as_completed(futures):
+            rows_with_word, _ = future.result()
+            dfs.append(rows_with_word)
 
     rows_all = pd.concat(dfs, ignore_index=True)
     rows_with_words = rows_all.drop_duplicates()
@@ -578,8 +628,8 @@ def compute_fraktionen_share(file: str, words: list[str], group_by: str = "Geste
     - total: total number of documents where this faction is listed (across all proposals)
     - share: count / total (float in [0,1])
     """
-    # Read full dataset to compute totals per faction
-    df_all = pd.read_csv(file)
+    # Read full dataset to compute totals per faction (use cache)
+    df_all = _load_data_cached(file)
     
     # Apply Typ filter if provided
     if typ_filter:
@@ -649,7 +699,7 @@ def compute_date_range(file: str) -> dict:
     }
     """
     try:
-        df = pd.read_csv(file)
+        df = _load_data_cached(file)
         if df.empty or "Gestellt am" not in df.columns:
             return {"minDate": None, "maxDate": None}
         
@@ -676,7 +726,7 @@ def get_available_typen(file: str) -> list:
     Returns a sorted list of unique Typ values (strings).
     """
     try:
-        df = pd.read_csv(file)
+        df = _load_data_cached(file)
         if df.empty or "Typ" not in df.columns:
             return []
         
