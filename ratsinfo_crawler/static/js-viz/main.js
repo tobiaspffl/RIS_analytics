@@ -11,7 +11,7 @@
 import { t, getCurrentLang } from '../i18n.js';
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen } from './api.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -29,7 +29,8 @@ const state = {
   showFraktionenShare: true,
   showTopDocs: false,
   selectedTypen: [], // Array of selected Typ values
-  dateFilter: { from: "", to: "" } // Date range filter
+  dateFilter: { from: "", to: "" }, // Date range filter
+  expandedTerms: { original: [], expanded: [] } // Expanded search terms
 };
 
 // DOM Elements
@@ -73,6 +74,10 @@ async function refresh() {
 
   try {
     const promises = [];
+    
+    // Fetch expanded search terms
+    const expandedTerms = await fetchExpandedSearchTerms(word);
+    state.expandedTerms = expandedTerms;
     
     if (state.showTrend) {
       promises.push(fetchTrend(word, typFilter, dateFilter));
@@ -204,6 +209,9 @@ async function refresh() {
       }
     }
 
+    // Display expanded search terms
+    displayExpandedTerms();
+
   } catch (error) {
     console.error("Error during refresh:", error);
     const trendContainer = document.getElementById("viz-trend");
@@ -217,6 +225,35 @@ async function refresh() {
     if (metricsChartContainer) metricsChartContainer.innerHTML = "";
     if (kpiContainer) kpiContainer.innerHTML = "";
   }
+}
+
+/**
+ * Display expanded search terms under the search bar
+ * Shows which terms are actually used when theme expansion is applied
+ */
+function displayExpandedTerms() {
+  const container = document.getElementById("expanded-terms-display");
+  if (!container) return;
+
+  const { original, expanded } = state.expandedTerms;
+
+  // Only show if there's a search term and it expanded
+  if (!original || original.length === 0 || (expanded && expanded.length === original.length)) {
+    container.innerHTML = "";
+    return;
+  }
+
+  // Format the expanded terms as a comma-separated list
+  const expandedStr = expanded.map(term => `"${term}"`).join(", ");
+  
+  const html = `
+    <div class="expanded-terms-info">
+      <p>${t('search.expanded.label')}</p>
+      <p class="expanded-terms-list">${expandedStr}</p>
+    </div>
+  `;
+
+  container.innerHTML = html;
 }
 
 /**
@@ -304,6 +341,7 @@ if (dateFilterToggle) {
   });
 }
 
+
 /**
  * Optional: Toggle functionality for visualizations
  * Uncomment and add toggle buttons to index.html if desired
@@ -340,6 +378,7 @@ document.addEventListener("languageChanged", () => {
     refresh();
     loadDateRange(); // Also update date range text
     updateTypFilterLabels(); // Update Typ filter labels
+    displayExpandedTerms();
   }
 });
 

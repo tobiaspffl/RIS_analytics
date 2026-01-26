@@ -191,3 +191,27 @@ export async function fetchAvailableTypen() {
     return [];
   }
 }
+
+/**
+ * Fetch expanded search terms for a given keyword
+ * Shows what search terms are actually used with theme expansion
+ * @param {string} word - The search keyword
+ * @returns {Promise<{original: Array, expanded: Array}>} - Original and expanded terms
+ */
+export async function fetchExpandedSearchTerms(word) {
+  try {
+    let url = `/expanded-search-terms`;
+    if (word) {
+      url += `?word=${encodeURIComponent(word)}`;
+    }
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return { original: [], expanded: [] };
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching expanded search terms:", error);
+    return { original: [], expanded: [] };
+  }
+}

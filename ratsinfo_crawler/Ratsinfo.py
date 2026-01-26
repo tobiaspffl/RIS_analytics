@@ -758,3 +758,32 @@ def get_available_typen(file: str) -> list:
     except Exception as e:
         print(f"Error getting available Typen: {e}")
         return []
+
+
+def get_expanded_search_terms(words: list[str], expand_with_themes: bool = True) -> dict:
+    """
+    Get the expanded search terms for display purposes.
+    
+    Shows what search terms are actually used when a user enters keywords.
+    If theme expansion is enabled and a word matches a theme, all related
+    phrases are included.
+    
+    Args:
+        words: List of search words entered by user
+        expand_with_themes: Whether to apply theme expansion (default True)
+    
+    Returns a dict with:
+    {
+        "original": ["Wohnen"],
+        "expanded": ["Wohnen", "Wohnung", "Miete", "Mietspiegel", "Wohnraum", "Zimmer", "Vermietung", "Untermiete"]
+    }
+    """
+    search_terms = words or []
+    
+    if expand_with_themes:
+        search_terms = _expand_search_terms_with_themes(search_terms)
+    
+    return {
+        "original": words or [],
+        "expanded": list(search_terms)
+    }

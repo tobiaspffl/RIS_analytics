@@ -196,7 +196,26 @@ def get_themes():
     return jsonify({"themes": themes})
 
 
-# Route for legal information (Impressum, Datenschutz, Haftung)
+# Route to return expanded search terms
+@app.route("/expanded-search-terms", methods=["GET"])
+def expanded_search_terms():
+    """
+    Returns the expanded search terms for a given keyword.
+    Shows what search terms are actually used when theme expansion is applied.
+    
+    Query params:
+        word (optional) - the search keyword to expand
+    
+    Response: { "original": [...], "expanded": [...] }
+    """
+    word = request.args.get("word", type=str, default="")
+    
+    # Get expanded terms (with theme expansion enabled)
+    result = ri.get_expanded_search_terms([word] if word else [], expand_with_themes=True)
+    
+    return jsonify(result)
+
+
 @app.route("/rechtliches", methods=["GET"])
 def legal():
     return render_template("legal.html")

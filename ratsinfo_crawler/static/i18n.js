@@ -32,6 +32,9 @@ export const translations = {
     'daterange.prefix': 'Daten von',
     'daterange.to': 'bis',
     
+    // Expanded Search Terms
+    'search.expanded.label': 'Gesucht nach:',
+    
     // Loading & Errors
     'loading.indicator': 'Wird geladen...',
     'loading.initial': 'Loading initial data...',
@@ -251,6 +254,9 @@ export const translations = {
 
     // Badges
     'badge.methodology': 'Counting rules & thresholds',
+    
+    // Expanded Search Terms
+    'search.expanded.label': 'Searched for:',
     
     // Typ Filter Values
     'typ.Antrag': 'Proposal',
