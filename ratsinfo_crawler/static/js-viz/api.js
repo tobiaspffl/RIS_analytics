@@ -6,7 +6,7 @@
  */
 
 // Configuration: Number of applications to load per batch
-export const APPLICATIONS_BATCH_SIZE = 20;
+export const APPLICATIONS_BATCH_SIZE = 18;
 
 /**
  * Fetch trend data (monthly aggregated counts) for a given keyword
