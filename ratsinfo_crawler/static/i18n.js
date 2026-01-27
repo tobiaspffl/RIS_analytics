@@ -53,6 +53,7 @@ export const translations = {
     // Charts - Titles
     'chart.trend.title': 'Anträge pro Monat',
     'chart.trend.title.all': 'Alle Anträge pro Monat',
+    'chart.trend.share.title': 'Anteil Stichwort pro Monat',
     'chart.fraktionen.title': 'Fraktionsbeteiligung',
     'chart.fraktionen.title.all': 'Fraktionsbeteiligung (alle Anträge)',
     'chart.share.title': 'Anteil thematisierte Anträge',
@@ -233,6 +234,7 @@ export const translations = {
     // Charts - Titles
     'chart.trend.title': 'Proposals per Month',
     'chart.trend.title.all': 'All Proposals per Month',
+    'chart.trend.share.title': 'Keyword Share per Month',
     'chart.fraktionen.title': 'Faction Participation',
     'chart.fraktionen.title.all': 'Faction Participation (all proposals)',
     'chart.share.title': 'Share of Topic-Related Proposals',

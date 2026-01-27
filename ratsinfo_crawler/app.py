@@ -122,6 +122,44 @@ def fraktionen_share():
     return jsonify(agg_share.to_dict(orient="records"))
 
 
+# Route to return monthly trend share data
+@app.route("/trend_share", methods=["GET"])
+def trend_share():
+    """
+    Returns monthly share (percentage) of proposals that mention the given keyword.
+    
+    Query params:
+        word (required) - the search keyword
+        typ (optional) - comma-separated list of Typ values to filter by
+        date_from (optional) - start date in YYYY-MM-DD format
+        date_to (optional) - end date in YYYY-MM-DD format
+    
+    Response: [ {month: "2024-01", share: 0.15, count: 5, total: 33}, ... ]
+    """
+    word = request.args.get("word", type=str)
+    typ_param = request.args.get("typ", type=str, default="")
+    date_from = request.args.get("date_from", type=str, default="")
+    date_to = request.args.get("date_to", type=str, default="")
+    
+    if not word:
+        return jsonify([])
+    
+    # Parse comma-separated typ values
+    typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
+    
+    # Create date filter dict
+    date_filter = None
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["from"] = date_from
+        if date_to:
+            date_filter["to"] = date_to
+    
+    trend_share_data = ri.compute_monthly_trend_share("data.csv", [word], typ_filter=typ_filter, date_filter=date_filter)
+    return jsonify(trend_share_data.to_dict(orient="records"))
+
+
 # Route to return processing metrics
 @app.route("/metrics", methods=["GET"])
 def metrics():

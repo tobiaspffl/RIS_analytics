@@ -831,3 +831,68 @@ def get_filtered_applications(file: str, words: list[str], typ_filter=None, date
     except Exception as e:
         print(f"Error getting filtered applications: {e}")
         return pd.DataFrame()
+
+
+def compute_monthly_trend_share(file: str, words: list[str], typ_filter=None, date_filter=None) -> pd.DataFrame:
+    """
+    Compute monthly share (percentage) of proposals that mention the given words.
+    
+    For each month, calculates:
+    - share: (count of matching documents in month) / (total documents in month)
+    - count: count of matching documents in month
+    - total: total documents in month
+
+    Args:
+        typ_filter: List of Typ values to filter by (OR condition)
+        date_filter: Dict with "from" and/or "to" keys in YYYY-MM-DD format
+
+    Returns a DataFrame with columns ['month', 'share', 'count', 'total'] sorted by month.
+    """
+    # Read full dataset to compute totals per month
+    df_all = _load_data_cached(file)
+    
+    # Apply Typ filter if provided
+    if typ_filter:
+        df_all = df_all[df_all["Typ"].isin(typ_filter)]
+    
+    # Apply date filter if provided
+    if date_filter:
+        df_all["Gestellt am"] = pd.to_datetime(df_all["Gestellt am"], errors="coerce")
+        if "from" in date_filter and date_filter["from"]:
+            date_from = pd.to_datetime(date_filter["from"])
+            df_all = df_all[df_all["Gestellt am"] >= date_from]
+        if "to" in date_filter and date_filter["to"]:
+            date_to = pd.to_datetime(date_filter["to"])
+            df_all = df_all[df_all["Gestellt am"] <= date_to]
+    
+    # Convert to datetime and extract month
+    df_all["Gestellt am"] = pd.to_datetime(df_all["Gestellt am"], errors="coerce")
+    df_all = df_all[df_all["Gestellt am"].notna()]
+    df_all["month"] = df_all["Gestellt am"].dt.strftime("%Y-%m")
+    
+    # Compute total documents per month
+    monthly_totals = df_all.groupby("month").size().reset_index(name="total")
+    
+    # Compute matching documents per month
+    rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter, date_filter=date_filter)
+    
+    if rows_with_words.empty:
+        # No matches: return months with zero counts
+        result = monthly_totals.copy()
+        result["count"] = 0
+        result["share"] = 0.0
+        return result[["month", "share", "count", "total"]].sort_values("month")
+    
+    rows_with_words["Gestellt am"] = pd.to_datetime(rows_with_words["Gestellt am"], errors="coerce")
+    rows_with_words = rows_with_words[rows_with_words["Gestellt am"].notna()]
+    rows_with_words["month"] = rows_with_words["Gestellt am"].dt.strftime("%Y-%m")
+    
+    # Group and sum counts per month
+    monthly_matched = rows_with_words.groupby("month")["count"].sum().reset_index(name="count")
+    
+    # Merge totals with matched counts
+    result = monthly_totals.merge(monthly_matched, on="month", how="left")
+    result["count"] = result["count"].fillna(0).astype(int)
+    result["share"] = result["count"] / result["total"].replace(0, pd.NA)
+    
+    return result[["month", "share", "count", "total"]].sort_values("month")

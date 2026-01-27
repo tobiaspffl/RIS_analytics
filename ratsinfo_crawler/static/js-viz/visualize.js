@@ -357,6 +357,241 @@ export function renderTrendChart(trendData, selector, options = {}) {
 }
 
 /**
+ * Render a line chart for monthly trend share data (percentage of proposals per month)
+ * @param {Array} trendShareData - Array of {month, share, count, total, date} objects
+ * @param {string} selector - CSS selector for container
+ * @param {Object} options - Configuration object
+ * @param {string} options.title - Chart title
+ * @param {number} options.width - Chart width
+ * @param {number} options.height - Chart height
+ * @param {string} options.searchTerm - The search term (for title)
+ */
+export function renderTrendShareChart(trendShareData, selector, options = {}) {
+  const {
+    title = t('chart.trend.share.title'),
+    width = 900,
+    height = 400,
+    searchTerm = ""
+  } = options;
+
+  const container = document.querySelector(selector);
+  if (!container) {
+    console.error(`Container not found: ${selector}`);
+    return;
+  }
+
+  // Clear previous content
+  container.innerHTML = "";
+
+  if (!trendShareData || trendShareData.length === 0) {
+    container.innerHTML = `<p style='text-align:center; padding:40px; color:#666;'>${t('error.no-data')}</p>`;
+    addInfoBadge(container);
+    return;
+  }
+
+  addInfoBadge(container);
+
+  // Margins
+  const margin = { top: 40, right: 30, bottom: 50, left: 70 };
+  const chartWidth = width - margin.left - margin.right;
+  const chartHeight = height - margin.top - margin.bottom;
+
+  // Create SVG
+  const svg = d3
+    .select(selector)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .style("display", "block")
+    .style("margin", "0 auto");
+
+  // Create group for chart
+  const g = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // Scales
+  const xScale = d3
+    .scaleTime()
+    .domain(d3.extent(trendShareData, d => d.date))
+    .range([0, chartWidth]);
+
+  // Y scale for share (0 to 1, representing 0-100%)
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(trendShareData, d => d.share)])
+    .nice()
+    .range([chartHeight, 0]);
+
+  // Line generator
+  const line = d3
+    .line()
+    .x(d => xScale(d.date))
+    .y(d => yScale(d.share));
+
+  // Area generator (for fill under line)
+  const area = d3
+    .area()
+    .x(d => xScale(d.date))
+    .y0(chartHeight)
+    .y1(d => yScale(d.share));
+
+  // Add grid lines for Y-Axis (horizontal)
+  g.append("g")
+    .attr("class", "grid")
+    .attr("stroke", "#e5e7eb")
+    .attr("stroke-dasharray", "4")
+    .attr("opacity", 0.7)
+    .call(
+      d3
+        .axisLeft(yScale)
+        .tickSize(-chartWidth)
+        .tickFormat("")
+    )
+    .select(".domain")
+    .remove();
+
+  // Add area fill (semi-transparent)
+  g.append("path")
+    .datum(trendShareData)
+    .attr("fill", "url(#gradient-share)")
+    .attr("d", area)
+    .attr("opacity", 0.3);
+
+  // Define gradient for area
+  const gradient = svg
+    .append("defs")
+    .append("linearGradient")
+    .attr("id", "gradient-share")
+    .attr("x1", "0%")
+    .attr("y1", "0%")
+    .attr("x2", "0%")
+    .attr("y2", "100%");
+
+  gradient.append("stop").attr("offset", "0%").attr("stop-color", "#8b5cf6").attr("stop-opacity", 0.6);
+  gradient.append("stop").attr("offset", "100%").attr("stop-color", "#8b5cf6").attr("stop-opacity", 0);
+
+  // X-Axis
+  g.append("g")
+    .attr("transform", `translate(0,${chartHeight})`)
+    .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b %y")))
+    .attr("class", "axis x-axis")
+    .style("font-size", "12px");
+
+  // Y-Axis with percentage format
+  g.append("g")
+    .call(d3.axisLeft(yScale).tickFormat(d => `${(d * 100).toFixed(0)}%`))
+    .attr("class", "axis y-axis")
+    .style("font-size", "12px");
+
+  // Add line path
+  g.append("path")
+    .datum(trendShareData)
+    .attr("fill", "none")
+    .attr("stroke", "#8b5cf6")
+    .attr("stroke-width", 3)
+    .attr("stroke-linecap", "round")
+    .attr("stroke-linejoin", "round")
+    .attr("d", line);
+
+  // Create tooltip
+  const tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("position", "absolute")
+    .style("padding", "8px 12px")
+    .style("background-color", "rgba(0, 0, 0, 0.8)")
+    .style("color", "#fff")
+    .style("border-radius", "4px")
+    .style("font-size", "12px")
+    .style("pointer-events", "none")
+    .style("display", "none")
+    .style("z-index", "1000");
+
+  // Add data points (circles) for better visibility with hover interaction
+  g.selectAll(".dot")
+    .data(trendShareData)
+    .join("circle")
+    .attr("class", "dot")
+    .attr("cx", d => xScale(d.date))
+    .attr("cy", d => yScale(d.share))
+    .attr("r", 4)
+    .attr("fill", "#fff")
+    .attr("stroke", "#8b5cf6")
+    .attr("stroke-width", 2)
+    .style("cursor", "pointer")
+    .on("mouseover", function (event, d) {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("r", 6)
+        .attr("fill", "#8b5cf6");
+
+      // Build tooltip HTML
+      const sharePercent = (d.share * 100).toFixed(1);
+      let tooltipHTML = `<strong>${d.month}</strong><br/>`;
+      tooltipHTML += `${t('chart.label.share')}: ${sharePercent}%<br/>`;
+      tooltipHTML += `${t('chart.label.keyword')}: ${d.count}/${d.total}`;
+
+      tooltip
+        .style("display", "block")
+        .html(tooltipHTML)
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 10 + "px");
+    })
+    .on("mousemove", function (event) {
+      tooltip
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 10 + "px");
+    })
+    .on("mouseout", function () {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("r", 4)
+        .attr("fill", "#fff");
+
+      tooltip.style("display", "none");
+    });
+
+  // X-Axis Label
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", height - 5)
+    .attr("text-anchor", "middle")
+    .attr("class", "axis-label")
+    .style("font-size", "13px")
+    .style("fill", "#666")
+    .text(t('chart.axis.timeperiod'));
+
+  // Y-Axis Label
+  svg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 15)
+    .attr("x", -(height / 2))
+    .attr("text-anchor", "middle")
+    .attr("class", "axis-label")
+    .style("font-size", "13px")
+    .style("fill", "#666")
+    .text(t('chart.axis.share'));
+
+  // Title
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 20)
+    .attr("text-anchor", "middle")
+    .attr("class", "chart-title")
+    .style("font-size", "18px")
+    .style("font-weight", "bold")
+    .text(title);
+}
+
+/**
  * Render a bar chart for top documents
  * @param {Array} documents - Array of top documents with {name, count}
  * @param {string} selector - CSS selector for container

@@ -17,20 +17,38 @@ export function parseDate(dateStr) {
 
 /**
  * Convert trend data to D3-ready format with parsed dates
- * @param {Array} trendData - Array of {month, count} objects
- * @returns {Array} - Array of {date, count} objects with Date objects
+ * @param {Array} trendData - Array of {month, count} or {month, share, count, total} objects
+ * @param {Object} options - Configuration options
+ * @param {boolean} options.isShare - Whether this is share data (uses 'share' instead of 'count' as main value)
+ * @returns {Array} - Array of {date, count/share, month, ...} objects with Date objects
  */
-export function prepareTrendData(trendData) {
+export function prepareTrendData(trendData, options = {}) {
   if (!Array.isArray(trendData) || trendData.length === 0) {
     return [];
   }
   
+  const { isShare = false } = options;
+  
   return trendData
-    .map(d => ({
-      date: new Date(d.month + "-01"), // Convert "2024-01" to Date object
-      month: d.month,
-      count: Number(d.count) || 0
-    }))
+    .map(d => {
+      if (isShare) {
+        // For share data, use share value and keep count/total for tooltips
+        return {
+          date: new Date(d.month + "-01"),
+          month: d.month,
+          share: Number(d.share) || 0,
+          count: Number(d.count) || 0,
+          total: Number(d.total) || 0
+        };
+      } else {
+        // For regular trend data
+        return {
+          date: new Date(d.month + "-01"),
+          month: d.month,
+          count: Number(d.count) || 0
+        };
+      }
+    })
     .sort((a, b) => a.date - b.date);
 }
 

@@ -10,8 +10,8 @@
 
 import { t, getCurrentLang } from '../i18n.js';
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
-import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart, renderApplicationsList } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms, fetchApplications, APPLICATIONS_BATCH_SIZE } from './api.js';
+import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderTrendShareChart, renderKPICards, renderProcessingTimeChart, renderApplicationsList } from './visualize.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchTrendShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms, fetchApplications, APPLICATIONS_BATCH_SIZE } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -25,6 +25,7 @@ function capitalizeFirstLetter(word) {
 const state = {
   currentWord: "",
   showTrend: true,
+  showTrendShare: true,
   showFraktionen: true,
   showFraktionenShare: true,
   showTopDocs: false,
@@ -62,6 +63,7 @@ async function refresh() {
 
   // Show loading state in containers
   const trendContainer = document.getElementById("viz-trend");
+  const trendShareContainer = document.getElementById("viz-trend-share");
   const fraktionenContainer = document.getElementById("viz-fraktionen");
   const fraktionenShareContainer = document.getElementById("viz-fraktionen-share");
   const docsContainer = document.getElementById("viz-topdocs");
@@ -71,6 +73,7 @@ async function refresh() {
   if (trendContainer && fraktionenContainer && fraktionenShareContainer && docsContainer) {
     const loadingHTML = `<p class="loading-text loading-dots">${t('loading.data')}</p>`;
     trendContainer.innerHTML = loadingHTML;
+    if (trendShareContainer) trendShareContainer.innerHTML = loadingHTML;
     fraktionenContainer.innerHTML = loadingHTML;
     fraktionenShareContainer.innerHTML = loadingHTML;
     docsContainer.innerHTML = loadingHTML;
@@ -90,6 +93,13 @@ async function refresh() {
     
     if (state.showTrend) {
       promises.push(fetchTrend(word, typFilter, dateFilter));
+    } else {
+      promises.push(Promise.resolve(null));
+    }
+
+    // Only fetch trend share when word is provided
+    if (state.showTrendShare && word) {
+      promises.push(fetchTrendShare(word, typFilter, dateFilter));
     } else {
       promises.push(Promise.resolve(null));
     }
@@ -130,7 +140,7 @@ async function refresh() {
     
     promises.push(fetchMetrics(word, typFilter, dateFilter));
 
-    const [trendData, fraktionenData, fraktionenShareData, documentsData, applicationsData, metrics] = await Promise.all(promises);
+    const [trendData, trendShareData, fraktionenData, fraktionenShareData, documentsData, applicationsData, metrics] = await Promise.all(promises);
     // Containers sind bereits oben initialisiert
 
     // Render trend chart
@@ -148,6 +158,24 @@ async function refresh() {
       }
     } else {
       trendContainer.innerHTML = "";
+    }
+
+    // Render trend share chart (relative percentage per month)
+    if (state.showTrendShare && word) {
+      if (trendShareData && trendShareData.length > 0) {
+        const prepared = prepareTrendData(trendShareData, { isShare: true });
+        renderTrendShareChart(prepared, "#viz-trend-share", {
+          title: t('chart.trend.share.title'),
+          searchTerm: word,
+          width: 900,
+          height: 400
+        });
+      } else {
+        trendShareContainer.innerHTML = `<p>${t('error.no-data')}</p>`;
+      }
+    } else {
+      // Hide trend share chart when no keyword
+      if (trendShareContainer) trendShareContainer.innerHTML = "";
     }
 
     // Render fraktionen chart

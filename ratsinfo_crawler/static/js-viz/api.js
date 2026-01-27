@@ -127,6 +127,39 @@ export async function fetchFraktionenShare(word, typFilter = null, dateFilter = 
 }
 
 /**
+ * Fetch monthly trend share data (percentage of proposals per month)
+ * @param {string} word - The keyword to search for
+ * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
+ * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
+ * @returns {Promise<Array>} - Array of {month, share, count, total} objects
+ */
+export async function fetchTrendShare(word, typFilter = null, dateFilter = null) {
+  try {
+    let url = `/trend_share?word=${encodeURIComponent(word)}`;
+    if (typFilter && typFilter.length > 0) {
+      url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    if (dateFilter) {
+      if (dateFilter.from) {
+        url += `&date_from=${encodeURIComponent(dateFilter.from)}`;
+      }
+      if (dateFilter.to) {
+        url += `&date_to=${encodeURIComponent(dateFilter.to)}`;
+      }
+    }
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return [];
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching trend share:", error);
+    return [];
+  }
+}
+
+/**
  * Fetch processing metrics for a given keyword
  * @param {string} word - The keyword to search for
  * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
