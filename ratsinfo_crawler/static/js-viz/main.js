@@ -30,7 +30,8 @@ const state = {
   showTopDocs: false,
   selectedTypen: [], // Array of selected Typ values
   dateFilter: { from: "", to: "" }, // Date range filter
-  expandedTerms: { original: [], expanded: [] } // Expanded search terms
+  expandedTerms: { original: [], expanded: [] }, // Expanded search terms
+  currentRequestId: 0 // Track current request to cancel outdated ones
 };
 
 // DOM Elements
@@ -44,6 +45,9 @@ const visualization = document.getElementById("visualization");
  */
 async function refresh() {
   const word = searchInput.value.trim();
+  
+  // Increment request ID to invalidate previous requests
+  const requestId = ++state.currentRequestId;
   
   // Allow empty word to show all proposals
   state.currentWord = word;
@@ -75,9 +79,12 @@ async function refresh() {
   try {
     const promises = [];
     
-    // Fetch expanded search terms
-    const expandedTerms = await fetchExpandedSearchTerms(word);
-    state.expandedTerms = expandedTerms;
+    // Fetch and display expanded search terms immediately in parallel (non-blocking)
+    // This updates the UI immediately without waiting for charts
+    fetchExpandedSearchTerms(word).then(expandedTerms => {
+      state.expandedTerms = expandedTerms;
+      displayExpandedTerms();
+    }).catch(err => console.error("Error loading expanded terms:", err));
     
     if (state.showTrend) {
       promises.push(fetchTrend(word, typFilter, dateFilter));
@@ -105,6 +112,13 @@ async function refresh() {
     }
 
     // Fetch metrics data
+    
+    // Check if this request is still current (user hasn't started a new search)
+    if (requestId !== state.currentRequestId) {
+      console.log("Outdated request, skipping render");
+      return; // Abort outdated request
+    }
+    
     promises.push(fetchMetrics(word, typFilter, dateFilter));
 
     const [trendData, fraktionenData, fraktionenShareData, documentsData, metrics] = await Promise.all(promises);
@@ -209,8 +223,7 @@ async function refresh() {
       }
     }
 
-    // Display expanded search terms
-    displayExpandedTerms();
+    // Expanded search terms already displayed earlier (before charts loaded)
 
   } catch (error) {
     console.error("Error during refresh:", error);
