@@ -11,7 +11,7 @@
 import { t, getCurrentLang } from '../i18n.js';
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart, renderApplicationsList } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms, fetchApplications } from './api.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms, fetchApplications, APPLICATIONS_BATCH_SIZE } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -113,11 +113,11 @@ async function refresh() {
       promises.push(Promise.resolve(null));
     }
 
-    // Fetch applications list (initial load - just first 20)
+    // Fetch applications list (initial load - just first batch)
     if (state.showApplications) {
-      promises.push(fetchApplications(word, typFilter, dateFilter, 0, 20));
+      promises.push(fetchApplications(word, typFilter, dateFilter, 0, APPLICATIONS_BATCH_SIZE));
     } else {
-      promises.push(Promise.resolve({ data: [], total: 0, offset: 0, limit: 20 }));
+      promises.push(Promise.resolve({ data: [], total: 0, offset: 0, limit: APPLICATIONS_BATCH_SIZE }));
     }
 
     // Fetch metrics data
@@ -288,7 +288,7 @@ async function loadMoreApplications() {
   const dateFilter = (state.dateFilter.from || state.dateFilter.to) ? state.dateFilter : null;
   
   const offset = state.applicationsData.loaded;
-  const limit = 20;
+  const limit = APPLICATIONS_BATCH_SIZE;
   
   // Show loading state on button
   const loadMoreBtn = document.querySelector(".load-more-btn");

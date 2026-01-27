@@ -2,6 +2,9 @@
 from flask import Flask, request, render_template, jsonify
 import Ratsinfo as ri
 
+# Configuration: Number of applications to load per batch
+APPLICATIONS_BATCH_SIZE = 20
+
 app = Flask(__name__)
 
 # Register dynamic keywords blueprint 
@@ -237,7 +240,7 @@ def get_applications():
     date_from = request.args.get("date_from", type=str, default="")
     date_to = request.args.get("date_to", type=str, default="")
     offset = request.args.get("offset", type=int, default=0)
-    limit = request.args.get("limit", type=int, default=20)
+    limit = request.args.get("limit", type=int, default=APPLICATIONS_BATCH_SIZE)
     
     # Parse comma-separated typ values
     typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None

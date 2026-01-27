@@ -5,6 +5,9 @@
  * All functions return promises that resolve to JSON data
  */
 
+// Configuration: Number of applications to load per batch
+export const APPLICATIONS_BATCH_SIZE = 20;
+
 /**
  * Fetch trend data (monthly aggregated counts) for a given keyword
  * @param {string} word - The keyword to search for
@@ -223,7 +226,7 @@ export async function fetchExpandedSearchTerms(word) {
  * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
  * @returns {Promise<Array>} - Array of application objects
  */
-export async function fetchApplications(word, typFilter = null, dateFilter = null, offset = 0, limit = 20) {
+export async function fetchApplications(word, typFilter = null, dateFilter = null, offset = 0, limit = APPLICATIONS_BATCH_SIZE) {
   try {
     let url = `/get_applications`;
     const params = [];
