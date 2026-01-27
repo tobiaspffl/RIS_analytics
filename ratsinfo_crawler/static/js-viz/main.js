@@ -294,7 +294,7 @@ const dateFrom = document.getElementById("dateFrom");
 const dateTo = document.getElementById("dateTo");
 const clearDateBtn = document.getElementById("clearDateFilter");
 const dateFilterToggle = document.getElementById("dateFilterToggle");
-const dateFilterContent = document.getElementById("date-filter-content");
+const dateFilterSection = document.querySelector(".date-filter-section");
 
 if (dateFrom) {
   // Use 'blur' instead of 'change' to avoid triggering on every keystroke during manual entry
@@ -335,9 +335,9 @@ if (clearDateBtn) {
   });
 }
 
-if (dateFilterToggle) {
+if (dateFilterToggle && dateFilterSection) {
   dateFilterToggle.addEventListener("click", () => {
-    dateFilterContent.classList.toggle("expanded");
+    dateFilterSection.classList.toggle("collapsed");
   });
 }
 

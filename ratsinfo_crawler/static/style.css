@@ -292,6 +292,7 @@ body {
   background: var(--gray-50);
   border-radius: var(--radius-md);
   border-left: 3px solid var(--primary-500);
+  margin-bottom: var(--spacing-md);
 }
 
 /* Expanded Search Terms Display */
