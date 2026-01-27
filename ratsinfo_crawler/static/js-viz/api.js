@@ -99,7 +99,7 @@ export async function fetchFraktionen(word, typFilter = null, dateFilter = null)
  */
 export async function fetchFraktionenShare(word, typFilter = null, dateFilter = null) {
   try {
-    let url = `/fraktionen_share?word=${encodeURIComponent(word)}`;
+      let url = `/fraktionen_share?word=${encodeURIComponent(word)}`;
     if (typFilter && typFilter.length > 0) {
       url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
     }
@@ -213,5 +213,51 @@ export async function fetchExpandedSearchTerms(word) {
   } catch (error) {
     console.error("Error fetching expanded search terms:", error);
     return { original: [], expanded: [] };
+  }
+}
+
+/**
+ * Fetch filtered applications/proposals
+ * @param {string} word - The keyword to search for
+ * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
+ * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
+ * @returns {Promise<Array>} - Array of application objects
+ */
+export async function fetchApplications(word, typFilter = null, dateFilter = null, offset = 0, limit = 20) {
+  try {
+    let url = `/get_applications`;
+    const params = [];
+    
+    if (word) {
+      params.push(`word=${encodeURIComponent(word)}`);
+    }
+    if (typFilter && typFilter.length > 0) {
+      params.push(`typ=${encodeURIComponent(typFilter.join(','))}`);
+    }
+    if (dateFilter) {
+      if (dateFilter.from) {
+        params.push(`date_from=${encodeURIComponent(dateFilter.from)}`);
+      }
+      if (dateFilter.to) {
+        params.push(`date_to=${encodeURIComponent(dateFilter.to)}`);
+      }
+    }
+    
+    params.push(`offset=${offset}`);
+    params.push(`limit=${limit}`);
+    
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
+    }
+    
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return { data: [], total: 0, offset: 0, limit: 20 };
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching applications:", error);
+    return { data: [], total: 0, offset: 0, limit: 20 };
   }
 }

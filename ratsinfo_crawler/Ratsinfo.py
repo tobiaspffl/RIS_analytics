@@ -18,7 +18,7 @@ _data_cache = {}
 
 # List of columns that are actually needed for the analysis
 REQUIRED_COLUMNS = ["document_content", "Gestellt am", "Typ", "Erledigt am", 
-                    "Zuständiges Referat", "Gestellt von"]
+                    "Zuständiges Referat", "Gestellt von", "document_link", "name"]
 
 # Rule-based theme lexicon for lightweight topic tagging and query expansion.
 # You can extend or edit this map to reflect your domain vocabulary.
@@ -787,3 +787,47 @@ def get_expanded_search_terms(words: list[str], expand_with_themes: bool = True)
         "original": words or [],
         "expanded": list(search_terms)
     }
+
+
+def get_filtered_applications(file: str, words: list[str], typ_filter=None, date_filter=None) -> pd.DataFrame:
+    """
+    Get all applications (proposals) that match the given filters.
+    
+    Returns all columns from the original data for matching applications,
+    filtered by search words, type, and date range.
+    
+    Args:
+        file: Path to CSV file
+        words: List of keywords to search for (optional, empty = all)
+        typ_filter: List of Typ values to filter by (OR condition), None = no filter
+        date_filter: Dict with "from" and/or "to" keys in YYYY-MM-DD format, None = no filter
+    
+    Returns:
+        DataFrame with matching applications, sorted by date descending
+    """
+    try:
+        # Find matching applications based on search words and filters
+        if words and any(w.strip() for w in words):
+            # Filter by search terms
+            rows_with_words, _ = find_words_frequency(file, words, typ_filter=typ_filter, date_filter=date_filter, expand_with_themes=True)
+            result_df = rows_with_words
+        else:
+            # No search term - return all applications matching type and date filters
+            result_df = _load_data_cached(file)
+            
+            # Apply date filter
+            if date_filter and (date_filter.get("from") or date_filter.get("to")):
+                result_df = _slice_by_date(result_df, date_filter.get("from"), date_filter.get("to"))
+            
+            # Apply typ filter
+            if typ_filter:
+                result_df = result_df[result_df["Typ"].isin(typ_filter)]
+        
+        # Sort by date descending (newest first)
+        if "Gestellt am" in result_df.columns:
+            result_df = result_df.sort_values("Gestellt am", ascending=False, na_position="last")
+        
+        return result_df
+    except Exception as e:
+        print(f"Error getting filtered applications: {e}")
+        return pd.DataFrame()

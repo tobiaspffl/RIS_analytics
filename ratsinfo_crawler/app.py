@@ -216,6 +216,60 @@ def expanded_search_terms():
     return jsonify(result)
 
 
+# Route to return filtered applications/proposals
+@app.route("/get_applications", methods=["GET"])
+def get_applications():
+    """
+    Returns all applications (proposals) matching the given filters.
+    
+    Query params:
+        word (optional) - search keyword
+        typ (optional) - comma-separated list of Typ values to filter by
+        date_from (optional) - start date in YYYY-MM-DD format
+        date_to (optional) - end date in YYYY-MM-DD format
+        offset (optional) - number of records to skip (default: 0)
+        limit (optional) - maximum number of records to return (default: 20)
+    
+    Response: {"data": [...], "total": X, "offset": Y, "limit": Z}
+    """
+    word = request.args.get("word", type=str, default="")
+    typ_param = request.args.get("typ", type=str, default="")
+    date_from = request.args.get("date_from", type=str, default="")
+    date_to = request.args.get("date_to", type=str, default="")
+    offset = request.args.get("offset", type=int, default=0)
+    limit = request.args.get("limit", type=int, default=20)
+    
+    # Parse comma-separated typ values
+    typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
+    
+    # Create date filter dict
+    date_filter = None
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["from"] = date_from
+        if date_to:
+            date_filter["to"] = date_to
+    
+    # Get filtered applications
+    applications = ri.get_filtered_applications("data.csv", [word] if word else [], typ_filter=typ_filter, date_filter=date_filter)
+    
+    total = len(applications)
+    
+    # Apply pagination
+    paginated_applications = applications.iloc[offset:offset + limit]
+    
+    # Convert NaN to None for JSON serialization
+    paginated_applications = paginated_applications.where(pd.notnull(paginated_applications), None)
+    
+    return jsonify({
+        "data": paginated_applications.to_dict(orient="records"),
+        "total": total,
+        "offset": offset,
+        "limit": limit
+    })
+
+
 @app.route("/rechtliches", methods=["GET"])
 def legal():
     return render_template("legal.html")

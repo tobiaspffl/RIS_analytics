@@ -85,6 +85,19 @@ export const translations = {
     'kpi.avgdays.description': 'Tage',
     'kpi.avgdays.na': 'k.A.',
 
+    // Applications List
+    'applications.title': 'Aufgelistete Anträge',
+    'applications.description': 'Beschreibung',
+    'applications.submitted_by': 'Gestellt von',
+    'applications.department': 'Zuständiges Referat',
+    'applications.type': 'Typ',
+    'applications.closed_date': 'Erledigt am',
+    'applications.empty': 'Keine Anträge gefunden, die den aktuellen Filtern entsprechen.',
+    'applications.showing': 'Zeige',
+    'applications.of': 'von',
+    'applications.load_more': 'Weitere laden',
+    'applications.loading': 'Lädt...',
+
     // Badges
     'badge.methodology': 'Zählregeln & Schwellen',
     
@@ -251,6 +264,19 @@ export const translations = {
     'kpi.avgdays.title': 'Avg. Processing Time',
     'kpi.avgdays.description': 'Days',
     'kpi.avgdays.na': 'N/A',
+
+    // Applications List
+    'applications.title': 'Listed Proposals',
+    'applications.description': 'Description',
+    'applications.submitted_by': 'Submitted by',
+    'applications.department': 'Responsible Department',
+    'applications.type': 'Type',
+    'applications.closed_date': 'Closed',
+    'applications.empty': 'No proposals found matching the current filters.',
+    'applications.showing': 'Showing',
+    'applications.of': 'of',
+    'applications.load_more': 'Load more',
+    'applications.loading': 'Loading...',
 
     // Badges
     'badge.methodology': 'Counting rules & thresholds',

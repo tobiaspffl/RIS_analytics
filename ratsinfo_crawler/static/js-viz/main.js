@@ -10,8 +10,8 @@
 
 import { t, getCurrentLang } from '../i18n.js';
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
-import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms } from './api.js';
+import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderKPICards, renderProcessingTimeChart, renderApplicationsList } from './visualize.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms, fetchApplications } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -28,10 +28,12 @@ const state = {
   showFraktionen: true,
   showFraktionenShare: true,
   showTopDocs: false,
+  showApplications: true, // Show applications list
   selectedTypen: [], // Array of selected Typ values
   dateFilter: { from: "", to: "" }, // Date range filter
   expandedTerms: { original: [], expanded: [] }, // Expanded search terms
-  currentRequestId: 0 // Track current request to cancel outdated ones
+  currentRequestId: 0, // Track current request to cancel outdated ones
+  applicationsData: { data: [], total: 0, loaded: 0 } // Track applications state
 };
 
 // DOM Elements
@@ -111,6 +113,13 @@ async function refresh() {
       promises.push(Promise.resolve(null));
     }
 
+    // Fetch applications list (initial load - just first 20)
+    if (state.showApplications) {
+      promises.push(fetchApplications(word, typFilter, dateFilter, 0, 20));
+    } else {
+      promises.push(Promise.resolve({ data: [], total: 0, offset: 0, limit: 20 }));
+    }
+
     // Fetch metrics data
     
     // Check if this request is still current (user hasn't started a new search)
@@ -121,7 +130,7 @@ async function refresh() {
     
     promises.push(fetchMetrics(word, typFilter, dateFilter));
 
-    const [trendData, fraktionenData, fraktionenShareData, documentsData, metrics] = await Promise.all(promises);
+    const [trendData, fraktionenData, fraktionenShareData, documentsData, applicationsData, metrics] = await Promise.all(promises);
     // Containers sind bereits oben initialisiert
 
     // Render trend chart
@@ -223,6 +232,36 @@ async function refresh() {
       }
     }
 
+    // Render Applications List
+    const applicationsContainer = document.querySelector("#viz-applications");
+    if (applicationsContainer) {
+      if (state.showApplications) {
+        if (applicationsData && applicationsData.data && applicationsData.data.length > 0) {
+          // Update state with initial data
+          state.applicationsData = {
+            data: applicationsData.data,
+            total: applicationsData.total,
+            loaded: applicationsData.data.length
+          };
+          
+          renderApplicationsList(
+            state.applicationsData.data, 
+            "#viz-applications", 
+            {
+              title: t('applications.title'),
+              total: state.applicationsData.total,
+              loaded: state.applicationsData.loaded,
+              onLoadMore: loadMoreApplications
+            }
+          );
+        } else {
+          applicationsContainer.innerHTML = `<p>${t('applications.empty')}</p>`;
+        }
+      } else {
+        applicationsContainer.innerHTML = "";
+      }
+    }
+
     // Expanded search terms already displayed earlier (before charts loaded)
 
   } catch (error) {
@@ -237,6 +276,54 @@ async function refresh() {
     if (docsContainer) docsContainer.innerHTML = "";
     if (metricsChartContainer) metricsChartContainer.innerHTML = "";
     if (kpiContainer) kpiContainer.innerHTML = "";
+  }
+}
+
+/**
+ * Load more applications (pagination)
+ */
+async function loadMoreApplications() {
+  const word = searchInput.value.trim();
+  const typFilter = state.selectedTypen.length > 0 ? state.selectedTypen : null;
+  const dateFilter = (state.dateFilter.from || state.dateFilter.to) ? state.dateFilter : null;
+  
+  const offset = state.applicationsData.loaded;
+  const limit = 20;
+  
+  // Show loading state on button
+  const loadMoreBtn = document.querySelector(".load-more-btn");
+  if (loadMoreBtn) {
+    loadMoreBtn.disabled = true;
+    loadMoreBtn.textContent = t('applications.loading');
+  }
+  
+  try {
+    const result = await fetchApplications(word, typFilter, dateFilter, offset, limit);
+    
+    if (result && result.data && result.data.length > 0) {
+      // Append new data to existing
+      state.applicationsData.data = [...state.applicationsData.data, ...result.data];
+      state.applicationsData.loaded = state.applicationsData.data.length;
+      
+      // Re-render with updated data
+      renderApplicationsList(
+        state.applicationsData.data, 
+        "#viz-applications", 
+        {
+          title: t('applications.title'),
+          total: state.applicationsData.total,
+          loaded: state.applicationsData.loaded,
+          onLoadMore: loadMoreApplications
+        }
+      );
+    }
+  } catch (error) {
+    console.error("Error loading more applications:", error);
+    // Re-enable button on error
+    if (loadMoreBtn) {
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.textContent = t('applications.load_more');
+    }
   }
 }
 

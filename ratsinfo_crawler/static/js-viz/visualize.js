@@ -1275,3 +1275,231 @@ export function renderFraktionShareChart(data, selector, options = {}) {
     .style("fill", "#1f2937")
     .text(titleText);
 }
+
+/**
+ * Render a list of applications/proposals as cards
+ * @param {Array} applications - Array of application objects
+ * @param {string} selector - CSS selector for container
+ * @param {Object} options - Configuration object
+ * @param {string} options.title - Section title
+ * @param {number} options.limit - Max applications to show (default: 100)
+ */
+export function renderApplicationsList(applications, selector, options = {}) {
+  const {
+    title = t('applications.title'),
+    total = applications.length,
+    loaded = applications.length,
+    onLoadMore = null
+  } = options;
+
+  const container = document.querySelector(selector);
+  if (!container) {
+    console.error(`Container not found: ${selector}`);
+    return;
+  }
+
+  container.innerHTML = "";
+
+  // If no applications, show empty state
+  if (!applications || applications.length === 0) {
+    const emptyHTML = `
+      <div class="applications-empty">
+        <p>${t('applications.empty')}</p>
+      </div>
+    `;
+    container.innerHTML = emptyHTML;
+    return;
+  }
+
+  // Create title
+  const titleEl = document.createElement("h3");
+  titleEl.className = "applications-title";
+  titleEl.setAttribute("data-i18n", "applications.title");
+  titleEl.textContent = title;
+  container.appendChild(titleEl);
+
+  // Create applications list container
+  const listContainer = document.createElement("div");
+  listContainer.className = "applications-list";
+
+  // Create a card for each application
+  applications.forEach(app => {
+    const card = createApplicationCard(app);
+    listContainer.appendChild(card);
+  });
+
+  container.appendChild(listContainer);
+
+  // Add info about loaded/total count
+  const infoEl = document.createElement("p");
+  infoEl.className = "applications-info";
+  infoEl.textContent = `${t('applications.showing')} ${loaded} ${t('applications.of')} ${total}`;
+  container.appendChild(infoEl);
+
+  // Add Load More button if there are more to load
+  if (loaded < total && onLoadMore) {
+    const btnContainer = document.createElement("div");
+    btnContainer.className = "load-more-container";
+    
+    const loadMoreBtn = document.createElement("button");
+    loadMoreBtn.className = "load-more-btn";
+    loadMoreBtn.textContent = t('applications.load_more');
+    loadMoreBtn.addEventListener("click", onLoadMore);
+    
+    btnContainer.appendChild(loadMoreBtn);
+    container.appendChild(btnContainer);
+  }
+}
+
+/**
+ * Helper function to create a single application card
+ */
+function createApplicationCard(app) {
+  const card = document.createElement("div");
+  card.className = "application-card";
+
+  // Make card clickable if document_link is available
+  const docLink = app["document_link"];
+  if (docLink && docLink.trim() && !docLink.includes("No pdf found")) {
+    card.classList.add("clickable");
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => {
+      window.open(docLink, "_blank");
+    });
+  }
+
+  // Format date for display
+  const dateStr = formatDate(app["Gestellt am"]);
+
+  // Create card header with title
+  const header = document.createElement("div");
+  header.className = "card-header";
+
+  const titleEl = document.createElement("h4");
+  titleEl.className = "card-title";
+  // Use name field which contains the full title
+  let title = app["name"] || "N/A";
+  // Clean up excessive whitespace/newlines
+  title = title.replace(/\s+/g, ' ').trim();
+  titleEl.textContent = title;
+  header.appendChild(titleEl);
+
+  const dateEl = document.createElement("div");
+  dateEl.className = "card-date";
+  dateEl.textContent = dateStr;
+  header.appendChild(dateEl);
+
+  card.appendChild(header);
+
+  // Create card body with details
+  const body = document.createElement("div");
+  body.className = "card-body";
+
+  // Add each relevant field
+  const fields = [
+    { key: "document_content", label: t('applications.description'), maxLength: 150 },
+    { key: "Gestellt von", label: t('applications.submitted_by') },
+    { key: "Zuständiges Referat", label: t('applications.department') },
+    { key: "Typ", label: t('applications.type') },
+    { key: "Erledigt am", label: t('applications.closed_date') }
+  ];
+
+  fields.forEach(field => {
+    let value = app[field.key];
+    
+    // Special handling for document_content - extract meaningful description
+    if (field.key === "document_content" && value) {
+      value = extractDescription(value);
+    }
+    
+    if (value && value.toString().trim()) {
+      const fieldEl = document.createElement("div");
+      fieldEl.className = "card-field";
+
+      const labelEl = document.createElement("span");
+      labelEl.className = "field-label";
+      labelEl.textContent = field.label + ":";
+      fieldEl.appendChild(labelEl);
+
+      const valueEl = document.createElement("span");
+      valueEl.className = "field-value";
+      
+      // Truncate long text
+      let displayValue = value.toString();
+      if (field.maxLength && displayValue.length > field.maxLength) {
+        displayValue = displayValue.substring(0, field.maxLength) + "...";
+      }
+      valueEl.textContent = displayValue;
+      fieldEl.appendChild(valueEl);
+
+      body.appendChild(fieldEl);
+    }
+  });
+
+  card.appendChild(body);
+
+  return card;
+}
+
+/**
+ * Helper function to format date for display
+ */
+function formatDate(dateStr) {
+  if (!dateStr) return "N/A";
+  
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    
+    // Format as DD.MM.YYYY
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `${day}.${month}.${year}`;
+  } catch {
+    return dateStr;
+  }
+}
+
+/**
+ * Helper function to extract meaningful description from document_content
+ * Skips common boilerplate text like names, addresses, "ANTRAG", etc.
+ */
+function extractDescription(content) {
+  if (!content || !content.trim()) {
+    return "";
+  }
+  
+  // Remove excessive whitespace and newlines
+  let text = content.replace(/\s+/g, ' ').trim();
+  
+  // Common patterns to skip (case-insensitive)
+  const skipPatterns = [
+    /^.*?MITGLIED DES STADTRATS.*?ANTRAG/i,
+    /^.*?Herrn?\s+(Oberbürgermeister|Bürgermeister).*?ANTRAG/i,
+    /^.*?Rathaus.*?München\s*ANTRAG/i,
+    /^.*?ANTRAG\s*/i,
+    /^Begründung:\s*/i,
+    /^.*?Fraktion.*?München\s*/i,
+    /^\d{2}\.\d{2}\.\d{2,4}\s*/,  // Dates at start
+  ];
+  
+  // Try to skip boilerplate
+  for (const pattern of skipPatterns) {
+    text = text.replace(pattern, '');
+  }
+  
+  // If text starts with a person's name pattern (Herr/Frau + name), skip it
+  text = text.replace(/^(Herr|Frau|Herrn)\s+[A-ZÄÖÜ][a-zäöüß]+\s+[A-ZÄÖÜ][a-zäöüß]+\s*/i, '');
+  
+  // Remove leading "Dem Stadtrat..." boilerplate
+  text = text.replace(/^Dem Stadtrat.*?sind\s+(nachstehende\s+)?Fragen?\s+(darzustellen|zu\s+beantworten):\s*/i, '');
+  
+  // If after cleanup the text is too short or empty, return empty
+  if (text.length < 20) {
+    return "";
+  }
+  
+  return text.trim();
+}
