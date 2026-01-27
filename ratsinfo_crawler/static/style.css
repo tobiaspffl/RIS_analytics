@@ -379,6 +379,10 @@ body {
   opacity: 0;
 }
 
+.date-filter-section.collapsed .toggle-icon {
+  transform: rotate(-90deg);
+}
+
 .date-inputs {
   display: flex;
   gap: var(--spacing-md);
