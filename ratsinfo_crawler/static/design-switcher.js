@@ -121,3 +121,65 @@ function initWaveWindowParallax() {
 }
 
 document.addEventListener("DOMContentLoaded", initWaveWindowParallax);
+
+// Parallax scroll effect for hero divider (top wave)
+function initHeroDividerParallax() {
+  const heroDivider = document.querySelector(".hero-divider");
+  if (!heroDivider) return;
+
+  let ticking = false;
+
+  function updateParallax() {
+    const scrolled = window.pageYOffset;
+    const rect = heroDivider.getBoundingClientRect();
+    const dividerTop = rect.top + scrolled;
+    const elementOffset = (scrolled - dividerTop) * 0.15; // Same slow scroll factor
+    
+    // Apply transform to hero divider
+    heroDivider.style.transform = `translateY(${elementOffset}px)`;
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  });
+  
+  // Initial call
+  updateParallax();
+}
+
+document.addEventListener("DOMContentLoaded", initHeroDividerParallax);
+
+// Parallax scroll effect for hero divider filler bar
+function initHeroDividerFillerParallax() {
+  const fillerBar = document.querySelector(".hero-divider-filler");
+  if (!fillerBar) return;
+
+  let ticking = false;
+
+  function updateParallax() {
+    const scrolled = window.pageYOffset;
+    const rect = fillerBar.getBoundingClientRect();
+    const fillerTop = rect.top + scrolled;
+    const elementOffset = (scrolled - fillerTop) * 0.15; // Same slow scroll factor as hero divider
+    
+    // Apply transform to filler bar
+    fillerBar.style.transform = `translateY(${elementOffset}px)`;
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  });
+  
+  // Initial call
+  updateParallax();
+}
+
+document.addEventListener("DOMContentLoaded", initHeroDividerFillerParallax);

@@ -135,6 +135,19 @@ body {
 }
 .hero-divider svg { width: 100%; height: 100%; display: block; }
 
+/* Filler bar to close visual gap between divider and wave-window (Wave variant only) */
+.hero-divider-filler {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -120px;
+  width: 100%;
+  height: 120px;
+  background-color: white;
+  display: none; /* shown only in wave variant */
+  pointer-events: none;
+}
+
 /* ========================================
    Design Switcher (UI)
    ======================================== */
@@ -1217,7 +1230,8 @@ body {
   background: linear-gradient(135deg, rgba(16,24,40,0.55), rgba(29,78,216,0.40));
   backdrop-filter: blur(1.5px);
 }
-.hero.hero--wave .hero-divider { display: block; height: 160px; }
+.hero.hero--wave .hero-divider { display: block; height: 220px; }
+.hero.hero--wave .hero-divider-filler { display: block; }
 header.hero.hero--wave + main { position: relative; z-index: 1; }
 header.hero.hero--wave + main .search-section { margin-top: -140px; }
 .hero.hero--wave .hero-content { transform: translateY(-40px); }
@@ -1239,7 +1253,7 @@ header.hero.hero--overlap + main .search-section { margin-top: -80px; }
 .wave-window {
   position: relative;
   height: 180px;
-  margin: calc(-1 * var(--spacing-2xl)) 0 var(--spacing-2xl);
+  margin: -80px 0 var(--spacing-2xl);
   pointer-events: none;
   width: 100vw;
   margin-left: calc(50% - 50vw);
