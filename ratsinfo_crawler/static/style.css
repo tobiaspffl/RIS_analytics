@@ -521,11 +521,11 @@ body {
 }
 
 #clearDateFilter {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: var(--warning);
-  color: white;
-  border: none;
+  width: auto;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  color: var(--gray-600);
+  border: 1px solid var(--gray-300);
   border-radius: var(--radius-md);
   cursor: pointer;
   font-weight: 500;
@@ -534,9 +534,9 @@ body {
 }
 
 #clearDateFilter:hover {
-  background: #d97706;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  background: var(--gray-50);
+  border-color: var(--gray-400);
+  color: var(--gray-700);
 }
 
 #clearDateFilter:active {
