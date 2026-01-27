@@ -90,3 +90,34 @@ function initDesignSwitcher() {
 }
 
 document.addEventListener("DOMContentLoaded", initDesignSwitcher);
+
+// Parallax scroll effect for wave-window (entire window + overlay moves)
+function initWaveWindowParallax() {
+  const waveWindow = document.querySelector(".wave-window");
+  if (!waveWindow) return;
+
+  let ticking = false;
+
+  function updateParallax() {
+    const scrolled = window.pageYOffset;
+    const rect = waveWindow.getBoundingClientRect();
+    const windowTop = rect.top + scrolled;
+    const elementOffset = (scrolled - windowTop) * 0.15; // Container + overlay move slowly together
+    
+    // Apply transform to entire container (moves mask + overlay together)
+    waveWindow.style.transform = `translateY(${elementOffset}px)`;
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  });
+  
+  // Initial call
+  updateParallax();
+}
+
+document.addEventListener("DOMContentLoaded", initWaveWindowParallax);

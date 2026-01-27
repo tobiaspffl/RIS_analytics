@@ -791,6 +791,8 @@ body {
 
 .visualizations {
   margin-bottom: var(--spacing-2xl);
+  position: relative;
+  z-index: 1;
 }
 
 /* KPI Section */
@@ -802,6 +804,8 @@ body {
 .charts-grid {
   display: grid;
   gap: var(--spacing-xl);
+  position: relative;
+  z-index: 2;
 }
 
 .chart-card {
@@ -1228,6 +1232,50 @@ header.hero.hero--overlap + main .search-section { margin-top: -80px; }
 /* ========================================
    Responsive Design
    ======================================== */
+
+/* ========================================
+   Wave Peek Window
+   ======================================== */
+.wave-window {
+  position: relative;
+  height: 180px;
+  margin: calc(-1 * var(--spacing-2xl)) 0 var(--spacing-2xl);
+  pointer-events: none;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  z-index: 0;
+  overflow: hidden;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 240"><path fill="%23fff" d="M0,60 C240,132 480,12 720,84 C960,156 1200,36 1440,100 L1440,180 C1200,108 960,228 720,156 C480,84 240,204 0,140 L0,60 Z"/></svg>');
+  -webkit-mask-size: cover;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 240"><path fill="%23fff" d="M0,60 C240,132 480,12 720,84 C960,156 1200,36 1440,100 L1440,180 C1200,108 960,228 720,156 C480,84 240,204 0,140 L0,60 Z"/></svg>');
+  mask-size: cover;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+/* Static background layer - stays fixed to viewport */
+.wave-window::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("skyline_banner.jpg");
+  background-size: cover;
+  background-position: center bottom;
+  background-attachment: fixed;
+  opacity: 0.95;
+}
+/* Moving overlay layer */
+.wave-window::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(16,24,40,0.45), rgba(29,78,216,0.35));
+  backdrop-filter: blur(1px);
+}
 
 @media (max-width: 768px) {
   .hero {
