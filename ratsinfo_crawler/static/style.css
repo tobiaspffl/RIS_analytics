@@ -1215,7 +1215,8 @@ body {
 }
 .hero.hero--wave .hero-divider { display: block; height: 160px; }
 header.hero.hero--wave + main { position: relative; z-index: 1; }
-header.hero.hero--wave + main .search-section { margin-top: -100px; }
+header.hero.hero--wave + main .search-section { margin-top: -140px; }
+.hero.hero--wave .hero-content { transform: translateY(-40px); }
 
 /* Overlap: pull next section up into hero space */
 .hero.hero--overlap { margin-bottom: 0; position: relative; z-index: 0; }
