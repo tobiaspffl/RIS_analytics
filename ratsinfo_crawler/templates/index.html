@@ -13,8 +13,22 @@
   <body>
 
     <!-- Hero Section -->
-    <header class="hero">
+    <header class="hero hero--wave">
       <div class="hero-overlay">
+        <div class="design-switcher" aria-label="Design auswählen">
+          <button class="design-btn" data-design="wave">Wave</button>
+          <button class="design-btn" data-design="default">Default</button>
+          <button class="design-btn" data-design="glass">Glass</button>
+          <button class="design-btn" data-design="mesh">Mesh</button>
+          <button class="design-btn" data-design="blobs">Blobs</button>
+          <button class="design-btn" data-design="parallax">Parallax</button>
+          <button class="design-btn" data-design="gradienttext">Gradient Text</button>
+          <button class="design-btn" data-design="noise">Noise</button>
+          <button class="design-btn" data-design="neumorphic">Neumorphic</button>
+          <button class="design-btn" data-design="glassborder">Glass Border</button>
+          <button class="design-btn" data-design="fade">Fade</button>
+          <button class="design-btn" data-design="overlap">Overlap</button>
+        </div>
         <div class="language-switcher">
           <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
           <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
@@ -23,6 +37,12 @@
           <h1 class="hero-title" data-i18n="hero.title">What does Munich work on?</h1>
           <p class="hero-subtitle" data-i18n="hero.subtitle">Visualisierung und Analyse von Stadtratsanträgen</p>
         </div>
+      </div>
+      <!-- Optional shape divider for wave variant -->
+      <div class="hero-divider" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M0,48 C240,120 480,0 720,72 C960,144 1200,24 1440,88 L1440,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
       </div>
     </header>
 
@@ -192,5 +212,8 @@
 
     <!-- Load main application with ES modules -->
     <script type="module" src="../static/js-viz/main.js"></script>
+    
+    <!-- Design switcher (module) -->
+    <script type="module" src="../static/design-switcher.js"></script>
   </body>
 </html>
