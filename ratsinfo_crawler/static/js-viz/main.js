@@ -389,48 +389,154 @@ exampleBtns.forEach(btn => {
   });
 });
 
-// Date filter inputs
-const dateFrom = document.getElementById("dateFrom");
-const dateTo = document.getElementById("dateTo");
+// Date Range Slider State
+let dateRangeData = { minDate: null, maxDate: null, allDates: [] };
+
+// Date filter inputs - NEW: Range Slider
+const dateSliderFrom = document.getElementById("dateSliderFrom");
+const dateSliderTo = document.getElementById("dateSliderTo");
+const sliderLabelFrom = document.getElementById("sliderDateFrom");
+const sliderLabelTo = document.getElementById("sliderDateTo");
+const sliderTrackActive = document.querySelector(".slider-track-active");
 const clearDateBtn = document.getElementById("clearDateFilter");
 const dateFilterToggle = document.getElementById("dateFilterToggle");
 const dateFilterSection = document.querySelector(".date-filter-section");
 
-if (dateFrom) {
-  // Use 'blur' instead of 'change' to avoid triggering on every keystroke during manual entry
-  dateFrom.addEventListener("blur", () => {
-    state.dateFilter.from = dateFrom.value;
-    refresh();
-  });
-  // Also trigger on Enter key
-  dateFrom.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      state.dateFilter.from = dateFrom.value;
-      refresh();
-    }
-  });
+/**
+ * Format date for display in slider labels (Month/Year only)
+ */
+function formatDateForDisplay(dateStr) {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr + "T00:00:00");
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${year}`;
 }
 
-if (dateTo) {
-  // Use 'blur' instead of 'change' to avoid triggering on every keystroke during manual entry
-  dateTo.addEventListener("blur", () => {
-    state.dateFilter.to = dateTo.value;
-    refresh();
-  });
-  // Also trigger on Enter key
-  dateTo.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      state.dateFilter.to = dateTo.value;
-      refresh();
-    }
-  });
+/**
+ * Update slider track position and date labels
+ */
+function updateSliderTrack() {
+  if (!dateSliderFrom || !dateSliderTo || !sliderTrackActive) return;
+
+  const fromValue = parseInt(dateSliderFrom.value);
+  const toValue = parseInt(dateSliderTo.value);
+
+  // Ensure from is not greater than to
+  if (fromValue > toValue) {
+    dateSliderFrom.value = toValue;
+  } else if (toValue < fromValue) {
+    dateSliderTo.value = fromValue;
+  }
+
+  const min = parseInt(dateSliderFrom.min);
+  const max = parseInt(dateSliderFrom.max);
+
+  // Calculate percentage positions
+  const fromPercent = ((parseInt(dateSliderFrom.value) - min) / (max - min)) * 100;
+  const toPercent = ((parseInt(dateSliderTo.value) - min) / (max - min)) * 100;
+
+  // Update active track
+  sliderTrackActive.style.left = fromPercent + "%";
+  sliderTrackActive.style.right = (100 - toPercent) + "%";
+
+  // Update date labels
+  if (dateRangeData.allDates && dateRangeData.allDates.length > 0) {
+    const fromDate = dateRangeData.allDates[parseInt(dateSliderFrom.value)];
+    const toDate = dateRangeData.allDates[parseInt(dateSliderTo.value)];
+    
+    if (sliderLabelFrom) sliderLabelFrom.textContent = formatDateForDisplay(fromDate);
+    if (sliderLabelTo) sliderLabelTo.textContent = formatDateForDisplay(toDate);
+
+    // Update state
+    state.dateFilter.from = fromDate;
+    state.dateFilter.to = toDate;
+  }
+}
+
+/**
+ * Initialize date range slider with actual dates
+ */
+async function initDateRangeSlider() {
+  const dateRange = await fetchDateRange();
+  
+  if (!dateRange.minDate || !dateRange.maxDate) {
+    console.warn("Could not fetch date range");
+    return;
+  }
+
+  dateRangeData.minDate = dateRange.minDate;
+  dateRangeData.maxDate = dateRange.maxDate;
+
+  // Generate array of all dates between min and max (monthly steps for simplicity)
+  const dates = [];
+  const current = new Date(dateRange.minDate + "T00:00:00");
+  const max = new Date(dateRange.maxDate + "T00:00:00");
+
+  while (current <= max) {
+    const year = current.getFullYear();
+    const month = String(current.getMonth() + 1).padStart(2, '0');
+    const day = String(current.getDate()).padStart(2, '0');
+    dates.push(`${year}-${month}-${day}`);
+    
+    // Move to next month
+    current.setMonth(current.getMonth() + 1);
+  }
+
+  dateRangeData.allDates = dates;
+
+  // Set slider ranges
+  if (dateSliderFrom) {
+    dateSliderFrom.max = dates.length - 1;
+    dateSliderFrom.value = 0;
+  }
+  if (dateSliderTo) {
+    dateSliderTo.max = dates.length - 1;
+    dateSliderTo.value = dates.length - 1;
+  }
+
+  // Initial update
+  updateSliderTrack();
+
+  // Add event listeners - input for visual feedback, pointerup/mouseup for data refresh
+  if (dateSliderFrom) {
+    dateSliderFrom.addEventListener("input", () => {
+      updateSliderTrack(); // Update visuals only (labels, track position)
+    });
+    
+    dateSliderFrom.addEventListener("pointerup", () => {
+      refresh(); // Refresh data when user releases the slider
+    });
+    dateSliderFrom.addEventListener("mouseup", () => {
+      refresh(); // Fallback for older browsers
+    });
+  }
+
+  if (dateSliderTo) {
+    dateSliderTo.addEventListener("input", () => {
+      updateSliderTrack(); // Update visuals only (labels, track position)
+    });
+    
+    dateSliderTo.addEventListener("pointerup", () => {
+      refresh(); // Refresh data when user releases the slider
+    });
+    dateSliderTo.addEventListener("mouseup", () => {
+      refresh(); // Fallback for older browsers
+    });
+  }
 }
 
 if (clearDateBtn) {
   clearDateBtn.addEventListener("click", () => {
     state.dateFilter = { from: "", to: "" };
-    dateFrom.value = "";
-    dateTo.value = "";
+    
+    // Reset sliders to full range
+    if (dateSliderFrom && dateSliderTo && dateRangeData.allDates.length > 0) {
+      dateSliderFrom.value = 0;
+      dateSliderTo.value = dateRangeData.allDates.length - 1;
+    }
+    
+    updateSliderTrack();
     refresh();
   });
 }
@@ -467,6 +573,7 @@ if (initTrendContainer) {
 // Load all proposals on page load
 document.addEventListener("DOMContentLoaded", () => {
   loadDateRange();
+  initDateRangeSlider(); // Initialize the date range slider
   // Trigger refresh with empty search to show all proposals
   refresh();
 });
@@ -479,6 +586,7 @@ document.addEventListener("languageChanged", () => {
     loadDateRange(); // Also update date range text
     updateTypFilterLabels(); // Update Typ filter labels
     displayExpandedTerms();
+    updateSliderTrack(); // Update slider labels with new language
   }
 });
 
@@ -642,28 +750,3 @@ function initTypFilterToggle() {
 
 // Initialize toggle functionality
 document.addEventListener("DOMContentLoaded", initTypFilterToggle);
-
-/**
- * Initialize date filter with min/max constraints based on dataset date range
- */
-async function initDateFilter() {
-  const dateRange = await fetchDateRange();
-  
-  if (dateRange.minDate && dateRange.maxDate) {
-    const dateFromInput = document.getElementById("dateFrom");
-    const dateToInput = document.getElementById("dateTo");
-    
-    if (dateFromInput) {
-      dateFromInput.setAttribute("min", dateRange.minDate);
-      dateFromInput.setAttribute("max", dateRange.maxDate);
-    }
-    
-    if (dateToInput) {
-      dateToInput.setAttribute("min", dateRange.minDate);
-      dateToInput.setAttribute("max", dateRange.maxDate);
-    }
-  }
-}
-
-// Initialize date filter when page loads
-document.addEventListener("DOMContentLoaded", initDateFilter);

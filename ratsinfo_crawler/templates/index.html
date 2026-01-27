@@ -106,15 +106,38 @@
               <!-- Will be populated by JavaScript -->
             </div>
             
-            <div class="date-inputs">
-              <div class="date-input-group">
-                <label for="dateFrom" data-i18n="filter.date.from">Von:</label>
-                <input type="date" id="dateFrom" />
+            <!-- Date Range Slider -->
+            <div class="date-slider-container">
+              <div class="slider-labels">
+                <span id="sliderDateFrom" class="slider-label-start">-</span>
+                <span id="sliderDateTo" class="slider-label-end">-</span>
               </div>
-              <div class="date-input-group">
-                <label for="dateTo" data-i18n="filter.date.to">Bis:</label>
-                <input type="date" id="dateTo" />
+              
+              <div class="slider-wrapper">
+                <input 
+                  type="range" 
+                  id="dateSliderFrom" 
+                  class="date-slider date-slider-from"
+                  min="0" 
+                  max="100" 
+                  value="0"
+                  data-i18n-aria="filter.date.slider.from"
+                  aria-label="Startdatum"
+                />
+                <input 
+                  type="range" 
+                  id="dateSliderTo" 
+                  class="date-slider date-slider-to"
+                  min="0" 
+                  max="100" 
+                  value="100"
+                  data-i18n-aria="filter.date.slider.to"
+                  aria-label="Enddatum"
+                />
+                <div class="slider-track"></div>
+                <div class="slider-track-active"></div>
               </div>
+              
               <button id="clearDateFilter" class="clear-btn" data-i18n="filter.date.clear">
                 Zurücksetzen
               </button>
