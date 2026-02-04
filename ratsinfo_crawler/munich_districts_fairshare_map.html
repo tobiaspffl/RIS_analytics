@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_79a1fb1dc582cd9f927bec3b50032498 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+     <div style="position: fixed; 
+     bottom: 50px; left: 50px; width: 160px; height: auto; 
+     border:2px solid grey; z-index:9999; font-size:12px;
+     background-color:white; opacity:0.9; padding: 10px;">
+     <b>Party Legend</b><br>
+     <i style="background:#000000;width:10px;height:10px;float:left;margin-right:5px;margin-top:2px;"></i> CSU<br><i style="background:#46962b;width:10px;height:10px;float:left;margin-right:5px;margin-top:2px;"></i> The Greens<br><i style="background:#E3000F;width:10px;height:10px;float:left;margin-right:5px;margin-top:2px;"></i> SPD<br><i style="background:#FFED00;width:10px;height:10px;float:left;margin-right:5px;margin-top:2px;"></i> FDP<br><i style="background:#BE3075;width:10px;height:10px;float:left;margin-right:5px;margin-top:2px;"></i> The Left<br><i style="background:#FF6600;width:10px;height:10px;float:left;margin-right:5px;margin-top:2px;"></i> ÖDP<br></div>
+    
+            <div class="folium-map" id="map_79a1fb1dc582cd9f927bec3b50032498" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_79a1fb1dc582cd9f927bec3b50032498 = L.map(
+                "map_79a1fb1dc582cd9f927bec3b50032498",
+                {
+                    center: [48.137, 11.575],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_697ce24919cd4d8eebf090f501c95948 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_697ce24919cd4d8eebf090f501c95948.addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var marker_da0af544e71aa94c729776d1a945235b = L.marker(
+                [48.193, 11.46],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_ae60957d19cf8b3329f7bc160b29d262 = L.divIcon({
+  "html": "\n    \u003csvg width=\"51.29618404342517\" height=\"51.29618404342517\" viewBox=\"0 0 51.29618404342517 51.29618404342517\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 25.648092021712586 25.648092021712586 L 25.648092021712586 0.0 A 25.648092021712586 25.648092021712586 0 0 1 51.286711229718335 26.34510669954607 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.648092021712586 25.648092021712586 L 51.286711229718335 26.34510669954607 A 25.648092021712586 25.648092021712586 0 0 1 46.33900966729162 40.80429706578951 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.648092021712586 25.648092021712586 L 46.33900966729162 40.80429706578951 A 25.648092021712586 25.648092021712586 0 0 1 30.027201295044158 50.91957845062013 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.648092021712586 25.648092021712586 L 30.027201295044158 50.91957845062013 A 25.648092021712586 25.648092021712586 0 0 1 16.831418297457123 49.73316808126158 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.648092021712586 25.648092021712586 L 16.831418297457123 49.73316808126158 A 25.648092021712586 25.648092021712586 0 0 1 9.679909711216252 45.71901073643485 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.648092021712586 25.648092021712586 L 9.679909711216252 45.71901073643485 A 25.648092021712586 25.648092021712586 0 0 1 25.648092021712582 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [51.29618404342517, 51.29618404342517],
+  "iconAnchor": [25.648092021712586, 25.648092021712586],
+  "className": "empty",
+});
+        
+    
+        var popup_9cf8b72c4aa096603ce1d78f23c5ec3a = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_e25733dd1ec66e1ee6941c63fc9d5109 = $(`<div id="html_e25733dd1ec66e1ee6941c63fc9d5109" style="width: 100.0%; height: 100.0%;"><b>Allach</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 39.3%<br>CSU: 25.4%<br>SPD: 12.2%<br>FDP: 9.6%<br>The Greens: 8.3%<br>The Left: 5.1%<br><br>Total Mentions: 50</div>`)[0];
+                popup_9cf8b72c4aa096603ce1d78f23c5ec3a.setContent(html_e25733dd1ec66e1ee6941c63fc9d5109);
+            
+        
+
+        marker_da0af544e71aa94c729776d1a945235b.bindPopup(popup_9cf8b72c4aa096603ce1d78f23c5ec3a)
+        ;
+
+        
+    
+    
+                marker_da0af544e71aa94c729776d1a945235b.setIcon(div_icon_ae60957d19cf8b3329f7bc160b29d262);
+            
+    
+            var marker_3f0cc8f417a1caa8aa93e4c510e3af6e = L.marker(
+                [48.193, 11.46],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_59c967bdc105540d7d540cdd1286ac98 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eAllach\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -20.648092021712586],
+  "className": "empty",
+});
+        
+    
+                marker_3f0cc8f417a1caa8aa93e4c510e3af6e.setIcon(div_icon_59c967bdc105540d7d540cdd1286ac98);
+            
+    
+            var marker_297ba36c59f116d68c7a6d1266fdc615 = L.marker(
+                [48.137, 11.575],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_57708630bd887171bd5320213a5ed48d = L.divIcon({
+  "html": "\n    \u003csvg width=\"57.07783190583709\" height=\"57.07783190583709\" viewBox=\"0 0 57.07783190583709 57.07783190583709\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 28.538915952918543 28.538915952918543 L 28.538915952918543 0.0 A 28.538915952918543 28.538915952918543 0 0 1 50.6780081460542 10.529742717270313 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.538915952918543 28.538915952918543 L 50.6780081460542 10.529742717270313 A 28.538915952918543 28.538915952918543 0 0 1 55.57789812607501 37.669259145125245 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.538915952918543 28.538915952918543 L 55.57789812607501 37.669259145125245 A 28.538915952918543 28.538915952918543 0 0 1 32.782475243920956 56.76057303239379 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.538915952918543 28.538915952918543 L 32.782475243920956 56.76057303239379 A 28.538915952918543 28.538915952918543 0 0 1 1.784897667748357 38.47331222871345 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.538915952918543 28.538915952918543 L 1.784897667748357 38.47331222871345 A 28.538915952918543 28.538915952918543 0 0 1 12.706529217910498 4.794332274932319 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.538915952918543 28.538915952918543 L 12.706529217910498 4.794332274932319 A 28.538915952918543 28.538915952918543 0 0 1 28.53891595291854 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [57.07783190583709, 57.07783190583709],
+  "iconAnchor": [28.538915952918543, 28.538915952918543],
+  "className": "empty",
+});
+        
+    
+        var popup_3da02737904da80ff3526524ed6fd1d9 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_9a0728de3aa916b453684fab3c30d32e = $(`<div id="html_9a0728de3aa916b453684fab3c30d32e" style="width: 100.0%; height: 100.0%;"><b>Altstadt</b><br><u>Fair Share (Normalized):</u><br>The Greens: 21.7%<br>The Left: 21.3%<br>SPD: 17.4%<br>FDP: 16.1%<br>CSU: 14.1%<br>ÖDP: 9.4%<br><br>Total Mentions: 103</div>`)[0];
+                popup_3da02737904da80ff3526524ed6fd1d9.setContent(html_9a0728de3aa916b453684fab3c30d32e);
+            
+        
+
+        marker_297ba36c59f116d68c7a6d1266fdc615.bindPopup(popup_3da02737904da80ff3526524ed6fd1d9)
+        ;
+
+        
+    
+    
+                marker_297ba36c59f116d68c7a6d1266fdc615.setIcon(div_icon_57708630bd887171bd5320213a5ed48d);
+            
+    
+            var marker_b773c4b44714a72e3f3f36eba75d12b5 = L.marker(
+                [48.137, 11.575],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c20e9bdb1e9b17f262f1110552ccf171 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eAltstadt\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -23.538915952918543],
+  "className": "empty",
+});
+        
+    
+                marker_b773c4b44714a72e3f3f36eba75d12b5.setIcon(div_icon_c20e9bdb1e9b17f262f1110552ccf171);
+            
+    
+            var marker_1fb20ce4214c5dd6b8013ea63e7b64c1 = L.marker(
+                [48.196, 11.569],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_d42ad79acddce99cd213b06bad2ba2c1 = L.divIcon({
+  "html": "\n    \u003csvg width=\"28.78889830934488\" height=\"28.78889830934488\" viewBox=\"0 0 28.78889830934488 28.78889830934488\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 14.39444915467244 14.39444915467244 L 14.39444915467244 0.0 A 14.39444915467244 14.39444915467244 0 1 1 3.2785247050792066 23.539742484980962 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 14.39444915467244 14.39444915467244 L 3.2785247050792066 23.539742484980962 A 14.39444915467244 14.39444915467244 0 0 1 0.0003095077992405493 14.300054807578913 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 14.39444915467244 14.39444915467244 L 0.0003095077992405493 14.300054807578913 A 14.39444915467244 14.39444915467244 0 0 1 14.39444915467245 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [28.78889830934488, 28.78889830934488],
+  "iconAnchor": [14.39444915467244, 14.39444915467244],
+  "className": "empty",
+});
+        
+    
+        var popup_9beced9eb79a5dc5a743ae9c2a3a75e4 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_4d1c9478f61a78fb0ef159e94e4b916c = $(`<div id="html_4d1c9478f61a78fb0ef159e94e4b916c" style="width: 100.0%; height: 100.0%;"><b>Am Hart</b><br><u>Fair Share (Normalized):</u><br>FDP: 64.0%<br>ÖDP: 24.9%<br>The Greens: 11.1%<br><br>Total Mentions: 3</div>`)[0];
+                popup_9beced9eb79a5dc5a743ae9c2a3a75e4.setContent(html_4d1c9478f61a78fb0ef159e94e4b916c);
+            
+        
+
+        marker_1fb20ce4214c5dd6b8013ea63e7b64c1.bindPopup(popup_9beced9eb79a5dc5a743ae9c2a3a75e4)
+        ;
+
+        
+    
+    
+                marker_1fb20ce4214c5dd6b8013ea63e7b64c1.setIcon(div_icon_d42ad79acddce99cd213b06bad2ba2c1);
+            
+    
+            var marker_c2131b2abe0c09b0d839286212d65cf2 = L.marker(
+                [48.196, 11.569],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_f26a9fc891648f18cf8f331acaccfb60 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eAm Hart\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -9.39444915467244],
+  "className": "empty",
+});
+        
+    
+                marker_c2131b2abe0c09b0d839286212d65cf2.setIcon(div_icon_f26a9fc891648f18cf8f331acaccfb60);
+            
+    
+            var marker_837286309a93facab85a89e263d3d097 = L.marker(
+                [48.125, 11.588],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_8d65fa772f208f95701af3044ebae833 = L.divIcon({
+  "html": "\n    \u003csvg width=\"69.60407339234152\" height=\"69.60407339234152\" viewBox=\"0 0 69.60407339234152 69.60407339234152\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 34.80203669617076 34.80203669617076 L 34.80203669617076 0.0 A 34.80203669617076 34.80203669617076 0 0 1 56.31253163659879 7.443667490031366 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 34.80203669617076 34.80203669617076 L 56.31253163659879 7.443667490031366 A 34.80203669617076 34.80203669617076 0 0 1 69.27524237764895 30.029212768545126 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 34.80203669617076 34.80203669617076 L 69.27524237764895 30.029212768545126 A 34.80203669617076 34.80203669617076 0 0 1 50.42863813069541 65.89851697623024 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 34.80203669617076 34.80203669617076 L 50.42863813069541 65.89851697623024 A 34.80203669617076 34.80203669617076 0 0 1 0.619718177836603 41.34045079385271 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 34.80203669617076 34.80203669617076 L 0.619718177836603 41.34045079385271 A 34.80203669617076 34.80203669617076 0 0 1 5.734803830709158 15.663652967479216 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 34.80203669617076 34.80203669617076 L 5.734803830709158 15.663652967479216 A 34.80203669617076 34.80203669617076 0 0 1 34.80203669617075 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [69.60407339234152, 69.60407339234152],
+  "iconAnchor": [34.80203669617076, 34.80203669617076],
+  "className": "empty",
+});
+        
+    
+        var popup_ae09d6a081897dcc5b4641d0f69d21b9 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_f94e9114fe4e765ed8062535e66ef52c = $(`<div id="html_f94e9114fe4e765ed8062535e66ef52c" style="width: 100.0%; height: 100.0%;"><b>Au</b><br><u>Fair Share (Normalized):</u><br>The Greens: 29.4%<br>SPD: 19.8%<br>ÖDP: 15.7%<br>The Left: 12.3%<br>FDP: 12.2%<br>CSU: 10.6%<br><br>Total Mentions: 493</div>`)[0];
+                popup_ae09d6a081897dcc5b4641d0f69d21b9.setContent(html_f94e9114fe4e765ed8062535e66ef52c);
+            
+        
+
+        marker_837286309a93facab85a89e263d3d097.bindPopup(popup_ae09d6a081897dcc5b4641d0f69d21b9)
+        ;
+
+        
+    
+    
+                marker_837286309a93facab85a89e263d3d097.setIcon(div_icon_8d65fa772f208f95701af3044ebae833);
+            
+    
+            var marker_9b571698881942d5a0a948c5dda8c2ac = L.marker(
+                [48.125, 11.588],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_aa31647a2086444a901ce18ba61715a8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eAu\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -29.80203669617076],
+  "className": "empty",
+});
+        
+    
+                marker_9b571698881942d5a0a948c5dda8c2ac.setIcon(div_icon_aa31647a2086444a901ce18ba61715a8);
+            
+    
+            var marker_e261bc85b06f7da963d447e31408ea9b = L.marker(
+                [48.154, 11.414],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4f43bde63491d0427dbe508e6644fc79 = L.divIcon({
+  "html": "\n    \u003csvg width=\"50.27351707134609\" height=\"50.27351707134609\" viewBox=\"0 0 50.27351707134609 50.27351707134609\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 25.136758535673046 25.136758535673046 L 25.136758535673046 0.0 A 25.136758535673046 25.136758535673046 0 0 1 48.18693474515479 15.109495380027155 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 48.18693474515479 15.109495380027155 A 25.136758535673046 25.136758535673046 0 0 1 38.80918308978215 46.229919429501315 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 38.80918308978215 46.229919429501315 A 25.136758535673046 25.136758535673046 0 0 1 6.666125803141689 42.186461059197406 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 6.666125803141689 42.186461059197406 A 25.136758535673046 25.136758535673046 0 0 1 0.13720425188487795 22.513989904500946 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 0.13720425188487795 22.513989904500946 A 25.136758535673046 25.136758535673046 0 0 1 2.8135503825834256 13.581196782362873 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 2.8135503825834256 13.581196782362873 A 25.136758535673046 25.136758535673046 0 0 1 25.136758535673017 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [50.27351707134609, 50.27351707134609],
+  "iconAnchor": [25.136758535673046, 25.136758535673046],
+  "className": "empty",
+});
+        
+    
+        var popup_16482b2fd7639b56789d1d8b0d6588aa = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_cd73fc4de266e01313dcd2ccdfcba242 = $(`<div id="html_cd73fc4de266e01313dcd2ccdfcba242" style="width: 100.0%; height: 100.0%;"><b>Aubing</b><br><u>Fair Share (Normalized):</u><br>FDP: 22.4%<br>SPD: 22.3%<br>CSU: 18.5%<br>ÖDP: 17.4%<br>The Greens: 13.5%<br>The Left: 5.9%<br><br>Total Mentions: 44</div>`)[0];
+                popup_16482b2fd7639b56789d1d8b0d6588aa.setContent(html_cd73fc4de266e01313dcd2ccdfcba242);
+            
+        
+
+        marker_e261bc85b06f7da963d447e31408ea9b.bindPopup(popup_16482b2fd7639b56789d1d8b0d6588aa)
+        ;
+
+        
+    
+    
+                marker_e261bc85b06f7da963d447e31408ea9b.setIcon(div_icon_4f43bde63491d0427dbe508e6644fc79);
+            
+    
+            var marker_c00720ed580a69f6ff859c99b3b3a659 = L.marker(
+                [48.154, 11.414],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_a366cc1d29d19524c1f59b90d75230ee = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eAubing\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -20.136758535673046],
+  "className": "empty",
+});
+        
+    
+                marker_c00720ed580a69f6ff859c99b3b3a659.setIcon(div_icon_a366cc1d29d19524c1f59b90d75230ee);
+            
+    
+            var marker_6481cd75a6b206b36499d0a4e383dfc4 = L.marker(
+                [48.128, 11.637],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_dc9cac0eae7e128d3b5783b4b79ebd72 = L.divIcon({
+  "html": "\n    \u003csvg width=\"43.96585818843192\" height=\"43.96585818843192\" viewBox=\"0 0 43.96585818843192 43.96585818843192\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.98292909421596 21.98292909421596 L 21.98292909421596 0.0 A 21.98292909421596 21.98292909421596 0 0 1 42.0408740880617 12.98692919508382 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 42.0408740880617 12.98692919508382 A 21.98292909421596 21.98292909421596 0 0 1 41.01643489967317 32.98178486720224 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 41.01643489967317 32.98178486720224 A 21.98292909421596 21.98292909421596 0 0 1 18.576229647421346 43.70028552727511 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 18.576229647421346 43.70028552727511 A 21.98292909421596 21.98292909421596 0 0 1 8.21900690317124 4.8422284819249555 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 8.21900690317124 4.8422284819249555 A 21.98292909421596 21.98292909421596 0 0 1 21.982929094215958 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [43.96585818843192, 43.96585818843192],
+  "iconAnchor": [21.98292909421596, 21.98292909421596],
+  "className": "empty",
+});
+        
+    
+        var popup_4c919efaa2aaac6ecace323f64e84853 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_165760255319d97a3e21e5e02ec7bcc4 = $(`<div id="html_165760255319d97a3e21e5e02ec7bcc4" style="width: 100.0%; height: 100.0%;"><b>Berg am Laim</b><br><u>Fair Share (Normalized):</u><br>The Left: 36.8%<br>The Greens: 19.1%<br>CSU: 18.3%<br>SPD: 15.0%<br>ÖDP: 10.8%<br><br>Total Mentions: 20</div>`)[0];
+                popup_4c919efaa2aaac6ecace323f64e84853.setContent(html_165760255319d97a3e21e5e02ec7bcc4);
+            
+        
+
+        marker_6481cd75a6b206b36499d0a4e383dfc4.bindPopup(popup_4c919efaa2aaac6ecace323f64e84853)
+        ;
+
+        
+    
+    
+                marker_6481cd75a6b206b36499d0a4e383dfc4.setIcon(div_icon_dc9cac0eae7e128d3b5783b4b79ebd72);
+            
+    
+            var marker_bce808ad71b2b99ccbe38bcb773775a0 = L.marker(
+                [48.128, 11.637],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_170d3f6de3a985087b98d44a6d636de9 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eBerg am Laim\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.98292909421596],
+  "className": "empty",
+});
+        
+    
+                marker_bce808ad71b2b99ccbe38bcb773775a0.setIcon(div_icon_170d3f6de3a985087b98d44a6d636de9);
+            
+    
+            var marker_d2064f13002ee64a235746ba7b29d582 = L.marker(
+                [48.157, 11.638],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_5b2f6a90cad884b9bf9038402916f35b = L.divIcon({
+  "html": "\n    \u003csvg width=\"47.725887222397816\" height=\"47.725887222397816\" viewBox=\"0 0 47.725887222397816 47.725887222397816\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 23.862943611198908 23.862943611198908 L 23.862943611198908 0.0 A 23.862943611198908 23.862943611198908 0 0 1 46.1939158033705 15.45058610906445 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.862943611198908 23.862943611198908 L 46.1939158033705 15.45058610906445 A 23.862943611198908 23.862943611198908 0 0 1 36.45903440340305 44.13061675208533 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.862943611198908 23.862943611198908 L 36.45903440340305 44.13061675208533 A 23.862943611198908 23.862943611198908 0 0 1 17.406401536823047 46.83582201668116 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.862943611198908 23.862943611198908 L 17.406401536823047 46.83582201668116 A 23.862943611198908 23.862943611198908 0 0 1 3.9597068566808353 37.02733666537576 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.862943611198908 23.862943611198908 L 3.9597068566808353 37.02733666537576 A 23.862943611198908 23.862943611198908 0 0 1 0.25195896322130906 20.404406095973023 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.862943611198908 23.862943611198908 L 0.25195896322130906 20.404406095973023 A 23.862943611198908 23.862943611198908 0 0 1 23.862943611198904 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [47.725887222397816, 47.725887222397816],
+  "iconAnchor": [23.862943611198908, 23.862943611198908],
+  "className": "empty",
+});
+        
+    
+        var popup_15a040ee9e0f63e22d026caffed012e3 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_df33af84b2877f2a84c33463435599ab = $(`<div id="html_df33af84b2877f2a84c33463435599ab" style="width: 100.0%; height: 100.0%;"><b>Bogenhausen</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 22.7%<br>FDP: 21.9%<br>CSU: 19.3%<br>SPD: 13.2%<br>The Left: 11.6%<br>The Greens: 11.3%<br><br>Total Mentions: 32</div>`)[0];
+                popup_15a040ee9e0f63e22d026caffed012e3.setContent(html_df33af84b2877f2a84c33463435599ab);
+            
+        
+
+        marker_d2064f13002ee64a235746ba7b29d582.bindPopup(popup_15a040ee9e0f63e22d026caffed012e3)
+        ;
+
+        
+    
+    
+                marker_d2064f13002ee64a235746ba7b29d582.setIcon(div_icon_5b2f6a90cad884b9bf9038402916f35b);
+            
+    
+            var marker_96d8a714fbc59f43cd24efa47afdeb57 = L.marker(
+                [48.157, 11.638],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_45c96d37b4524e75332e4391f6ca28a4 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eBogenhausen\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -18.862943611198908],
+  "className": "empty",
+});
+        
+    
+                marker_96d8a714fbc59f43cd24efa47afdeb57.setIcon(div_icon_45c96d37b4524e75332e4391f6ca28a4);
+            
+    
+            var marker_dbd2408efc3dd81626337ab8e6def74d = L.marker(
+                [48.214, 11.531],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_e1fecd28bae0e191b7ab14659e53a360 = L.divIcon({
+  "html": "\n    \u003csvg width=\"51.45460506179461\" height=\"51.45460506179461\" viewBox=\"0 0 51.45460506179461 51.45460506179461\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 25.727302530897305 25.727302530897305 L 25.727302530897305 0.0 A 25.727302530897305 25.727302530897305 0 0 1 50.56904876293943 19.03538653776534 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.727302530897305 25.727302530897305 L 50.56904876293943 19.03538653776534 A 25.727302530897305 25.727302530897305 0 0 1 29.225881129777957 51.21561442681872 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.727302530897305 25.727302530897305 L 29.225881129777957 51.21561442681872 A 25.727302530897305 25.727302530897305 0 0 1 0.9496882747068227 32.6529019481132 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.727302530897305 25.727302530897305 L 0.9496882747068227 32.6529019481132 A 25.727302530897305 25.727302530897305 0 0 1 2.679066452976283 14.296077346660287 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.727302530897305 25.727302530897305 L 2.679066452976283 14.296077346660287 A 25.727302530897305 25.727302530897305 0 0 1 9.955860094925455 5.401070735378951 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.727302530897305 25.727302530897305 L 9.955860094925455 5.401070735378951 A 25.727302530897305 25.727302530897305 0 0 1 25.727302530897276 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [51.45460506179461, 51.45460506179461],
+  "iconAnchor": [25.727302530897305, 25.727302530897305],
+  "className": "empty",
+});
+        
+    
+        var popup_3114e68fa72b967004cd2bc91af42e7f = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_34b69785a6322bce021ea47e0c3229d6 = $(`<div id="html_34b69785a6322bce021ea47e0c3229d6" style="width: 100.0%; height: 100.0%;"><b>Feldmoching</b><br><u>Fair Share (Normalized):</u><br>FDP: 27.0%<br>SPD: 22.8%<br>CSU: 20.8%<br>The Greens: 11.7%<br>ÖDP: 10.5%<br>The Left: 7.2%<br><br>Total Mentions: 51</div>`)[0];
+                popup_3114e68fa72b967004cd2bc91af42e7f.setContent(html_34b69785a6322bce021ea47e0c3229d6);
+            
+        
+
+        marker_dbd2408efc3dd81626337ab8e6def74d.bindPopup(popup_3114e68fa72b967004cd2bc91af42e7f)
+        ;
+
+        
+    
+    
+                marker_dbd2408efc3dd81626337ab8e6def74d.setIcon(div_icon_e1fecd28bae0e191b7ab14659e53a360);
+            
+    
+            var marker_f85431cace049614bf7cbb2049c9b3dc = L.marker(
+                [48.214, 11.531],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4507abfbfdeb0f31c7c5c4a18a6941ac = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eFeldmoching\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -20.727302530897305],
+  "className": "empty",
+});
+        
+    
+                marker_f85431cace049614bf7cbb2049c9b3dc.setIcon(div_icon_4507abfbfdeb0f31c7c5c4a18a6941ac);
+            
+    
+            var marker_a5284aba9d0b7a6a9d68c86058a134c0 = L.marker(
+                [48.085, 11.493],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4c48cc79198bb058c090cd78f1ed9beb = L.divIcon({
+  "html": "\n    \u003csvg width=\"34.334075753824436\" height=\"34.334075753824436\" viewBox=\"0 0 34.334075753824436 34.334075753824436\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 17.167037876912218 17.167037876912218 L 17.167037876912218 0.0 A 17.167037876912218 17.167037876912218 0 0 1 33.30154509781666 11.303176844629721 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 17.167037876912218 17.167037876912218 L 33.30154509781666 11.303176844629721 A 17.167037876912218 17.167037876912218 0 1 1 0.3837799983652488 13.557405700425269 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 17.167037876912218 17.167037876912218 L 0.3837799983652488 13.557405700425269 A 17.167037876912218 17.167037876912218 0 0 1 5.853164217034582 4.255668767647865 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 17.167037876912218 17.167037876912218 L 5.853164217034582 4.255668767647865 A 17.167037876912218 17.167037876912218 0 0 1 17.167037876912215 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [34.334075753824436, 34.334075753824436],
+  "iconAnchor": [17.167037876912218, 17.167037876912218],
+  "className": "empty",
+});
+        
+    
+        var popup_285e3d17db9b3d2d0fe0df37b43701d1 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_39b53c6b60f0c5b737f2a0bfaae87c3b = $(`<div id="html_39b53c6b60f0c5b737f2a0bfaae87c3b" style="width: 100.0%; height: 100.0%;"><b>Forstenried</b><br><u>Fair Share (Normalized):</u><br>FDP: 58.9%<br>CSU: 19.5%<br>ÖDP: 11.5%<br>The Greens: 10.2%<br><br>Total Mentions: 6</div>`)[0];
+                popup_285e3d17db9b3d2d0fe0df37b43701d1.setContent(html_39b53c6b60f0c5b737f2a0bfaae87c3b);
+            
+        
+
+        marker_a5284aba9d0b7a6a9d68c86058a134c0.bindPopup(popup_285e3d17db9b3d2d0fe0df37b43701d1)
+        ;
+
+        
+    
+    
+                marker_a5284aba9d0b7a6a9d68c86058a134c0.setIcon(div_icon_4c48cc79198bb058c090cd78f1ed9beb);
+            
+    
+            var marker_93d04691c2db3eefb4dfd99069e6b7f5 = L.marker(
+                [48.085, 11.493],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c7f53f8cc48caf443dcb08d6e5f8f368 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eForstenried\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -12.167037876912218],
+  "className": "empty",
+});
+        
+    
+                marker_93d04691c2db3eefb4dfd99069e6b7f5.setIcon(div_icon_c7f53f8cc48caf443dcb08d6e5f8f368);
+            
+    
+            var marker_fea3db816787315f064fcf16cf4cea86 = L.marker(
+                [48.14, 11.405],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_e36bbe9dd7fa8562aa6cfdf8b6309352 = L.divIcon({
+  "html": "\n    \u003csvg width=\"57.53078305783315\" height=\"57.53078305783315\" viewBox=\"0 0 57.53078305783315 57.53078305783315\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 28.765391528916574 28.765391528916574 L 28.765391528916574 0.0 A 28.765391528916574 28.765391528916574 0 0 1 57.10659951709989 23.843635787069992 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.765391528916574 28.765391528916574 L 57.10659951709989 23.843635787069992 A 28.765391528916574 28.765391528916574 0 0 1 54.87178418055767 40.84446485969015 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.765391528916574 28.765391528916574 L 54.87178418055767 40.84446485969015 A 28.765391528916574 28.765391528916574 0 0 1 39.16992778023679 55.58317248124051 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.765391528916574 28.765391528916574 L 39.16992778023679 55.58317248124051 A 28.765391528916574 28.765391528916574 0 0 1 10.20144091830947 50.73872735984597 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.765391528916574 28.765391528916574 L 10.20144091830947 50.73872735984597 A 28.765391528916574 28.765391528916574 0 0 1 1.6035403177494167 19.295355172371654 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.765391528916574 28.765391528916574 L 1.6035403177494167 19.295355172371654 A 28.765391528916574 28.765391528916574 0 0 1 28.76539152891657 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [57.53078305783315, 57.53078305783315],
+  "iconAnchor": [28.765391528916574, 28.765391528916574],
+  "className": "empty",
+});
+        
+    
+        var popup_ab021b1934e60d3c3bc0e0e2fce126ef = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_e7f98b19c4b0c4e49ecbbdf3ddbe48d0 = $(`<div id="html_e7f98b19c4b0c4e49ecbbdf3ddbe48d0" style="width: 100.0%; height: 100.0%;"><b>Freiham</b><br><u>Fair Share (Normalized):</u><br>CSU: 22.3%<br>ÖDP: 19.7%<br>The Left: 19.2%<br>The Greens: 17.1%<br>SPD: 12.2%<br>FDP: 9.6%<br><br>Total Mentions: 109</div>`)[0];
+                popup_ab021b1934e60d3c3bc0e0e2fce126ef.setContent(html_e7f98b19c4b0c4e49ecbbdf3ddbe48d0);
+            
+        
+
+        marker_fea3db816787315f064fcf16cf4cea86.bindPopup(popup_ab021b1934e60d3c3bc0e0e2fce126ef)
+        ;
+
+        
+    
+    
+                marker_fea3db816787315f064fcf16cf4cea86.setIcon(div_icon_e36bbe9dd7fa8562aa6cfdf8b6309352);
+            
+    
+            var marker_dba7d28785989e077a6e983f58223ccc = L.marker(
+                [48.14, 11.405],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_6209b205e3ca098e65eb05d8c982b775 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eFreiham\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -23.765391528916574],
+  "className": "empty",
+});
+        
+    
+                marker_dba7d28785989e077a6e983f58223ccc.setIcon(div_icon_6209b205e3ca098e65eb05d8c982b775);
+            
+    
+            var marker_3b9277c1e9cc1fb40837a4671fdcf96a = L.marker(
+                [48.195, 11.615],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_32e3750e6a2eebe7310773cdd3c90d5a = L.divIcon({
+  "html": "\n    \u003csvg width=\"48.66815150764888\" height=\"48.66815150764888\" viewBox=\"0 0 48.66815150764888 48.66815150764888\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 24.33407575382444 24.33407575382444 L 24.33407575382444 0.0 A 24.33407575382444 24.33407575382444 0 0 1 42.88301013239794 8.583384460670331 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 42.88301013239794 8.583384460670331 A 24.33407575382444 24.33407575382444 0 0 1 47.809709200897416 17.927682302627794 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 47.809709200897416 17.927682302627794 A 24.33407575382444 24.33407575382444 0 0 1 40.52054554363734 42.50398050141023 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 40.52054554363734 42.50398050141023 A 24.33407575382444 24.33407575382444 0 0 1 27.32214625606361 48.48399661221473 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 27.32214625606361 48.48399661221473 A 24.33407575382444 24.33407575382444 0 0 1 1.0893828200424132 31.533484980076988 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 1.0893828200424132 31.533484980076988 A 24.33407575382444 24.33407575382444 0 0 1 24.334075753824436 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [48.66815150764888, 48.66815150764888],
+  "iconAnchor": [24.33407575382444, 24.33407575382444],
+  "className": "empty",
+});
+        
+    
+        var popup_6c32cf207b183829ad180655a8e1a321 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_e43ef7d50a21d2aeede5068742de171c = $(`<div id="html_e43ef7d50a21d2aeede5068742de171c" style="width: 100.0%; height: 100.0%;"><b>Freimann</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 29.8%<br>The Left: 22.2%<br>SPD: 17.7%<br>CSU: 13.8%<br>The Greens: 9.6%<br>FDP: 7.0%<br><br>Total Mentions: 36</div>`)[0];
+                popup_6c32cf207b183829ad180655a8e1a321.setContent(html_e43ef7d50a21d2aeede5068742de171c);
+            
+        
+
+        marker_3b9277c1e9cc1fb40837a4671fdcf96a.bindPopup(popup_6c32cf207b183829ad180655a8e1a321)
+        ;
+
+        
+    
+    
+                marker_3b9277c1e9cc1fb40837a4671fdcf96a.setIcon(div_icon_32e3750e6a2eebe7310773cdd3c90d5a);
+            
+    
+            var marker_8f846e0d5c4061817a8a7e4296ba8a38 = L.marker(
+                [48.195, 11.615],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_767df668d9676e993ad623c32d6e89a5 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eFreimann\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -19.33407575382444],
+  "className": "empty",
+});
+        
+    
+                marker_8f846e0d5c4061817a8a7e4296ba8a38.setIcon(div_icon_767df668d9676e993ad623c32d6e89a5);
+            
+    
+            var marker_0511dc751ef4702405c58ec0a8475f29 = L.marker(
+                [48.077, 11.478],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_d828309a240653974e82ca743de65851 = L.divIcon({
+  "html": "\n    \u003csvg width=\"43.55551183333152\" height=\"43.55551183333152\" viewBox=\"0 0 43.55551183333152 43.55551183333152\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.77775591666576 21.77775591666576 L 21.77775591666576 0.0 A 21.77775591666576 21.77775591666576 0 0 1 43.167414202396444 25.87081970624238 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 43.167414202396444 25.87081970624238 A 21.77775591666576 21.77775591666576 0 0 1 32.0900784020824 40.959170299412435 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 32.0900784020824 40.959170299412435 A 21.77775591666576 21.77775591666576 0 0 1 11.874202539405642 41.173381280897516 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 11.874202539405642 41.173381280897516 A 21.77775591666576 21.77775591666576 0 0 1 0.8621681879866472 15.710726764782759 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 0.8621681879866472 15.710726764782759 A 21.77775591666576 21.77775591666576 0 0 1 14.405137294306726 1.2859246804117568 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 14.405137294306726 1.2859246804117568 A 21.77775591666576 21.77775591666576 0 0 1 21.777755916665757 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [43.55551183333152, 43.55551183333152],
+  "iconAnchor": [21.77775591666576, 21.77775591666576],
+  "className": "empty",
+});
+        
+    
+        var popup_ced132cc6da55f938888051a6ee6390c = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_013d1ddd05b31e5cef1f84adf6d68915 = $(`<div id="html_013d1ddd05b31e5cef1f84adf6d68915" style="width: 100.0%; height: 100.0%;"><b>Fürstenried</b><br><u>Fair Share (Normalized):</u><br>CSU: 28.0%<br>The Greens: 22.0%<br>SPD: 15.4%<br>The Left: 15.0%<br>FDP: 14.1%<br>ÖDP: 5.5%<br><br>Total Mentions: 19</div>`)[0];
+                popup_ced132cc6da55f938888051a6ee6390c.setContent(html_013d1ddd05b31e5cef1f84adf6d68915);
+            
+        
+
+        marker_0511dc751ef4702405c58ec0a8475f29.bindPopup(popup_ced132cc6da55f938888051a6ee6390c)
+        ;
+
+        
+    
+    
+                marker_0511dc751ef4702405c58ec0a8475f29.setIcon(div_icon_d828309a240653974e82ca743de65851);
+            
+    
+            var marker_e2c7382b5a0e8b8663bc57fad541f816 = L.marker(
+                [48.077, 11.478],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_57d94372b170361510171ad96dc00dcd = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eF\u00fcrstenried\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.77775591666576],
+  "className": "empty",
+});
+        
+    
+                marker_e2c7382b5a0e8b8663bc57fad541f816.setIcon(div_icon_57d94372b170361510171ad96dc00dcd);
+            
+    
+            var marker_e02105d91359452b0130ea4b096601f2 = L.marker(
+                [48.115, 11.48],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_fdc9cc87eff52210100ec6d8336d6fd1 = L.divIcon({
+  "html": "\n    \u003csvg width=\"34.334075753824436\" height=\"34.334075753824436\" viewBox=\"0 0 34.334075753824436 34.334075753824436\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 17.167037876912218 17.167037876912218 L 17.167037876912218 0.0 A 17.167037876912218 17.167037876912218 0 0 1 34.27003307566139 18.648504953462215 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 17.167037876912218 17.167037876912218 L 34.27003307566139 18.648504953462215 A 17.167037876912218 17.167037876912218 0 0 1 26.507729021230016 31.57046380319107 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 17.167037876912218 17.167037876912218 L 26.507729021230016 31.57046380319107 A 17.167037876912218 17.167037876912218 0 0 1 19.59381656152619 34.16168217101976 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 17.167037876912218 17.167037876912218 L 19.59381656152619 34.16168217101976 A 17.167037876912218 17.167037876912218 0 0 1 1.227799399537517 23.542605791123204 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 17.167037876912218 17.167037876912218 L 1.227799399537517 23.542605791123204 A 17.167037876912218 17.167037876912218 0 0 1 17.16703787691223 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [34.334075753824436, 34.334075753824436],
+  "iconAnchor": [17.167037876912218, 17.167037876912218],
+  "className": "empty",
+});
+        
+    
+        var popup_49edb864fbec7de5301a30148b4685e2 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_4cef2c34e76f249c3b58a8de8c3e90a2 = $(`<div id="html_4cef2c34e76f249c3b58a8de8c3e90a2" style="width: 100.0%; height: 100.0%;"><b>Hadern</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 31.1%<br>CSU: 26.4%<br>The Left: 21.2%<br>SPD: 14.5%<br>The Greens: 6.9%<br><br>Total Mentions: 6</div>`)[0];
+                popup_49edb864fbec7de5301a30148b4685e2.setContent(html_4cef2c34e76f249c3b58a8de8c3e90a2);
+            
+        
+
+        marker_e02105d91359452b0130ea4b096601f2.bindPopup(popup_49edb864fbec7de5301a30148b4685e2)
+        ;
+
+        
+    
+    
+                marker_e02105d91359452b0130ea4b096601f2.setIcon(div_icon_fdc9cc87eff52210100ec6d8336d6fd1);
+            
+    
+            var marker_7b46175e92d33beca9b8580a570efd78 = L.marker(
+                [48.115, 11.48],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_250b81170f3d4de9a86144367db11efb = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eHadern\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -12.167037876912218],
+  "className": "empty",
+});
+        
+    
+                marker_7b46175e92d33beca9b8580a570efd78.setIcon(div_icon_250b81170f3d4de9a86144367db11efb);
+            
+    
+            var marker_55cc18d826691f8e3a9461c9c09bd911 = L.marker(
+                [48.131, 11.605],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_e9b9749738c6e93f7765ac37686640fa = L.divIcon({
+  "html": "\n    \u003csvg width=\"43.55551183333152\" height=\"43.55551183333152\" viewBox=\"0 0 43.55551183333152 43.55551183333152\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.77775591666576 21.77775591666576 L 21.77775591666576 0.0 A 21.77775591666576 21.77775591666576 0 0 1 43.52196709759795 22.986032741277622 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 43.52196709759795 22.986032741277622 A 21.77775591666576 21.77775591666576 0 0 1 34.63793041281292 39.352924897205234 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 34.63793041281292 39.352924897205234 A 21.77775591666576 21.77775591666576 0 0 1 14.281370036052436 42.2246346881265 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 14.281370036052436 42.2246346881265 A 21.77775591666576 21.77775591666576 0 0 1 8.908854274673761 4.20897612708999 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.77775591666576 21.77775591666576 L 8.908854274673761 4.20897612708999 A 21.77775591666576 21.77775591666576 0 0 1 21.777755916665736 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [43.55551183333152, 43.55551183333152],
+  "iconAnchor": [21.77775591666576, 21.77775591666576],
+  "className": "empty",
+});
+        
+    
+        var popup_61642fb67fd092c322d2ccdc69d3b5c8 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_8b7482e22ffab915c4fecfd212dde754 = $(`<div id="html_8b7482e22ffab915c4fecfd212dde754" style="width: 100.0%; height: 100.0%;"><b>Haidhausen</b><br><u>Fair Share (Normalized):</u><br>The Left: 34.3%<br>FDP: 25.9%<br>The Greens: 15.6%<br>SPD: 14.1%<br>ÖDP: 10.1%<br><br>Total Mentions: 19</div>`)[0];
+                popup_61642fb67fd092c322d2ccdc69d3b5c8.setContent(html_8b7482e22ffab915c4fecfd212dde754);
+            
+        
+
+        marker_55cc18d826691f8e3a9461c9c09bd911.bindPopup(popup_61642fb67fd092c322d2ccdc69d3b5c8)
+        ;
+
+        
+    
+    
+                marker_55cc18d826691f8e3a9461c9c09bd911.setIcon(div_icon_e9b9749738c6e93f7765ac37686640fa);
+            
+    
+            var marker_08f098c0409c32b448e8e2ea8f4acb35 = L.marker(
+                [48.131, 11.605],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_a2796346358965164d4285e085cd6283 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eHaidhausen\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.77775591666576],
+  "className": "empty",
+});
+        
+    
+                marker_08f098c0409c32b448e8e2ea8f4acb35.setIcon(div_icon_a2796346358965164d4285e085cd6283);
+            
+    
+            var marker_9899cdb8fb49c4bbd5fb9477ecb4c8eb = L.marker(
+                [48.091, 11.566],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c582c700ee612e312ea05579dff2a95a = L.divIcon({
+  "html": "\n    \u003csvg width=\"43.122974063169316\" height=\"43.122974063169316\" viewBox=\"0 0 43.122974063169316 43.122974063169316\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.561487031584658 21.561487031584658 L 21.561487031584658 0.0 A 21.561487031584658 21.561487031584658 0 0 1 41.15645026303147 12.56509114370596 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 41.15645026303147 12.56509114370596 A 21.561487031584658 21.561487031584658 0 0 1 41.13179486903619 30.61139168083796 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 41.13179486903619 30.61139168083796 A 21.561487031584658 21.561487031584658 0 0 1 25.830393588011024 42.69615428294429 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 25.830393588011024 42.69615428294429 A 21.561487031584658 21.561487031584658 0 0 1 10.357039978338772 39.983161473507764 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 10.357039978338772 39.983161473507764 A 21.561487031584658 21.561487031584658 0 0 1 0.12483335571297971 23.87829565422282 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 0.12483335571297971 23.87829565422282 A 21.561487031584658 21.561487031584658 0 0 1 21.561487031584633 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [43.122974063169316, 43.122974063169316],
+  "iconAnchor": [21.561487031584658, 21.561487031584658],
+  "className": "empty",
+});
+        
+    
+        var popup_5a02c85eecec33298d76ac56c3538356 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_d0efb697cc9b34448c60a029d86edd50 = $(`<div id="html_d0efb697cc9b34448c60a029d86edd50" style="width: 100.0%; height: 100.0%;"><b>Harlaching</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 26.7%<br>CSU: 18.1%<br>SPD: 14.9%<br>The Left: 14.6%<br>FDP: 13.7%<br>The Greens: 11.9%<br><br>Total Mentions: 18</div>`)[0];
+                popup_5a02c85eecec33298d76ac56c3538356.setContent(html_d0efb697cc9b34448c60a029d86edd50);
+            
+        
+
+        marker_9899cdb8fb49c4bbd5fb9477ecb4c8eb.bindPopup(popup_5a02c85eecec33298d76ac56c3538356)
+        ;
+
+        
+    
+    
+                marker_9899cdb8fb49c4bbd5fb9477ecb4c8eb.setIcon(div_icon_c582c700ee612e312ea05579dff2a95a);
+            
+    
+            var marker_d60883b8bca80c7b0f421a8034ed7270 = L.marker(
+                [48.091, 11.566],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_a287db47a828f38d7ba0136746414373 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eHarlaching\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.561487031584658],
+  "className": "empty",
+});
+        
+    
+                marker_d60883b8bca80c7b0f421a8034ed7270.setIcon(div_icon_a287db47a828f38d7ba0136746414373);
+            
+    
+            var marker_76bc4d207a6187181a61fa71dcedc169 = L.marker(
+                [48.213, 11.555],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_65f35932964ebdf8160c4c25b6d8754a = L.divIcon({
+  "html": "\n    \u003csvg width=\"46.9383666398918\" height=\"46.9383666398918\" viewBox=\"0 0 46.9383666398918 46.9383666398918\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 23.4691833199459 23.4691833199459 L 23.4691833199459 0.0 A 23.4691833199459 23.4691833199459 0 0 1 42.09873938537382 9.195353892973449 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 42.09873938537382 9.195353892973449 A 23.4691833199459 23.4691833199459 0 0 1 46.57342086195257 27.59189763308428 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 46.57342086195257 27.59189763308428 A 23.4691833199459 23.4691833199459 0 0 1 44.95420310350016 32.913572691710954 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 44.95420310350016 32.913572691710954 A 23.4691833199459 23.4691833199459 0 1 1 5.2145132524187865 8.718943103903435 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 5.2145132524187865 8.718943103903435 A 23.4691833199459 23.4691833199459 0 0 1 23.469183319945916 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [46.9383666398918, 46.9383666398918],
+  "iconAnchor": [23.4691833199459, 23.4691833199459],
+  "className": "empty",
+});
+        
+    
+        var popup_780f2564e62b21b1d15ef15a1a9da04f = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_a78bf566b0930890e1352dc31febe8d0 = $(`<div id="html_a78bf566b0930890e1352dc31febe8d0" style="width: 100.0%; height: 100.0%;"><b>Hasenbergl</b><br><u>Fair Share (Normalized):</u><br>The Left: 54.2%<br>FDP: 14.6%<br>ÖDP: 14.2%<br>SPD: 13.2%<br><br>Total Mentions: 29</div>`)[0];
+                popup_780f2564e62b21b1d15ef15a1a9da04f.setContent(html_a78bf566b0930890e1352dc31febe8d0);
+            
+        
+
+        marker_76bc4d207a6187181a61fa71dcedc169.bindPopup(popup_780f2564e62b21b1d15ef15a1a9da04f)
+        ;
+
+        
+    
+    
+                marker_76bc4d207a6187181a61fa71dcedc169.setIcon(div_icon_65f35932964ebdf8160c4c25b6d8754a);
+            
+    
+            var marker_9bc2f12adb3328b4f08a0fd46ec7b238 = L.marker(
+                [48.213, 11.555],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_98187ccd08b7bef7b30e99a7e17646d8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eHasenbergl\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -18.4691833199459],
+  "className": "empty",
+});
+        
+    
+                marker_9bc2f12adb3328b4f08a0fd46ec7b238.setIcon(div_icon_98187ccd08b7bef7b30e99a7e17646d8);
+            
+    
+            var marker_fe45c1ea859606d61c369a7546f48a18 = L.marker(
+                [48.128, 11.564],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_70d17bfd49b42f22b9e3886f3ed7545e = L.divIcon({
+  "html": "\n    \u003csvg width=\"43.122974063169316\" height=\"43.122974063169316\" viewBox=\"0 0 43.122974063169316 43.122974063169316\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.561487031584658 21.561487031584658 L 21.561487031584658 0.0 A 21.561487031584658 21.561487031584658 0 0 1 40.579094006286915 11.401351797792271 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 40.579094006286915 11.401351797792271 A 21.561487031584658 21.561487031584658 0 0 1 13.318225537277327 41.48499984809529 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 13.318225537277327 41.48499984809529 A 21.561487031584658 21.561487031584658 0 0 1 0.0004588155537383898 21.420826871226545 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 0.0004588155537383898 21.420826871226545 A 21.561487031584658 21.561487031584658 0 0 1 12.492310966914498 2.000102404692644 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.561487031584658 21.561487031584658 L 12.492310966914498 2.000102404692644 A 21.561487031584658 21.561487031584658 0 0 1 21.561487031584672 0.0 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [43.122974063169316, 43.122974063169316],
+  "iconAnchor": [21.561487031584658, 21.561487031584658],
+  "className": "empty",
+});
+        
+    
+        var popup_0450a9ad15c10d4b63a3d34d995866e2 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_fe6465df91229e2a01547f7e8a1486c5 = $(`<div id="html_fe6465df91229e2a01547f7e8a1486c5" style="width: 100.0%; height: 100.0%;"><b>Isarvorstadt</b><br><u>Fair Share (Normalized):</u><br>FDP: 39.1%<br>SPD: 18.9%<br>The Greens: 18.0%<br>CSU: 17.2%<br>The Left: 6.9%<br><br>Total Mentions: 18</div>`)[0];
+                popup_0450a9ad15c10d4b63a3d34d995866e2.setContent(html_fe6465df91229e2a01547f7e8a1486c5);
+            
+        
+
+        marker_fe45c1ea859606d61c369a7546f48a18.bindPopup(popup_0450a9ad15c10d4b63a3d34d995866e2)
+        ;
+
+        
+    
+    
+                marker_fe45c1ea859606d61c369a7546f48a18.setIcon(div_icon_70d17bfd49b42f22b9e3886f3ed7545e);
+            
+    
+            var marker_8467a41813ab9bba2a038ea4d12d7a21 = L.marker(
+                [48.128, 11.564],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_50443b99495d116ffe7c87e0950b492c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eIsarvorstadt\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.561487031584658],
+  "className": "empty",
+});
+        
+    
+                marker_8467a41813ab9bba2a038ea4d12d7a21.setIcon(div_icon_50443b99495d116ffe7c87e0950b492c);
+            
+    
+            var marker_45389d9089ff9ca98b87a500e1a5ae40 = L.marker(
+                [48.137, 11.494],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_176fc586c51cd9934d3c60079b0fcb66 = L.divIcon({
+  "html": "\n    \u003csvg width=\"55.350724862372786\" height=\"55.350724862372786\" viewBox=\"0 0 55.350724862372786 55.350724862372786\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 27.675362431186393 27.675362431186393 L 27.675362431186393 0.0 A 27.675362431186393 27.675362431186393 0 0 1 54.15796085716861 19.638095090498553 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.675362431186393 27.675362431186393 L 54.15796085716861 19.638095090498553 A 27.675362431186393 27.675362431186393 0 0 1 54.23315527871141 35.460561514412994 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.675362431186393 27.675362431186393 L 54.23315527871141 35.460561514412994 A 27.675362431186393 27.675362431186393 0 0 1 39.603487286030514 52.648258201296294 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.675362431186393 27.675362431186393 L 39.603487286030514 52.648258201296294 A 27.675362431186393 27.675362431186393 0 0 1 15.496171643094282 52.526780850358676 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.675362431186393 27.675362431186393 L 15.496171643094282 52.526780850358676 A 27.675362431186393 27.675362431186393 0 0 1 0.6577113417934726 21.6776782689994 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.675362431186393 27.675362431186393 L 0.6577113417934726 21.6776782689994 A 27.675362431186393 27.675362431186393 0 0 1 27.67536243118639 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [55.350724862372786, 55.350724862372786],
+  "iconAnchor": [27.675362431186393, 27.675362431186393],
+  "className": "empty",
+});
+        
+    
+        var popup_c2f53bf85fa2c74341dbea9d33e32fa2 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_d46e7eadbad0844e573fdc2062b09158 = $(`<div id="html_d46e7eadbad0844e573fdc2062b09158" style="width: 100.0%; height: 100.0%;"><b>Laim</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 21.5%<br>The Left: 21.2%<br>CSU: 20.3%<br>The Greens: 14.3%<br>SPD: 13.4%<br>FDP: 9.2%<br><br>Total Mentions: 83</div>`)[0];
+                popup_c2f53bf85fa2c74341dbea9d33e32fa2.setContent(html_d46e7eadbad0844e573fdc2062b09158);
+            
+        
+
+        marker_45389d9089ff9ca98b87a500e1a5ae40.bindPopup(popup_c2f53bf85fa2c74341dbea9d33e32fa2)
+        ;
+
+        
+    
+    
+                marker_45389d9089ff9ca98b87a500e1a5ae40.setIcon(div_icon_176fc586c51cd9934d3c60079b0fcb66);
+            
+    
+            var marker_a10cea4d93f57d7bd47f7c9caa424125 = L.marker(
+                [48.137, 11.494],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_e87a51193d64d65a339fde1ddc0d102a = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eLaim\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -22.675362431186393],
+  "className": "empty",
+});
+        
+    
+                marker_a10cea4d93f57d7bd47f7c9caa424125.setIcon(div_icon_e87a51193d64d65a339fde1ddc0d102a);
+            
+    
+            var marker_72e298b936028e00be6c02d60da5b7a2 = L.marker(
+                [48.181, 11.423],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_507d3aa5231ae0c638b8a7640e91163f = L.divIcon({
+  "html": "\n    \u003csvg width=\"44.72833962686653\" height=\"44.72833962686653\" viewBox=\"0 0 44.72833962686653 44.72833962686653\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 22.364169813433264 22.364169813433264 L 22.364169813433264 0.0 A 22.364169813433264 22.364169813433264 0 0 1 32.82595091450007 2.597854333874583 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.364169813433264 22.364169813433264 L 32.82595091450007 2.597854333874583 A 22.364169813433264 22.364169813433264 0 0 1 43.04493033925583 30.876645100778227 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.364169813433264 22.364169813433264 L 43.04493033925583 30.876645100778227 A 22.364169813433264 22.364169813433264 0 0 1 30.643333037962087 43.13943269373611 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.364169813433264 22.364169813433264 L 30.643333037962087 43.13943269373611 A 22.364169813433264 22.364169813433264 0 0 1 9.01835207969968 40.309788790276656 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.364169813433264 22.364169813433264 L 9.01835207969968 40.309788790276656 A 22.364169813433264 22.364169813433264 0 0 1 0.2469368857114702 25.678396580716772 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.364169813433264 22.364169813433264 L 0.2469368857114702 25.678396580716772 A 22.364169813433264 22.364169813433264 0 0 1 22.36416981343326 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [44.72833962686653, 44.72833962686653],
+  "iconAnchor": [22.364169813433264, 22.364169813433264],
+  "className": "empty",
+});
+        
+    
+        var popup_461f6a25b8efb7588fe73d8608b38e38 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_248ea215de88ef7fad4e6c6c9c38c6d3 = $(`<div id="html_248ea215de88ef7fad4e6c6c9c38c6d3" style="width: 100.0%; height: 100.0%;"><b>Langwied</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 27.4%<br>FDP: 23.5%<br>The Greens: 16.2%<br>SPD: 12.7%<br>The Left: 12.5%<br>CSU: 7.7%<br><br>Total Mentions: 22</div>`)[0];
+                popup_461f6a25b8efb7588fe73d8608b38e38.setContent(html_248ea215de88ef7fad4e6c6c9c38c6d3);
+            
+        
+
+        marker_72e298b936028e00be6c02d60da5b7a2.bindPopup(popup_461f6a25b8efb7588fe73d8608b38e38)
+        ;
+
+        
+    
+    
+                marker_72e298b936028e00be6c02d60da5b7a2.setIcon(div_icon_507d3aa5231ae0c638b8a7640e91163f);
+            
+    
+            var marker_a316c9a37582e4fe934da47652562d0a = L.marker(
+                [48.181, 11.423],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_e8059991aa49125d765953b44231a2f6 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eLangwied\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -17.364169813433264],
+  "className": "empty",
+});
+        
+    
+                marker_a316c9a37582e4fe934da47652562d0a.setIcon(div_icon_e8059991aa49125d765953b44231a2f6);
+            
+    
+            var marker_f300d835e6f499e3d49cee28276d68fe = L.marker(
+                [48.139, 11.59],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_87e3907dddbbbedb362a04ee0007ac4d = L.divIcon({
+  "html": "\n    \u003csvg width=\"38.42068074395237\" height=\"38.42068074395237\" viewBox=\"0 0 38.42068074395237 38.42068074395237\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 19.210340371976184 19.210340371976184 L 19.210340371976184 0.0 A 19.210340371976184 19.210340371976184 0 0 1 36.468430615825724 27.648082862851528 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.210340371976184 19.210340371976184 L 36.468430615825724 27.648082862851528 A 19.210340371976184 19.210340371976184 0 0 1 26.378587416822747 37.03317436411185 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.210340371976184 19.210340371976184 L 26.378587416822747 37.03317436411185 A 19.210340371976184 19.210340371976184 0 0 1 2.3122677683696224 10.072927199178347 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.210340371976184 19.210340371976184 L 2.3122677683696224 10.072927199178347 A 19.210340371976184 19.210340371976184 0 0 1 19.21034037197618 0.0 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [38.42068074395237, 38.42068074395237],
+  "iconAnchor": [19.210340371976184, 19.210340371976184],
+  "className": "empty",
+});
+        
+    
+        var popup_06219472e5c231483c8e809dac88ac41 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_5fc9f048f55351696a8d58b34d8da272 = $(`<div id="html_5fc9f048f55351696a8d58b34d8da272" style="width: 100.0%; height: 100.0%;"><b>Lehel</b><br><u>Fair Share (Normalized):</u><br>The Greens: 39.0%<br>FDP: 32.2%<br>The Left: 17.1%<br>SPD: 11.7%<br><br>Total Mentions: 10</div>`)[0];
+                popup_06219472e5c231483c8e809dac88ac41.setContent(html_5fc9f048f55351696a8d58b34d8da272);
+            
+        
+
+        marker_f300d835e6f499e3d49cee28276d68fe.bindPopup(popup_06219472e5c231483c8e809dac88ac41)
+        ;
+
+        
+    
+    
+                marker_f300d835e6f499e3d49cee28276d68fe.setIcon(div_icon_87e3907dddbbbedb362a04ee0007ac4d);
+            
+    
+            var marker_bccb6fcb315720422aabba74fdf44502 = L.marker(
+                [48.139, 11.59],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_957e25f1e9e5c97fb2486a3754d6f0db = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eLehel\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -14.210340371976184],
+  "className": "empty",
+});
+        
+    
+                marker_bccb6fcb315720422aabba74fdf44502.setIcon(div_icon_957e25f1e9e5c97fb2486a3754d6f0db);
+            
+    
+            var marker_51b8deb0852fe81633ce102779d46fd9 = L.marker(
+                [48.168, 11.408],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_76143f68d3ae8241d29ea8648f5a3c1a = L.divIcon({
+  "html": "\n    \u003csvg width=\"45.75100659894561\" height=\"45.75100659894561\" viewBox=\"0 0 45.75100659894561 45.75100659894561\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 22.875503299472804 22.875503299472804 L 22.875503299472804 0.0 A 22.875503299472804 22.875503299472804 0 0 1 32.99765154875669 2.361343164977651 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.875503299472804 22.875503299472804 L 32.99765154875669 2.361343164977651 A 22.875503299472804 22.875503299472804 0 0 1 43.77940724214562 13.584892385237987 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.875503299472804 22.875503299472804 L 43.77940724214562 13.584892385237987 A 22.875503299472804 22.875503299472804 0 0 1 41.914847419313205 35.55588289515092 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.875503299472804 22.875503299472804 L 41.914847419313205 35.55588289515092 A 22.875503299472804 22.875503299472804 0 0 1 23.425674045138106 45.74438965965233 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.875503299472804 22.875503299472804 L 23.425674045138106 45.74438965965233 A 22.875503299472804 22.875503299472804 0 0 1 7.914788520491852 40.180579563568614 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.875503299472804 22.875503299472804 L 7.914788520491852 40.180579563568614 A 22.875503299472804 22.875503299472804 0 0 1 22.8755032994728 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [45.75100659894561, 45.75100659894561],
+  "iconAnchor": [22.875503299472804, 22.875503299472804],
+  "className": "empty",
+});
+        
+    
+        var popup_745a2b1f60ca0818b49b5f928bf69548 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_03cebf932f240763f7ffcb922b0b4611 = $(`<div id="html_03cebf932f240763f7ffcb922b0b4611" style="width: 100.0%; height: 100.0%;"><b>Lochhausen</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 38.7%<br>SPD: 16.0%<br>The Greens: 15.3%<br>The Left: 11.7%<br>FDP: 11.0%<br>CSU: 7.3%<br><br>Total Mentions: 25</div>`)[0];
+                popup_745a2b1f60ca0818b49b5f928bf69548.setContent(html_03cebf932f240763f7ffcb922b0b4611);
+            
+        
+
+        marker_51b8deb0852fe81633ce102779d46fd9.bindPopup(popup_745a2b1f60ca0818b49b5f928bf69548)
+        ;
+
+        
+    
+    
+                marker_51b8deb0852fe81633ce102779d46fd9.setIcon(div_icon_76143f68d3ae8241d29ea8648f5a3c1a);
+            
+    
+            var marker_8de252a8d47f26be658ca1f93e2d2489 = L.marker(
+                [48.168, 11.408],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_f8ad18c03e97e9458efa94a5b923c4da = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eLochhausen\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -17.875503299472804],
+  "className": "empty",
+});
+        
+    
+                marker_8de252a8d47f26be658ca1f93e2d2489.setIcon(div_icon_f8ad18c03e97e9458efa94a5b923c4da);
+            
+    
+            var marker_ac730654c159dea77bb62638e102051e = L.marker(
+                [48.131, 11.556],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_415fd9ea579536e513db76ccc3cf037f = L.divIcon({
+  "html": "\n    \u003csvg width=\"42.66570675244973\" height=\"42.66570675244973\" viewBox=\"0 0 42.66570675244973 42.66570675244973\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.332853376224865 21.332853376224865 L 21.332853376224865 0.0 A 21.332853376224865 21.332853376224865 0 0 1 40.893395679206776 12.81958032852085 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 40.893395679206776 12.81958032852085 A 21.332853376224865 21.332853376224865 0 0 1 8.34466337586025 38.25613774084916 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 8.34466337586025 38.25613774084916 A 21.332853376224865 21.332853376224865 0 0 1 1.3433348013140005 13.88236478051504 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 1.3433348013140005 13.88236478051504 A 21.332853376224865 21.332853376224865 0 0 1 21.33285337622486 0.0 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [42.66570675244973, 42.66570675244973],
+  "iconAnchor": [21.332853376224865, 21.332853376224865],
+  "className": "empty",
+});
+        
+    
+        var popup_7cd30c133c00da41eec72c23603d2ed0 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_0e481b161bee197628391ea76bed716d = $(`<div id="html_0e481b161bee197628391ea76bed716d" style="width: 100.0%; height: 100.0%;"><b>Ludwigsvorstadt</b><br><u>Fair Share (Normalized):</u><br>FDP: 42.0%<br>SPD: 20.3%<br>The Greens: 19.3%<br>CSU: 18.5%<br><br>Total Mentions: 17</div>`)[0];
+                popup_7cd30c133c00da41eec72c23603d2ed0.setContent(html_0e481b161bee197628391ea76bed716d);
+            
+        
+
+        marker_ac730654c159dea77bb62638e102051e.bindPopup(popup_7cd30c133c00da41eec72c23603d2ed0)
+        ;
+
+        
+    
+    
+                marker_ac730654c159dea77bb62638e102051e.setIcon(div_icon_415fd9ea579536e513db76ccc3cf037f);
+            
+    
+            var marker_e196fecf02c483efbdde2caaef50f5f8 = L.marker(
+                [48.131, 11.556],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_957bb5c43b2ca461cbc08d4c06f7240d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eLudwigsvorstadt\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.332853376224865],
+  "className": "empty",
+});
+        
+    
+                marker_e196fecf02c483efbdde2caaef50f5f8.setIcon(div_icon_957bb5c43b2ca461cbc08d4c06f7240d);
+            
+    
+            var marker_39839fc13d2394c7cd724622fe12f070 = L.marker(
+                [48.149, 11.565],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_9a76f5756a90f8ad1e7f420486ce35a8 = L.divIcon({
+  "html": "\n    \u003csvg width=\"46.9383666398918\" height=\"46.9383666398918\" viewBox=\"0 0 46.9383666398918 46.9383666398918\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 23.4691833199459 23.4691833199459 L 23.4691833199459 0.0 A 23.4691833199459 23.4691833199459 0 0 1 46.150825428043646 17.440445725275353 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 46.150825428043646 17.440445725275353 A 23.4691833199459 23.4691833199459 0 0 1 31.328081071433346 45.58343871859978 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 31.328081071433346 45.58343871859978 A 23.4691833199459 23.4691833199459 0 0 1 7.691337624667549 40.84336390267305 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 7.691337624667549 40.84336390267305 A 23.4691833199459 23.4691833199459 0 0 1 0.04498191486708336 24.92154492764921 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 0.04498191486708336 24.92154492764921 A 23.4691833199459 23.4691833199459 0 0 1 10.629634886855822 3.8236097284326966 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.4691833199459 23.4691833199459 L 10.629634886855822 3.8236097284326966 A 23.4691833199459 23.4691833199459 0 0 1 23.469183319945873 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [46.9383666398918, 46.9383666398918],
+  "iconAnchor": [23.4691833199459, 23.4691833199459],
+  "className": "empty",
+});
+        
+    
+        var popup_62ca6a31b8f4885b425a75f225803ee3 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_064e7d252e93250b4ee5b49f5ecb099a = $(`<div id="html_064e7d252e93250b4ee5b49f5ecb099a" style="width: 100.0%; height: 100.0%;"><b>Maxvorstadt</b><br><u>Fair Share (Normalized):</u><br>FDP: 23.7%<br>CSU: 20.9%<br>SPD: 17.2%<br>The Left: 16.8%<br>The Greens: 12.3%<br>ÖDP: 9.2%<br><br>Total Mentions: 29</div>`)[0];
+                popup_62ca6a31b8f4885b425a75f225803ee3.setContent(html_064e7d252e93250b4ee5b49f5ecb099a);
+            
+        
+
+        marker_39839fc13d2394c7cd724622fe12f070.bindPopup(popup_62ca6a31b8f4885b425a75f225803ee3)
+        ;
+
+        
+    
+    
+                marker_39839fc13d2394c7cd724622fe12f070.setIcon(div_icon_9a76f5756a90f8ad1e7f420486ce35a8);
+            
+    
+            var marker_d6dab72075cfaf933b88caded9de3a0c = L.marker(
+                [48.149, 11.565],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4582abc96df2e45ffa3ae1c4644b7011 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eMaxvorstadt\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -18.4691833199459],
+  "className": "empty",
+});
+        
+    
+                marker_d6dab72075cfaf933b88caded9de3a0c.setIcon(div_icon_4582abc96df2e45ffa3ae1c4644b7011);
+            
+    
+            var marker_3054f7382d311571558dde401cc4b68e = L.marker(
+                [48.183, 11.566],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_307a0e6a25553de268a172a6d49a652a = L.divIcon({
+  "html": "\n    \u003csvg width=\"40.51959485969229\" height=\"40.51959485969229\" viewBox=\"0 0 40.51959485969229 40.51959485969229\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 20.259797429846145 20.259797429846145 L 20.259797429846145 0.0 A 20.259797429846145 20.259797429846145 0 0 1 34.73432837908622 6.084207646775679 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 34.73432837908622 6.084207646775679 A 20.259797429846145 20.259797429846145 0 0 1 31.691406590939458 36.986354274768175 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 31.691406590939458 36.986354274768175 A 20.259797429846145 20.259797429846145 0 0 1 23.950327052440954 40.18062529926841 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 23.950327052440954 40.18062529926841 A 20.259797429846145 20.259797429846145 0 0 1 0.27582768737035224 16.928079370013876 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 0.27582768737035224 16.928079370013876 A 20.259797429846145 20.259797429846145 0 0 1 20.25979742984614 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [40.51959485969229, 40.51959485969229],
+  "iconAnchor": [20.259797429846145, 20.259797429846145],
+  "className": "empty",
+});
+        
+    
+        var popup_4137a3956aaf376cd1ef1e5fb876f400 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_68f5fc248cace1e2769375cae8572b82 = $(`<div id="html_68f5fc248cace1e2769375cae8572b82" style="width: 100.0%; height: 100.0%;"><b>Milbertshofen</b><br><u>Fair Share (Normalized):</u><br>The Left: 30.5%<br>SPD: 27.8%<br>ÖDP: 22.4%<br>CSU: 12.7%<br>The Greens: 6.6%<br><br>Total Mentions: 13</div>`)[0];
+                popup_4137a3956aaf376cd1ef1e5fb876f400.setContent(html_68f5fc248cace1e2769375cae8572b82);
+            
+        
+
+        marker_3054f7382d311571558dde401cc4b68e.bindPopup(popup_4137a3956aaf376cd1ef1e5fb876f400)
+        ;
+
+        
+    
+    
+                marker_3054f7382d311571558dde401cc4b68e.setIcon(div_icon_307a0e6a25553de268a172a6d49a652a);
+            
+    
+            var marker_235f77cd7bc94f26d5382433e8fd80f8 = L.marker(
+                [48.183, 11.566],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_e68c1380843e18cc5816b2f2778b1848 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eMilbertshofen\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -15.259797429846145],
+  "className": "empty",
+});
+        
+    
+                marker_235f77cd7bc94f26d5382433e8fd80f8.setIcon(div_icon_e68c1380843e18cc5816b2f2778b1848);
+            
+    
+            var marker_5c467a4703ea41e72f802eab630686e8 = L.marker(
+                [48.181, 11.507],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_529a4aa814f44d3eca4a2413c0ae238a = L.divIcon({
+  "html": "\n    \u003csvg width=\"49.708576533634464\" height=\"49.708576533634464\" viewBox=\"0 0 49.708576533634464 49.708576533634464\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 24.854288266817232 24.854288266817232 L 24.854288266817232 0.0 A 24.854288266817232 24.854288266817232 0 0 1 46.50423881673467 12.647106510319206 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.854288266817232 24.854288266817232 L 46.50423881673467 12.647106510319206 A 24.854288266817232 24.854288266817232 0 0 1 28.875845828218967 49.38106384026719 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.854288266817232 24.854288266817232 L 28.875845828218967 49.38106384026719 A 24.854288266817232 24.854288266817232 0 0 1 9.822090150458651 44.64743518792592 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.854288266817232 24.854288266817232 L 9.822090150458651 44.64743518792592 A 24.854288266817232 24.854288266817232 0 0 1 2.794037286721192 36.30334813849317 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.854288266817232 24.854288266817232 L 2.794037286721192 36.30334813849317 A 24.854288266817232 24.854288266817232 0 0 1 0.5016562662304906 19.88589215800632 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.854288266817232 24.854288266817232 L 0.5016562662304906 19.88589215800632 A 24.854288266817232 24.854288266817232 0 0 1 24.85428826681723 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [49.708576533634464, 49.708576533634464],
+  "iconAnchor": [24.854288266817232, 24.854288266817232],
+  "className": "empty",
+});
+        
+    
+        var popup_4aba8423ebdb53c0c0c849c14e14321f = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_e687f3c083aeadc868b622dbc4f757ca = $(`<div id="html_e687f3c083aeadc868b622dbc4f757ca" style="width: 100.0%; height: 100.0%;"><b>Moosach</b><br><u>Fair Share (Normalized):</u><br>FDP: 30.6%<br>ÖDP: 21.8%<br>CSU: 16.8%<br>SPD: 12.9%<br>The Left: 10.8%<br>The Greens: 7.0%<br><br>Total Mentions: 41</div>`)[0];
+                popup_4aba8423ebdb53c0c0c849c14e14321f.setContent(html_e687f3c083aeadc868b622dbc4f757ca);
+            
+        
+
+        marker_5c467a4703ea41e72f802eab630686e8.bindPopup(popup_4aba8423ebdb53c0c0c849c14e14321f)
+        ;
+
+        
+    
+    
+                marker_5c467a4703ea41e72f802eab630686e8.setIcon(div_icon_529a4aa814f44d3eca4a2413c0ae238a);
+            
+    
+            var marker_cbf02233b2b11fd3eacb2a72e602bc6d = L.marker(
+                [48.181, 11.507],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_26d15f89c512474b6e22503ae7a4d15c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eMoosach\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -19.854288266817232],
+  "className": "empty",
+});
+        
+    
+                marker_cbf02233b2b11fd3eacb2a72e602bc6d.setIcon(div_icon_26d15f89c512474b6e22503ae7a4d15c);
+            
+    
+            var marker_7ddc19384a5dba1b98d0ba180a7b4fe9 = L.marker(
+                [48.156, 11.536],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_9cc804c83965f6774c521ee879945f37 = L.divIcon({
+  "html": "\n    \u003csvg width=\"48.442784491915305\" height=\"48.442784491915305\" viewBox=\"0 0 48.442784491915305 48.442784491915305\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 24.221392245957652 24.221392245957652 L 24.221392245957652 0.0 A 24.221392245957652 24.221392245957652 0 0 1 41.49761344481668 7.244701655014097 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.221392245957652 24.221392245957652 L 41.49761344481668 7.244701655014097 A 24.221392245957652 24.221392245957652 0 0 1 32.365358808786354 47.032609902103616 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.221392245957652 24.221392245957652 L 32.365358808786354 47.032609902103616 A 24.221392245957652 24.221392245957652 0 0 1 6.532292332632835 40.767436685307786 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.221392245957652 24.221392245957652 L 6.532292332632835 40.767436685307786 A 24.221392245957652 24.221392245957652 0 0 1 0.042993120704384324 25.66391020858048 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.221392245957652 24.221392245957652 L 0.042993120704384324 25.66391020858048 A 24.221392245957652 24.221392245957652 0 0 1 7.20026431786933 6.988950562081591 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.221392245957652 24.221392245957652 L 7.20026431786933 6.988950562081591 A 24.221392245957652 24.221392245957652 0 0 1 24.22139224595765 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [48.442784491915305, 48.442784491915305],
+  "iconAnchor": [24.221392245957652, 24.221392245957652],
+  "className": "empty",
+});
+        
+    
+        var popup_c27c49787204141dbae4662e9f607d88 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_d1b0394e3385babbc738ba0aef61b14f = $(`<div id="html_d1b0394e3385babbc738ba0aef61b14f" style="width: 100.0%; height: 100.0%;"><b>Neuhausen</b><br><u>Fair Share (Normalized):</u><br>FDP: 31.9%<br>SPD: 18.5%<br>The Left: 13.5%<br>CSU: 12.6%<br>ÖDP: 12.4%<br>The Greens: 11.0%<br><br>Total Mentions: 35</div>`)[0];
+                popup_c27c49787204141dbae4662e9f607d88.setContent(html_d1b0394e3385babbc738ba0aef61b14f);
+            
+        
+
+        marker_7ddc19384a5dba1b98d0ba180a7b4fe9.bindPopup(popup_c27c49787204141dbae4662e9f607d88)
+        ;
+
+        
+    
+    
+                marker_7ddc19384a5dba1b98d0ba180a7b4fe9.setIcon(div_icon_9cc804c83965f6774c521ee879945f37);
+            
+    
+            var marker_777ae22104e432f47e2ed36dee727c13 = L.marker(
+                [48.156, 11.536],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_e8dc36169374a5b60bb7b41ff791bd1b = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eNeuhausen\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -19.221392245957652],
+  "className": "empty",
+});
+        
+    
+                marker_777ae22104e432f47e2ed36dee727c13.setIcon(div_icon_e8dc36169374a5b60bb7b41ff791bd1b);
+            
+    
+            var marker_b54e3918c89bf190cd953395cd5197da = L.marker(
+                [48.094, 11.649],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_00e808114d4307c147756fe10c04213c = L.divIcon({
+  "html": "\n    \u003csvg width=\"49.30849316903717\" height=\"49.30849316903717\" viewBox=\"0 0 49.30849316903717 49.30849316903717\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 24.654246584518585 24.654246584518585 L 24.654246584518585 0.0 A 24.654246584518585 24.654246584518585 0 0 1 47.491577955366935 15.365103970245066 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.654246584518585 24.654246584518585 L 47.491577955366935 15.365103970245066 A 24.654246584518585 24.654246584518585 0 0 1 47.10626243389859 34.8394740709047 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.654246584518585 24.654246584518585 L 47.10626243389859 34.8394740709047 A 24.654246584518585 24.654246584518585 0 0 1 24.23615687483633 49.30494790608151 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.654246584518585 24.654246584518585 L 24.23615687483633 49.30494790608151 A 24.654246584518585 24.654246584518585 0 0 1 1.4984912874733105 16.19003538242739 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.654246584518585 24.654246584518585 L 1.4984912874733105 16.19003538242739 A 24.654246584518585 24.654246584518585 0 0 1 24.65424658451856 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [49.30849316903717, 49.30849316903717],
+  "iconAnchor": [24.654246584518585, 24.654246584518585],
+  "className": "empty",
+});
+        
+    
+        var popup_703886b33b2a9219569ebb256f96f37f = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_f3bf86d21b88cca466a7e17f3c91e32c = $(`<div id="html_f3bf86d21b88cca466a7e17f3c91e32c" style="width: 100.0%; height: 100.0%;"><b>Neuperlach</b><br><u>Fair Share (Normalized):</u><br>The Left: 30.3%<br>ÖDP: 19.4%<br>CSU: 18.9%<br>The Greens: 18.5%<br>SPD: 12.9%<br><br>Total Mentions: 39</div>`)[0];
+                popup_703886b33b2a9219569ebb256f96f37f.setContent(html_f3bf86d21b88cca466a7e17f3c91e32c);
+            
+        
+
+        marker_b54e3918c89bf190cd953395cd5197da.bindPopup(popup_703886b33b2a9219569ebb256f96f37f)
+        ;
+
+        
+    
+    
+                marker_b54e3918c89bf190cd953395cd5197da.setIcon(div_icon_00e808114d4307c147756fe10c04213c);
+            
+    
+            var marker_b96b6136e6130df5969bb5921d777b0b = L.marker(
+                [48.094, 11.649],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c5c0a7528a0fa5e297d1f784c3c95dae = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eNeuperlach\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -19.654246584518585],
+  "className": "empty",
+});
+        
+    
+                marker_b96b6136e6130df5969bb5921d777b0b.setIcon(div_icon_c5c0a7528a0fa5e297d1f784c3c95dae);
+            
+    
+            var marker_354f4aa73ae26828073cc478efa77f90 = L.marker(
+                [48.158, 11.503],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c7c41d571f238cb987b6ae4e35042476 = L.divIcon({
+  "html": "\n    \u003csvg width=\"50.62913117191276\" height=\"50.62913117191276\" viewBox=\"0 0 50.62913117191276 50.62913117191276\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 25.31456558595638 25.31456558595638 L 25.31456558595638 0.0 A 25.31456558595638 25.31456558595638 0 0 1 35.60857221027319 2.187510900497429 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.31456558595638 25.31456558595638 L 35.60857221027319 2.187510900497429 A 25.31456558595638 25.31456558595638 0 0 1 37.517448286871875 47.49376495368344 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.31456558595638 25.31456558595638 L 37.517448286871875 47.49376495368344 A 25.31456558595638 25.31456558595638 0 0 1 15.087169123425692 48.471154117169306 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.31456558595638 25.31456558595638 L 15.087169123425692 48.471154117169306 A 25.31456558595638 25.31456558595638 0 0 1 0.631240570256125 30.932456380106178 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.31456558595638 25.31456558595638 L 0.631240570256125 30.932456380106178 A 25.31456558595638 25.31456558595638 0 0 1 10.68081383249596 4.658318578724376 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.31456558595638 25.31456558595638 L 10.68081383249596 4.658318578724376 A 25.31456558595638 25.31456558595638 0 0 1 25.314565585956377 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [50.62913117191276, 50.62913117191276],
+  "iconAnchor": [25.31456558595638, 25.31456558595638],
+  "className": "empty",
+});
+        
+    
+        var popup_702fe1810aab0810166b4b16d6875890 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_624471ff20a9a8968780988066370ecb = $(`<div id="html_624471ff20a9a8968780988066370ecb" style="width: 100.0%; height: 100.0%;"><b>Nymphenburg</b><br><u>Fair Share (Normalized):</u><br>FDP: 35.3%<br>The Left: 18.8%<br>The Greens: 14.8%<br>SPD: 14.6%<br>ÖDP: 9.8%<br>CSU: 6.7%<br><br>Total Mentions: 46</div>`)[0];
+                popup_702fe1810aab0810166b4b16d6875890.setContent(html_624471ff20a9a8968780988066370ecb);
+            
+        
+
+        marker_354f4aa73ae26828073cc478efa77f90.bindPopup(popup_702fe1810aab0810166b4b16d6875890)
+        ;
+
+        
+    
+    
+                marker_354f4aa73ae26828073cc478efa77f90.setIcon(div_icon_c7c41d571f238cb987b6ae4e35042476);
+            
+    
+            var marker_6dafa03d1ebe64c06f086daed8e4b5a7 = L.marker(
+                [48.158, 11.503],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_18db339e91d858d84e534592b5f97cbe = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eNymphenburg\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -20.31456558595638],
+  "className": "empty",
+});
+        
+    
+                marker_6dafa03d1ebe64c06f086daed8e4b5a7.setIcon(div_icon_18db339e91d858d84e534592b5f97cbe);
+            
+    
+            var marker_118f2b43d8dfbbbb0d698f49ca34d64f = L.marker(
+                [48.11, 11.58],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_3fd7e9fd27cfe8d6135760fd7f698399 = L.divIcon({
+  "html": "\n    \u003csvg width=\"32.875503299472804\" height=\"32.875503299472804\" viewBox=\"0 0 32.875503299472804 32.875503299472804\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 16.437751649736402 16.437751649736402 L 16.437751649736402 0.0 A 16.437751649736402 16.437751649736402 0 0 1 23.569038750534713 31.248032659372896 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 16.437751649736402 16.437751649736402 L 23.569038750534713 31.248032659372896 A 16.437751649736402 16.437751649736402 0 0 1 2.3589656477117984 24.92229430138286 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 16.437751649736402 16.437751649736402 L 2.3589656477117984 24.92229430138286 A 16.437751649736402 16.437751649736402 0 0 1 16.4377516497364 0.0 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [32.875503299472804, 32.875503299472804],
+  "iconAnchor": [16.437751649736402, 16.437751649736402],
+  "className": "empty",
+});
+        
+    
+        var popup_a85d5f2139e87a9df2022d0cfa45a741 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_fd4c67a4af92ebfd1f7bf3ac0da7ec22 = $(`<div id="html_fd4c67a4af92ebfd1f7bf3ac0da7ec22" style="width: 100.0%; height: 100.0%;"><b>Obergiesing</b><br><u>Fair Share (Normalized):</u><br>CSU: 42.9%<br>The Greens: 33.6%<br>SPD: 23.5%<br><br>Total Mentions: 5</div>`)[0];
+                popup_a85d5f2139e87a9df2022d0cfa45a741.setContent(html_fd4c67a4af92ebfd1f7bf3ac0da7ec22);
+            
+        
+
+        marker_118f2b43d8dfbbbb0d698f49ca34d64f.bindPopup(popup_a85d5f2139e87a9df2022d0cfa45a741)
+        ;
+
+        
+    
+    
+                marker_118f2b43d8dfbbbb0d698f49ca34d64f.setIcon(div_icon_3fd7e9fd27cfe8d6135760fd7f698399);
+            
+    
+            var marker_f5555c9e269c0a2456e069c89d106a3e = L.marker(
+                [48.11, 11.58],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_7898f4d4b79f687c0bdbc58efba5e333 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eObergiesing\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -11.437751649736402],
+  "className": "empty",
+});
+        
+    
+                marker_f5555c9e269c0a2456e069c89d106a3e.setIcon(div_icon_7898f4d4b79f687c0bdbc58efba5e333);
+            
+    
+            var marker_d7ab79a87888745d79fca1fcef71b6d6 = L.marker(
+                [48.163, 11.463],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_47247c0369348a67bdc12fb26d749d93 = L.divIcon({
+  "html": "\n    \u003csvg width=\"44.35617950178738\" height=\"44.35617950178738\" viewBox=\"0 0 44.35617950178738 44.35617950178738\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 22.17808975089369 22.17808975089369 L 22.17808975089369 0.0 A 22.17808975089369 22.17808975089369 0 0 1 42.05455008813945 12.339696108606766 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.17808975089369 22.17808975089369 L 42.05455008813945 12.339696108606766 A 22.17808975089369 22.17808975089369 0 0 1 26.62311592840983 43.9061685265216 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.17808975089369 22.17808975089369 L 26.62311592840983 43.9061685265216 A 22.17808975089369 22.17808975089369 0 0 1 11.06495205369143 41.37094872296238 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 22.17808975089369 22.17808975089369 L 11.06495205369143 41.37094872296238 A 22.17808975089369 22.17808975089369 0 0 1 22.178089750893687 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [44.35617950178738, 44.35617950178738],
+  "iconAnchor": [22.17808975089369, 22.17808975089369],
+  "className": "empty",
+});
+        
+    
+        var popup_b5590e54298732c0b5388d1c0756d4f4 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_43c73b9d3bfe3a53f6e753e8e47b7139 = $(`<div id="html_43c73b9d3bfe3a53f6e753e8e47b7139" style="width: 100.0%; height: 100.0%;"><b>Obermenzing</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 41.6%<br>SPD: 29.1%<br>CSU: 17.7%<br>The Greens: 11.6%<br><br>Total Mentions: 21</div>`)[0];
+                popup_b5590e54298732c0b5388d1c0756d4f4.setContent(html_43c73b9d3bfe3a53f6e753e8e47b7139);
+            
+        
+
+        marker_d7ab79a87888745d79fca1fcef71b6d6.bindPopup(popup_b5590e54298732c0b5388d1c0756d4f4)
+        ;
+
+        
+    
+    
+                marker_d7ab79a87888745d79fca1fcef71b6d6.setIcon(div_icon_47247c0369348a67bdc12fb26d749d93);
+            
+    
+            var marker_10ec8ace37e13d0791eea4fae91d0e8e = L.marker(
+                [48.163, 11.463],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_65cef38d8d57eaa6ef0cc4dc43463064 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eObermenzing\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -17.17808975089369],
+  "className": "empty",
+});
+        
+    
+                marker_10ec8ace37e13d0791eea4fae91d0e8e.setIcon(div_icon_65cef38d8d57eaa6ef0cc4dc43463064);
+            
+    
+            var marker_1053be6add97276b578b45e240d0dacc = L.marker(
+                [48.098, 11.535],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_d630673d441ce1a1408980bf75f3441b = L.divIcon({
+  "html": "\n    \u003csvg width=\"40.51959485969229\" height=\"40.51959485969229\" viewBox=\"0 0 40.51959485969229 40.51959485969229\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 20.259797429846145 20.259797429846145 L 20.259797429846145 0.0 A 20.259797429846145 20.259797429846145 0 0 1 38.80145602838813 28.424740069786395 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 38.80145602838813 28.424740069786395 A 20.259797429846145 20.259797429846145 0 0 1 5.055120718499552 33.64924095830673 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 5.055120718499552 33.64924095830673 A 20.259797429846145 20.259797429846145 0 0 1 1.2910839389497433 27.376489104963547 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 1.2910839389497433 27.376489104963547 A 20.259797429846145 20.259797429846145 0 0 1 2.5457989576689215 10.42752149667058 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 20.259797429846145 20.259797429846145 L 2.5457989576689215 10.42752149667058 A 20.259797429846145 20.259797429846145 0 0 1 20.25979742984614 0.0 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [40.51959485969229, 40.51959485969229],
+  "iconAnchor": [20.259797429846145, 20.259797429846145],
+  "className": "empty",
+});
+        
+    
+        var popup_9a156fbe9b027c3e34cf40be05429265 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_c930c86e2032190767f47383882893fd = $(`<div id="html_c930c86e2032190767f47383882893fd" style="width: 100.0%; height: 100.0%;"><b>Obersendling</b><br><u>Fair Share (Normalized):</u><br>FDP: 31.9%<br>CSU: 31.6%<br>The Left: 16.9%<br>The Greens: 13.8%<br>SPD: 5.8%<br><br>Total Mentions: 13</div>`)[0];
+                popup_9a156fbe9b027c3e34cf40be05429265.setContent(html_c930c86e2032190767f47383882893fd);
+            
+        
+
+        marker_1053be6add97276b578b45e240d0dacc.bindPopup(popup_9a156fbe9b027c3e34cf40be05429265)
+        ;
+
+        
+    
+    
+                marker_1053be6add97276b578b45e240d0dacc.setIcon(div_icon_d630673d441ce1a1408980bf75f3441b);
+            
+    
+            var marker_d8a169cca981cf21626fa2e78206cd82 = L.marker(
+                [48.098, 11.535],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c2c7f90dcbf0baebbac8e2f78789690e = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eObersendling\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -15.259797429846145],
+  "className": "empty",
+});
+        
+    
+                marker_d8a169cca981cf21626fa2e78206cd82.setIcon(div_icon_c2c7f90dcbf0baebbac8e2f78789690e);
+            
+    
+            var marker_c8600886dd2ef790c9b98ab723ec5b6d = L.marker(
+                [48.147, 11.462],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_43b87c7b5ba61a77786e9e54c37a7928 = L.divIcon({
+  "html": "\n    \u003csvg width=\"57.45704981699376\" height=\"57.45704981699376\" viewBox=\"0 0 57.45704981699376 57.45704981699376\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 28.72852490849688 28.72852490849688 L 28.72852490849688 0.0 A 28.72852490849688 28.72852490849688 0 0 1 56.2751621793662 20.573102265538456 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.72852490849688 28.72852490849688 L 56.2751621793662 20.573102265538456 A 28.72852490849688 28.72852490849688 0 0 1 55.12047782764477 40.07722371195478 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.72852490849688 28.72852490849688 L 55.12047782764477 40.07722371195478 A 28.72852490849688 28.72852490849688 0 0 1 30.41564620680917 57.407467795969325 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.72852490849688 28.72852490849688 L 30.41564620680917 57.407467795969325 A 28.72852490849688 28.72852490849688 0 0 1 13.945533525203901 53.36165928436572 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.72852490849688 28.72852490849688 L 13.945533525203901 53.36165928436572 A 28.72852490849688 28.72852490849688 0 0 1 0.7050962640365945 22.402737176761928 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.72852490849688 28.72852490849688 L 0.7050962640365945 22.402737176761928 A 28.72852490849688 28.72852490849688 0 0 1 28.728524908496848 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [57.45704981699376, 57.45704981699376],
+  "iconAnchor": [28.72852490849688, 28.72852490849688],
+  "className": "empty",
+});
+        
+    
+        var popup_376a31a35552f043757b51abc823a047 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_b43f1196efcad3e12df6db6d771947df = $(`<div id="html_b43f1196efcad3e12df6db6d771947df" style="width: 100.0%; height: 100.0%;"><b>Pasing</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 21.5%<br>CSU: 20.4%<br>The Left: 19.9%<br>SPD: 17.6%<br>FDP: 11.0%<br>The Greens: 9.5%<br><br>Total Mentions: 108</div>`)[0];
+                popup_376a31a35552f043757b51abc823a047.setContent(html_b43f1196efcad3e12df6db6d771947df);
+            
+        
+
+        marker_c8600886dd2ef790c9b98ab723ec5b6d.bindPopup(popup_376a31a35552f043757b51abc823a047)
+        ;
+
+        
+    
+    
+                marker_c8600886dd2ef790c9b98ab723ec5b6d.setIcon(div_icon_43b87c7b5ba61a77786e9e54c37a7928);
+            
+    
+            var marker_7fa090d82156a8a8eeadb83f11efa320 = L.marker(
+                [48.147, 11.462],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_639fccb4d459f033c591db0c8d0af08d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003ePasing\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -23.72852490849688],
+  "className": "empty",
+});
+        
+    
+                marker_7fa090d82156a8a8eeadb83f11efa320.setIcon(div_icon_639fccb4d459f033c591db0c8d0af08d);
+            
+    
+            var marker_c5e039e9d7479575031849131ba55706 = L.marker(
+                [48.095, 11.63],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_69aabaf658ebcf581d207e7cf332ed69 = L.divIcon({
+  "html": "\n    \u003csvg width=\"50.27351707134609\" height=\"50.27351707134609\" viewBox=\"0 0 50.27351707134609 50.27351707134609\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 25.136758535673046 25.136758535673046 L 25.136758535673046 0.0 A 25.136758535673046 25.136758535673046 0 0 1 50.27299394616668 25.298928412584733 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 50.27299394616668 25.298928412584733 A 25.136758535673046 25.136758535673046 0 0 1 48.76931623092102 33.70173643765898 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 48.76931623092102 33.70173643765898 A 25.136758535673046 25.136758535673046 0 0 1 41.875187690966015 43.88993477581887 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 41.875187690966015 43.88993477581887 A 25.136758535673046 25.136758535673046 0 0 1 27.154704556414785 50.19238711565691 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 27.154704556414785 50.19238711565691 A 25.136758535673046 25.136758535673046 0 0 1 0.005568778330435009 25.66584365280406 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 25.136758535673046 25.136758535673046 L 0.005568778330435009 25.66584365280406 A 25.136758535673046 25.136758535673046 0 0 1 25.136758535673042 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [50.27351707134609, 50.27351707134609],
+  "iconAnchor": [25.136758535673046, 25.136758535673046],
+  "className": "empty",
+});
+        
+    
+        var popup_cede0c47d357635d9eb94b99fc7e100b = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_dee64173133d63980ebd8ad5bf1e81ff = $(`<div id="html_dee64173133d63980ebd8ad5bf1e81ff" style="width: 100.0%; height: 100.0%;"><b>Perlach</b><br><u>Fair Share (Normalized):</u><br>The Left: 25.9%<br>ÖDP: 25.3%<br>CSU: 25.1%<br>The Greens: 10.3%<br>SPD: 7.9%<br>FDP: 5.4%<br><br>Total Mentions: 44</div>`)[0];
+                popup_cede0c47d357635d9eb94b99fc7e100b.setContent(html_dee64173133d63980ebd8ad5bf1e81ff);
+            
+        
+
+        marker_c5e039e9d7479575031849131ba55706.bindPopup(popup_cede0c47d357635d9eb94b99fc7e100b)
+        ;
+
+        
+    
+    
+                marker_c5e039e9d7479575031849131ba55706.setIcon(div_icon_69aabaf658ebcf581d207e7cf332ed69);
+            
+    
+            var marker_99ce79c376d54fa321ef1c3a470a9e3e = L.marker(
+                [48.095, 11.63],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_812a97563fc4ebeaf3d1f0753ea00ad2 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003ePerlach\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -20.136758535673046],
+  "className": "empty",
+});
+        
+    
+                marker_99ce79c376d54fa321ef1c3a470a9e3e.setIcon(div_icon_812a97563fc4ebeaf3d1f0753ea00ad2);
+            
+    
+            var marker_710d3bd30a7916318dac2690476cbe40 = L.marker(
+                [48.114, 11.616],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4c62cfa7df265ae35b00a26eecc138bb = L.divIcon({
+  "html": "\n    \u003csvg width=\"48.66815150764888\" height=\"48.66815150764888\" viewBox=\"0 0 48.66815150764888 48.66815150764888\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 24.33407575382444 24.33407575382444 L 24.33407575382444 0.0 A 24.33407575382444 24.33407575382444 0 0 1 38.18984026356087 44.33820114444312 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 38.18984026356087 44.33820114444312 A 24.33407575382444 24.33407575382444 0 0 1 28.667916476193064 48.279118401228644 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 28.667916476193064 48.279118401228644 A 24.33407575382444 24.33407575382444 0 0 1 7.777187927525272 42.16709872527302 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 7.777187927525272 42.16709872527302 A 24.33407575382444 24.33407575382444 0 0 1 0.046645251077965355 22.828100200527974 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 0.046645251077965355 22.828100200527974 A 24.33407575382444 24.33407575382444 0 0 1 6.387061497414248 7.90081916624948 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 24.33407575382444 24.33407575382444 L 6.387061497414248 7.90081916624948 A 24.33407575382444 24.33407575382444 0 0 1 24.334075753824436 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [48.66815150764888, 48.66815150764888],
+  "iconAnchor": [24.33407575382444, 24.33407575382444],
+  "className": "empty",
+});
+        
+    
+        var popup_6a4c867c895141cb09eea84f2e7dcab0 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_29dd81611933b5f019e004c5cbfb77a9 = $(`<div id="html_29dd81611933b5f019e004c5cbfb77a9" style="width: 100.0%; height: 100.0%;"><b>Ramersdorf</b><br><u>Fair Share (Normalized):</u><br>CSU: 40.4%<br>SPD: 14.8%<br>The Greens: 14.1%<br>ÖDP: 13.2%<br>The Left: 10.8%<br>FDP: 6.8%<br><br>Total Mentions: 36</div>`)[0];
+                popup_6a4c867c895141cb09eea84f2e7dcab0.setContent(html_29dd81611933b5f019e004c5cbfb77a9);
+            
+        
+
+        marker_710d3bd30a7916318dac2690476cbe40.bindPopup(popup_6a4c867c895141cb09eea84f2e7dcab0)
+        ;
+
+        
+    
+    
+                marker_710d3bd30a7916318dac2690476cbe40.setIcon(div_icon_4c62cfa7df265ae35b00a26eecc138bb);
+            
+    
+            var marker_00376ac49299a77d16c4e379642676b7 = L.marker(
+                [48.114, 11.616],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_2ed6484c1c4456bca2c43590ac4ceb05 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eRamersdorf\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -19.33407575382444],
+  "className": "empty",
+});
+        
+    
+                marker_00376ac49299a77d16c4e379642676b7.setIcon(div_icon_2ed6484c1c4456bca2c43590ac4ceb05);
+            
+    
+            var marker_04ada98c30a39021235a4632170d3723 = L.marker(
+                [48.135, 11.7],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4cd52a3daff05415204253e8a3032e2b = L.divIcon({
+  "html": "\n    \u003csvg width=\"54.64586672229065\" height=\"54.64586672229065\" viewBox=\"0 0 54.64586672229065 54.64586672229065\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 27.322933361145324 27.322933361145324 L 27.322933361145324 0.0 A 27.322933361145324 27.322933361145324 0 0 1 49.266013582442596 11.042763894604125 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.322933361145324 27.322933361145324 L 49.266013582442596 11.042763894604125 A 27.322933361145324 27.322933361145324 0 0 1 52.792638161322316 37.21418327455005 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.322933361145324 27.322933361145324 L 52.792638161322316 37.21418327455005 A 27.322933361145324 27.322933361145324 0 0 1 32.142818709432554 54.21738246661975 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.322933361145324 27.322933361145324 L 32.142818709432554 54.21738246661975 A 27.322933361145324 27.322933361145324 0 0 1 9.851016434164588 48.32947535058928 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.322933361145324 27.322933361145324 L 9.851016434164588 48.32947535058928 A 27.322933361145324 27.322933361145324 0 0 1 11.283043317367994 5.203606634476607 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.322933361145324 27.322933361145324 L 11.283043317367994 5.203606634476607 A 27.322933361145324 27.322933361145324 0 0 1 27.322933361145342 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [54.64586672229065, 54.64586672229065],
+  "iconAnchor": [27.322933361145324, 27.322933361145324],
+  "className": "empty",
+});
+        
+    
+        var popup_0baca148a24ac034cb30aeec815c53cf = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_3d24a95b7111644ca40ed616f718faef = $(`<div id="html_3d24a95b7111644ca40ed616f718faef" style="width: 100.0%; height: 100.0%;"><b>Riem</b><br><u>Fair Share (Normalized):</u><br>The Left: 29.0%<br>SPD: 16.3%<br>FDP: 16.1%<br>CSU: 14.8%<br>The Greens: 13.9%<br>ÖDP: 10.0%<br><br>Total Mentions: 76</div>`)[0];
+                popup_0baca148a24ac034cb30aeec815c53cf.setContent(html_3d24a95b7111644ca40ed616f718faef);
+            
+        
+
+        marker_04ada98c30a39021235a4632170d3723.bindPopup(popup_0baca148a24ac034cb30aeec815c53cf)
+        ;
+
+        
+    
+    
+                marker_04ada98c30a39021235a4632170d3723.setIcon(div_icon_4cd52a3daff05415204253e8a3032e2b);
+            
+    
+            var marker_c7cac3cadf45d179eb5106ac5c0dc8ba = L.marker(
+                [48.135, 11.7],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_b8bd7dd71af98071ffc0bbfbfb26f786 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eRiem\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -22.322933361145324],
+  "className": "empty",
+});
+        
+    
+                marker_c7cac3cadf45d179eb5106ac5c0dc8ba.setIcon(div_icon_b8bd7dd71af98071ffc0bbfbfb26f786);
+            
+    
+            var marker_e3d134335df9e3166e60a54ce11d84f9 = L.marker(
+                [48.17, 11.585],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_179cff9af921b4915700dc6162d445c4 = L.divIcon({
+  "html": "\n    \u003csvg width=\"54.101439016330524\" height=\"54.101439016330524\" viewBox=\"0 0 54.101439016330524 54.101439016330524\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 27.050719508165262 27.050719508165262 L 27.050719508165262 0.0 A 27.050719508165262 27.050719508165262 0 0 1 52.00889564724723 16.61851601513503 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.050719508165262 27.050719508165262 L 52.00889564724723 16.61851601513503 A 27.050719508165262 27.050719508165262 0 0 1 53.11172771704955 34.30091102604247 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.050719508165262 27.050719508165262 L 53.11172771704955 34.30091102604247 A 27.050719508165262 27.050719508165262 0 0 1 25.156542474544786 54.03503938610062 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.050719508165262 27.050719508165262 L 25.156542474544786 54.03503938610062 A 27.050719508165262 27.050719508165262 0 0 1 5.607784518632865 43.54138247070621 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.050719508165262 27.050719508165262 L 5.607784518632865 43.54138247070621 A 27.050719508165262 27.050719508165262 0 0 1 9.79669456347435 6.217091664762268 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 27.050719508165262 27.050719508165262 L 9.79669456347435 6.217091664762268 A 27.050719508165262 27.050719508165262 0 0 1 27.05071950816526 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [54.101439016330524, 54.101439016330524],
+  "iconAnchor": [27.050719508165262, 27.050719508165262],
+  "className": "empty",
+});
+        
+    
+        var popup_bb3da6fef5bb8bdc134bca86d12b4a44 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_4d167dd10105471e62559d45a2e8e48c = $(`<div id="html_4d167dd10105471e62559d45a2e8e48c" style="width: 100.0%; height: 100.0%;"><b>Schwabing</b><br><u>Fair Share (Normalized):</u><br>The Left: 24.4%<br>SPD: 21.8%<br>CSU: 18.7%<br>The Greens: 13.5%<br>ÖDP: 11.0%<br>FDP: 10.6%<br><br>Total Mentions: 71</div>`)[0];
+                popup_bb3da6fef5bb8bdc134bca86d12b4a44.setContent(html_4d167dd10105471e62559d45a2e8e48c);
+            
+        
+
+        marker_e3d134335df9e3166e60a54ce11d84f9.bindPopup(popup_bb3da6fef5bb8bdc134bca86d12b4a44)
+        ;
+
+        
+    
+    
+                marker_e3d134335df9e3166e60a54ce11d84f9.setIcon(div_icon_179cff9af921b4915700dc6162d445c4);
+            
+    
+            var marker_fe8873e77650699cbcd974365ac195c9 = L.marker(
+                [48.17, 11.585],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_f9dcbc575f50736a2a0cb8c925b85f8a = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eSchwabing\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -22.050719508165262],
+  "className": "empty",
+});
+        
+    
+                marker_fe8873e77650699cbcd974365ac195c9.setIcon(div_icon_f9dcbc575f50736a2a0cb8c925b85f8a);
+            
+    
+            var marker_1ff6e4a55928924a914bb0eeff64aee4 = L.marker(
+                [48.138, 11.54],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_39e512b5772cb5abbe5b31576362fc9c = L.divIcon({
+  "html": "\n    \u003csvg width=\"38.42068074395237\" height=\"38.42068074395237\" viewBox=\"0 0 38.42068074395237 38.42068074395237\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 19.210340371976184 19.210340371976184 L 19.210340371976184 0.0 A 19.210340371976184 19.210340371976184 0 1 1 9.832873656290586 35.97638627443592 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.210340371976184 19.210340371976184 L 9.832873656290586 35.97638627443592 A 19.210340371976184 19.210340371976184 0 0 1 0.3072469470742476 22.632362606943005 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.210340371976184 19.210340371976184 L 0.3072469470742476 22.632362606943005 A 19.210340371976184 19.210340371976184 0 0 1 1.9257684748288035 10.826978782522879 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.210340371976184 19.210340371976184 L 1.9257684748288035 10.826978782522879 A 19.210340371976184 19.210340371976184 0 0 1 10.456168646622965 2.11058439096276 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.210340371976184 19.210340371976184 L 10.456168646622965 2.11058439096276 A 19.210340371976184 19.210340371976184 0 0 1 19.21034037197618 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [38.42068074395237, 38.42068074395237],
+  "iconAnchor": [19.210340371976184, 19.210340371976184],
+  "className": "empty",
+});
+        
+    
+        var popup_ad9025319cdb689e54750a2572eecea6 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_31e3bec566814eb2e9547c211d744ae5 = $(`<div id="html_31e3bec566814eb2e9547c211d744ae5" style="width: 100.0%; height: 100.0%;"><b>Schwanthalerhöhe</b><br><u>Fair Share (Normalized):</u><br>FDP: 58.1%<br>SPD: 14.0%<br>The Left: 10.3%<br>The Greens: 10.0%<br>ÖDP: 7.5%<br><br>Total Mentions: 10</div>`)[0];
+                popup_ad9025319cdb689e54750a2572eecea6.setContent(html_31e3bec566814eb2e9547c211d744ae5);
+            
+        
+
+        marker_1ff6e4a55928924a914bb0eeff64aee4.bindPopup(popup_ad9025319cdb689e54750a2572eecea6)
+        ;
+
+        
+    
+    
+                marker_1ff6e4a55928924a914bb0eeff64aee4.setIcon(div_icon_39e512b5772cb5abbe5b31576362fc9c);
+            
+    
+            var marker_0bb6926413419831b8a63e16a58b7aa2 = L.marker(
+                [48.138, 11.54],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_97138866bd5ff076b569db9736c00518 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eSchwanthalerh\u00f6he\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -14.210340371976184],
+  "className": "empty",
+});
+        
+    
+                marker_0bb6926413419831b8a63e16a58b7aa2.setIcon(div_icon_97138866bd5ff076b569db9736c00518);
+            
+    
+            var marker_b8ca75b451927682cc76fd2acf5370d0 = L.marker(
+                [48.118, 11.545],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_0c365bcceb86093b213f1045bddf66c2 = L.divIcon({
+  "html": "\n    \u003csvg width=\"57.60384292633933\" height=\"57.60384292633933\" viewBox=\"0 0 57.60384292633933 57.60384292633933\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 28.801921463169666 28.801921463169666 L 28.801921463169666 0.0 A 28.801921463169666 28.801921463169666 0 0 1 53.23740656652764 13.555356350523349 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.801921463169666 28.801921463169666 L 53.23740656652764 13.555356350523349 A 28.801921463169666 28.801921463169666 0 0 1 44.934543134274136 52.66170348203153 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.801921463169666 28.801921463169666 L 44.934543134274136 52.66170348203153 A 28.801921463169666 28.801921463169666 0 0 1 15.853729905610304 54.529241870848 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.801921463169666 28.801921463169666 L 15.853729905610304 54.529241870848 A 28.801921463169666 28.801921463169666 0 0 1 0.39166672730812735 33.53564154509788 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.801921463169666 28.801921463169666 L 0.39166672730812735 33.53564154509788 A 28.801921463169666 28.801921463169666 0 0 1 5.858431246692437 11.390806144011986 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 28.801921463169666 28.801921463169666 L 5.858431246692437 11.390806144011986 A 28.801921463169666 28.801921463169666 0 0 1 28.801921463169688 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [57.60384292633933, 57.60384292633933],
+  "iconAnchor": [28.801921463169666, 28.801921463169666],
+  "className": "empty",
+});
+        
+    
+        var popup_27db6365cb2a752dd0999cb90c3ac62f = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_97ae8a54a2a01e48b64fa1b78061ded4 = $(`<div id="html_97ae8a54a2a01e48b64fa1b78061ded4" style="width: 100.0%; height: 100.0%;"><b>Sendling</b><br><u>Fair Share (Normalized):</u><br>FDP: 24.4%<br>SPD: 16.9%<br>CSU: 16.1%<br>The Greens: 15.0%<br>ÖDP: 14.7%<br>The Left: 13.0%<br><br>Total Mentions: 110</div>`)[0];
+                popup_27db6365cb2a752dd0999cb90c3ac62f.setContent(html_97ae8a54a2a01e48b64fa1b78061ded4);
+            
+        
+
+        marker_b8ca75b451927682cc76fd2acf5370d0.bindPopup(popup_27db6365cb2a752dd0999cb90c3ac62f)
+        ;
+
+        
+    
+    
+                marker_b8ca75b451927682cc76fd2acf5370d0.setIcon(div_icon_0c365bcceb86093b213f1045bddf66c2);
+            
+    
+            var marker_afa417f7f986ac2a3c0077877d4f6c01 = L.marker(
+                [48.118, 11.545],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_ace2d4ea2d72730899f5c6e14999aa5e = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eSendling\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -23.801921463169666],
+  "className": "empty",
+});
+        
+    
+                marker_afa417f7f986ac2a3c0077877d4f6c01.setIcon(div_icon_ace2d4ea2d72730899f5c6e14999aa5e);
+            
+    
+            var marker_28311c544372f99fdaa67fe384bc468d = L.marker(
+                [48.079, 11.528],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_1d9c254a5a268ac54257bac23f73035b = L.divIcon({
+  "html": "\n    \u003csvg width=\"43.96585818843192\" height=\"43.96585818843192\" viewBox=\"0 0 43.96585818843192 43.96585818843192\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.98292909421596 21.98292909421596 L 21.98292909421596 0.0 A 21.98292909421596 21.98292909421596 0 0 1 43.50638866892095 17.511927025622544 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 43.50638866892095 17.511927025622544 A 21.98292909421596 21.98292909421596 0 1 1 0.8196941300297986 16.03594183914514 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 0.8196941300297986 16.03594183914514 A 21.98292909421596 21.98292909421596 0 0 1 4.46406856502751 8.703670932700703 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 4.46406856502751 8.703670932700703 A 21.98292909421596 21.98292909421596 0 0 1 11.9183566589026 2.4392970557319913 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 11.9183566589026 2.4392970557319913 A 21.98292909421596 21.98292909421596 0 0 1 17.592986674856057 0.44279035009383705 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.98292909421596 21.98292909421596 L 17.592986674856057 0.44279035009383705 A 21.98292909421596 21.98292909421596 0 0 1 21.982929094215976 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [43.96585818843192, 43.96585818843192],
+  "iconAnchor": [21.98292909421596, 21.98292909421596],
+  "className": "empty",
+});
+        
+    
+        var popup_b0e8c0e2700733d5ff532e11b5627a6f = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_9f5eb558c43938742d2ce5f68fe3e86a = $(`<div id="html_9f5eb558c43938742d2ce5f68fe3e86a" style="width: 100.0%; height: 100.0%;"><b>Solln</b><br><u>Fair Share (Normalized):</u><br>FDP: 57.6%<br>CSU: 21.7%<br>The Greens: 7.1%<br>SPD: 6.0%<br><br>Total Mentions: 20</div>`)[0];
+                popup_b0e8c0e2700733d5ff532e11b5627a6f.setContent(html_9f5eb558c43938742d2ce5f68fe3e86a);
+            
+        
+
+        marker_28311c544372f99fdaa67fe384bc468d.bindPopup(popup_b0e8c0e2700733d5ff532e11b5627a6f)
+        ;
+
+        
+    
+    
+                marker_28311c544372f99fdaa67fe384bc468d.setIcon(div_icon_1d9c254a5a268ac54257bac23f73035b);
+            
+    
+            var marker_b2a39515991ea0012a65c59296959774 = L.marker(
+                [48.079, 11.528],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_384cb68e844a5b02d96ecb1abf09e076 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eSolln\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.98292909421596],
+  "className": "empty",
+});
+        
+    
+                marker_b2a39515991ea0012a65c59296959774.setIcon(div_icon_384cb68e844a5b02d96ecb1abf09e076);
+            
+    
+            var marker_3023d572ce13d14b00ec8490f9cf6053 = L.marker(
+                [48.1, 11.545],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_a3740fbecb99ce084324fd38c097ea8f = L.divIcon({
+  "html": "\n    \u003csvg width=\"39.879253198304\" height=\"39.879253198304\" viewBox=\"0 0 39.879253198304 39.879253198304\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 19.939626599152 19.939626599152 L 19.939626599152 0.0 A 19.939626599152 19.939626599152 0 0 1 32.433780744999716 4.399844712220434 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.939626599152 19.939626599152 L 32.433780744999716 4.399844712220434 A 19.939626599152 19.939626599152 0 0 1 27.94689836004131 38.200850760222764 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.939626599152 19.939626599152 L 27.94689836004131 38.200850760222764 A 19.939626599152 19.939626599152 0 0 1 20.772150945890548 39.86186573348871 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.939626599152 19.939626599152 L 20.772150945890548 39.86186573348871 A 19.939626599152 19.939626599152 0 0 1 13.80930444550351 38.913499667297486 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.939626599152 19.939626599152 L 13.80930444550351 38.913499667297486 A 19.939626599152 19.939626599152 0 0 1 1.3838974194899265 12.640748361734452 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 19.939626599152 19.939626599152 L 1.3838974194899265 12.640748361734452 A 19.939626599152 19.939626599152 0 0 1 19.93962659915198 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [39.879253198304, 39.879253198304],
+  "iconAnchor": [19.939626599152, 19.939626599152],
+  "className": "empty",
+});
+        
+    
+        var popup_5f4bf35bae2b79b025cf45a1b3b66513 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_46d6dfa094b1fc8be58b4109eaa4db9e = $(`<div id="html_46d6dfa094b1fc8be58b4109eaa4db9e" style="width: 100.0%; height: 100.0%;"><b>Thalkirchen</b><br><u>Fair Share (Normalized):</u><br>FDP: 32.6%<br>The Left: 26.0%<br>ÖDP: 19.0%<br>CSU: 10.8%<br>SPD: 5.9%<br>The Greens: 5.6%<br><br>Total Mentions: 12</div>`)[0];
+                popup_5f4bf35bae2b79b025cf45a1b3b66513.setContent(html_46d6dfa094b1fc8be58b4109eaa4db9e);
+            
+        
+
+        marker_3023d572ce13d14b00ec8490f9cf6053.bindPopup(popup_5f4bf35bae2b79b025cf45a1b3b66513)
+        ;
+
+        
+    
+    
+                marker_3023d572ce13d14b00ec8490f9cf6053.setIcon(div_icon_a3740fbecb99ce084324fd38c097ea8f);
+            
+    
+            var marker_44263a3f14b4a861b30779ea94a6278f = L.marker(
+                [48.1, 11.545],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c3280a70fad5299b340b77a9e3e8454b = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eThalkirchen\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -14.939626599152],
+  "className": "empty",
+});
+        
+    
+                marker_44263a3f14b4a861b30779ea94a6278f.setIcon(div_icon_c3280a70fad5299b340b77a9e3e8454b);
+            
+    
+            var marker_7e4fdad0fc0fac29f4cb1baaf30fe375 = L.marker(
+                [48.125, 11.666],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_8211e99136c6844931d06f6dbc3d1760 = L.divIcon({
+  "html": "\n    \u003csvg width=\"53.5172379362114\" height=\"53.5172379362114\" viewBox=\"0 0 53.5172379362114 53.5172379362114\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 26.7586189681057 26.7586189681057 L 26.7586189681057 0.0 A 26.7586189681057 26.7586189681057 0 0 1 53.13810310278046 22.270133046471436 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 26.7586189681057 26.7586189681057 L 53.13810310278046 22.270133046471436 A 26.7586189681057 26.7586189681057 0 0 1 40.9609258468005 49.43720288341322 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 26.7586189681057 26.7586189681057 L 40.9609258468005 49.43720288341322 A 26.7586189681057 26.7586189681057 0 0 1 18.97383961965599 52.35980838532257 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 26.7586189681057 26.7586189681057 L 18.97383961965599 52.35980838532257 A 26.7586189681057 26.7586189681057 0 0 1 0.8769060866268994 33.55278024091638 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 26.7586189681057 26.7586189681057 L 0.8769060866268994 33.55278024091638 A 26.7586189681057 26.7586189681057 0 0 1 7.093046845245748 8.612298069343339 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 26.7586189681057 26.7586189681057 L 7.093046845245748 8.612298069343339 A 26.7586189681057 26.7586189681057 0 0 1 26.758618968105697 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [53.5172379362114, 53.5172379362114],
+  "iconAnchor": [26.7586189681057, 26.7586189681057],
+  "className": "empty",
+});
+        
+    
+        var popup_a2b88569ede5ae8df2e81f57d1c676bc = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_ad6d5eaa4845bf134709679b3c304db1 = $(`<div id="html_ad6d5eaa4845bf134709679b3c304db1" style="width: 100.0%; height: 100.0%;"><b>Trudering</b><br><u>Fair Share (Normalized):</u><br>CSU: 22.3%<br>FDP: 18.8%<br>The Greens: 16.2%<br>The Left: 15.9%<br>SPD: 13.6%<br>ÖDP: 13.1%<br><br>Total Mentions: 66</div>`)[0];
+                popup_a2b88569ede5ae8df2e81f57d1c676bc.setContent(html_ad6d5eaa4845bf134709679b3c304db1);
+            
+        
+
+        marker_7e4fdad0fc0fac29f4cb1baaf30fe375.bindPopup(popup_a2b88569ede5ae8df2e81f57d1c676bc)
+        ;
+
+        
+    
+    
+                marker_7e4fdad0fc0fac29f4cb1baaf30fe375.setIcon(div_icon_8211e99136c6844931d06f6dbc3d1760);
+            
+    
+            var marker_92f6a5bf2ef55865cd6e8719e4517692 = L.marker(
+                [48.125, 11.666],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_c6f2ae3d96e759b382b59c756a3c4e94 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eTrudering\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -21.7586189681057],
+  "className": "empty",
+});
+        
+    
+                marker_92f6a5bf2ef55865cd6e8719e4517692.setIcon(div_icon_c6f2ae3d96e759b382b59c756a3c4e94);
+            
+    
+            var marker_1fe0ebea4295434bc0753a39f93d39ef = L.marker(
+                [48.11, 11.566],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4252ec06edda8830a879ca5b7dc9b127 = L.divIcon({
+  "html": "\n    \u003csvg width=\"37.57779661868976\" height=\"37.57779661868976\" viewBox=\"0 0 37.57779661868976 37.57779661868976\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 18.78889830934488 18.78889830934488 L 18.78889830934488 0.0 A 18.78889830934488 18.78889830934488 0 0 1 35.28919523144218 9.802080120378927 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 18.78889830934488 18.78889830934488 L 35.28919523144218 9.802080120378927 A 18.78889830934488 18.78889830934488 0 0 1 26.891524036506347 35.74089394420876 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 18.78889830934488 18.78889830934488 L 26.891524036506347 35.74089394420876 A 18.78889830934488 18.78889830934488 0 0 1 0.5952689243076286 23.48086479247452 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 18.78889830934488 18.78889830934488 L 0.5952689243076286 23.48086479247452 A 18.78889830934488 18.78889830934488 0 0 1 0.886839848231709 13.084601461021748 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 18.78889830934488 18.78889830934488 L 0.886839848231709 13.084601461021748 A 18.78889830934488 18.78889830934488 0 0 1 18.78889830934486 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [37.57779661868976, 37.57779661868976],
+  "iconAnchor": [18.78889830934488, 18.78889830934488],
+  "className": "empty",
+});
+        
+    
+        var popup_3cc18a1c5a3e10ba48b52590a2b038d4 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_716b57f797589111d8e26df406e4593b = $(`<div id="html_716b57f797589111d8e26df406e4593b" style="width: 100.0%; height: 100.0%;"><b>Untergiesing</b><br><u>Fair Share (Normalized):</u><br>SPD: 28.1%<br>FDP: 25.8%<br>ÖDP: 20.1%<br>CSU: 17.1%<br>The Greens: 8.9%<br><br>Total Mentions: 9</div>`)[0];
+                popup_3cc18a1c5a3e10ba48b52590a2b038d4.setContent(html_716b57f797589111d8e26df406e4593b);
+            
+        
+
+        marker_1fe0ebea4295434bc0753a39f93d39ef.bindPopup(popup_3cc18a1c5a3e10ba48b52590a2b038d4)
+        ;
+
+        
+    
+    
+                marker_1fe0ebea4295434bc0753a39f93d39ef.setIcon(div_icon_4252ec06edda8830a879ca5b7dc9b127);
+            
+    
+            var marker_0cab1434760761dba9b4a6dd55631227 = L.marker(
+                [48.11, 11.566],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_32c6e75cf9c001c45714da400c8bd7fe = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eUntergiesing\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -13.78889830934488],
+  "className": "empty",
+});
+        
+    
+                marker_0cab1434760761dba9b4a6dd55631227.setIcon(div_icon_32c6e75cf9c001c45714da400c8bd7fe);
+            
+    
+            var marker_0eee15da2e2050e17379a4029b9782dc = L.marker(
+                [48.176, 11.474],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_5939b1c5f29c01be67e747323c701009 = L.divIcon({
+  "html": "\n    \u003csvg width=\"46.36669492803463\" height=\"46.36669492803463\" viewBox=\"0 0 46.36669492803463 46.36669492803463\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 23.183347464017316 23.183347464017316 L 23.183347464017316 0.0 A 23.183347464017316 23.183347464017316 0 0 1 39.40491135026116 6.620483438678352 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.183347464017316 23.183347464017316 L 39.40491135026116 6.620483438678352 A 23.183347464017316 23.183347464017316 0 0 1 45.8624337383455 18.37433037120747 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.183347464017316 23.183347464017316 L 45.8624337383455 18.37433037120747 A 23.183347464017316 23.183347464017316 0 0 1 44.2684174765316 32.82115957075237 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.183347464017316 23.183347464017316 L 44.2684174765316 32.82115957075237 A 23.183347464017316 23.183347464017316 0 0 1 38.75768543805309 40.35622131517762 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 23.183347464017316 23.183347464017316 L 38.75768543805309 40.35622131517762 A 23.183347464017316 23.183347464017316 0 1 1 23.183347464017313 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [46.36669492803463, 46.36669492803463],
+  "iconAnchor": [23.183347464017316, 23.183347464017316],
+  "className": "empty",
+});
+        
+    
+        var popup_c80c7a5f3cd7fc14bc0824aa8d05833f = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_e3bd077a9a411f28c167120acdced8b2 = $(`<div id="html_e3bd077a9a411f28c167120acdced8b2" style="width: 100.0%; height: 100.0%;"><b>Untermenzing</b><br><u>Fair Share (Normalized):</u><br>ÖDP: 61.7%<br>CSU: 12.3%<br>SPD: 10.1%<br>FDP: 9.3%<br>The Greens: 6.5%<br><br>Total Mentions: 27</div>`)[0];
+                popup_c80c7a5f3cd7fc14bc0824aa8d05833f.setContent(html_e3bd077a9a411f28c167120acdced8b2);
+            
+        
+
+        marker_0eee15da2e2050e17379a4029b9782dc.bindPopup(popup_c80c7a5f3cd7fc14bc0824aa8d05833f)
+        ;
+
+        
+    
+    
+                marker_0eee15da2e2050e17379a4029b9782dc.setIcon(div_icon_5939b1c5f29c01be67e747323c701009);
+            
+    
+            var marker_c18adb7d94f0160d7bc429e9e7c38076 = L.marker(
+                [48.176, 11.474],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_f73292b6f692025f312c4a5c49d6a385 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eUntermenzing\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -18.183347464017316],
+  "className": "empty",
+});
+        
+    
+                marker_c18adb7d94f0160d7bc429e9e7c38076.setIcon(div_icon_f73292b6f692025f312c4a5c49d6a385);
+            
+    
+            var marker_faeecce87266e0f1c8316179b69d7dd5 = L.marker(
+                [48.136, 11.54],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_1416288209a8afeafac9b0d2446063e9 = L.divIcon({
+  "html": "\n    \u003csvg width=\"42.66570675244973\" height=\"42.66570675244973\" viewBox=\"0 0 42.66570675244973 42.66570675244973\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.332853376224865 21.332853376224865 L 21.332853376224865 0.0 A 21.332853376224865 21.332853376224865 0 0 1 30.67372261421965 40.511977314773034 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 30.67372261421965 40.511977314773034 A 21.332853376224865 21.332853376224865 0 0 1 2.9097048812263786 32.08823494559485 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 2.9097048812263786 32.08823494559485 A 21.332853376224865 21.332853376224865 0 0 1 0.17496381441545594 18.606254311128364 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 0.17496381441545594 18.606254311128364 A 21.332853376224865 21.332853376224865 0 0 1 21.33285337622486 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [42.66570675244973, 42.66570675244973],
+  "iconAnchor": [21.332853376224865, 21.332853376224865],
+  "className": "empty",
+});
+        
+    
+        var popup_6ef4ad4cee1100ec595f0e8f2275f329 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_3ddd929aaf314d598df639b7a14b8048 = $(`<div id="html_3ddd929aaf314d598df639b7a14b8048" style="width: 100.0%; height: 100.0%;"><b>Westend</b><br><u>Fair Share (Normalized):</u><br>SPD: 42.8%<br>The Greens: 23.8%<br>ÖDP: 23.0%<br>The Left: 10.4%<br><br>Total Mentions: 17</div>`)[0];
+                popup_6ef4ad4cee1100ec595f0e8f2275f329.setContent(html_3ddd929aaf314d598df639b7a14b8048);
+            
+        
+
+        marker_faeecce87266e0f1c8316179b69d7dd5.bindPopup(popup_6ef4ad4cee1100ec595f0e8f2275f329)
+        ;
+
+        
+    
+    
+                marker_faeecce87266e0f1c8316179b69d7dd5.setIcon(div_icon_1416288209a8afeafac9b0d2446063e9);
+            
+    
+            var marker_75df809035d36c6b2295ad424146c4ee = L.marker(
+                [48.136, 11.54],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4f46e0dd5bd37419461a33c138b3f15c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eWestend\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.332853376224865],
+  "className": "empty",
+});
+        
+    
+                marker_75df809035d36c6b2295ad424146c4ee.setIcon(div_icon_4f46e0dd5bd37419461a33c138b3f15c);
+            
+    
+            var marker_efaedad84b36b13cafcfe79039e8d4e8 = L.marker(
+                [48.119, 11.516],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_4826717d6d0b4110766760fa4edaa6c0 = L.divIcon({
+  "html": "\n    \u003csvg width=\"42.66570675244973\" height=\"42.66570675244973\" viewBox=\"0 0 42.66570675244973 42.66570675244973\" xmlns=\"http://www.w3.org/2000/svg\" style=\"filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));\"\u003e\n        \u003cpath d=\"M 21.332853376224865 21.332853376224865 L 21.332853376224865 0.0 A 21.332853376224865 21.332853376224865 0 0 1 39.39079018046867 32.69073837059973 Z\" fill=\"#000000\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 39.39079018046867 32.69073837059973 A 21.332853376224865 21.332853376224865 0 0 1 25.613482830699795 42.23182092596258 Z\" fill=\"#FFED00\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 25.613482830699795 42.23182092596258 A 21.332853376224865 21.332853376224865 0 0 1 0.0035884088852355944 21.724119429604134 Z\" fill=\"#E3000F\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 0.0035884088852355944 21.724119429604134 A 21.332853376224865 21.332853376224865 0 0 1 1.6837247453080835 13.026086422879231 Z\" fill=\"#46962b\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 1.6837247453080835 13.026086422879231 A 21.332853376224865 21.332853376224865 0 0 1 14.747311939418351 1.041937252116199 Z\" fill=\"#BE3075\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\u003cpath d=\"M 21.332853376224865 21.332853376224865 L 14.747311939418351 1.041937252116199 A 21.332853376224865 21.332853376224865 0 0 1 21.33285337622486 0.0 Z\" fill=\"#FF6600\" stroke=\"white\" stroke-width=\"0.5\"/\u003e\n    \u003c/svg\u003e\n    ",
+  "iconSize": [42.66570675244973, 42.66570675244973],
+  "iconAnchor": [21.332853376224865, 21.332853376224865],
+  "className": "empty",
+});
+        
+    
+        var popup_2516d43f61b990fc5dd0618abc32f359 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_64f0bc97fcca3eb3d6415f6ce8a4ae36 = $(`<div id="html_64f0bc97fcca3eb3d6415f6ce8a4ae36" style="width: 100.0%; height: 100.0%;"><b>Westpark</b><br><u>Fair Share (Normalized):</u><br>CSU: 33.9%<br>SPD: 27.9%<br>The Left: 13.6%<br>FDP: 12.8%<br>The Greens: 6.7%<br><br>Total Mentions: 17</div>`)[0];
+                popup_2516d43f61b990fc5dd0618abc32f359.setContent(html_64f0bc97fcca3eb3d6415f6ce8a4ae36);
+            
+        
+
+        marker_efaedad84b36b13cafcfe79039e8d4e8.bindPopup(popup_2516d43f61b990fc5dd0618abc32f359)
+        ;
+
+        
+    
+    
+                marker_efaedad84b36b13cafcfe79039e8d4e8.setIcon(div_icon_4826717d6d0b4110766760fa4edaa6c0);
+            
+    
+            var marker_085c3b4382fbbc208513db7380af8f4d = L.marker(
+                [48.119, 11.516],
+                {
+}
+            ).addTo(map_79a1fb1dc582cd9f927bec3b50032498);
+        
+    
+            var div_icon_70db20287ff01e21f306d2283e0a7c1f = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 8pt; text-align: center; font-weight: bold; color: #333; text-shadow: 1px 1px 0px white;\"\u003eWestpark\u003c/div\u003e",
+  "iconSize": [100, 20],
+  "iconAnchor": [50, -16.332853376224865],
+  "className": "empty",
+});
+        
+    
+                marker_085c3b4382fbbc208513db7380af8f4d.setIcon(div_icon_70db20287ff01e21f306d2283e0a7c1f);
+            
+</script>
+</html>

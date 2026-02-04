@@ -992,13 +992,13 @@ export function renderKPICards(metrics, selector, options = {}) {
   cardsContainer.appendChild(closedCard);
   cardsContainer.appendChild(avgCard);
 
-  // Add title if searchTerm provided
-  if (searchTerm) {
-    const title = document.createElement("h3");
-    title.textContent = `Bearbeitungsmetriken: "${capitalizeFirstLetter(searchTerm)}"`;
-    title.style.cssText = "text-align: center; color: #1f2937; margin: 10px 0;";
-    container.appendChild(title);
-  }
+  // Add title (localized)
+  const title = document.createElement("h3");
+  title.textContent = searchTerm
+    ? `${t('kpi.metrics.title')}: "${capitalizeFirstLetter(searchTerm)}"`
+    : t('kpi.metrics.title.all');
+  title.style.cssText = "text-align: center; color: #1f2937; margin: 10px 0;";
+  container.appendChild(title);
 
   container.appendChild(cardsContainer);
 }

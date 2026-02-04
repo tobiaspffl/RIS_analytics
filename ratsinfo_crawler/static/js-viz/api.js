@@ -211,6 +211,24 @@ export async function fetchDateRange() {
 }
 
 /**
+ * Fetch yearly content coverage (share of proposals with content)
+ * @returns {Promise<Array>} - Array of {year, coverage, with_content, total}
+ */
+export async function fetchContentCoverageYearly() {
+  try {
+    const res = await fetch(`/content-coverage-yearly`);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return [];
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching content coverage:", error);
+    return [];
+  }
+}
+
+/**
  * Fetch available Typ values from the dataset
  * @returns {Promise<Array<string>>} - Array of Typ strings
  */
@@ -295,5 +313,56 @@ export async function fetchApplications(word, typFilter = null, dateFilter = nul
   } catch (error) {
     console.error("Error fetching applications:", error);
     return { data: [], total: 0, offset: 0, limit: 20 };
+  }
+}
+
+/**
+ * Fetch PDF availability by month (cached on backend)
+ * @returns {Promise<Array>} - Array of {month, pdf_availability} objects
+ */
+export async function fetchPdfAvailability() {
+  try {
+    const res = await fetch('/pdf_availability');
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return [];
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching PDF availability:", error);
+    return [];
+  }
+}
+
+/**
+ * Fetch bias-corrected monthly trend data
+ * @param {string} word - The keyword to search for
+ * @param {Array<string>} typFilter - Array of Typ values to filter by (optional)
+ * @param {Object} dateFilter - Object with "from" and/or "to" keys in YYYY-MM-DD format (optional)
+ * @returns {Promise<Array>} - Array of {month, count, count_corrected, pdf_availability} objects
+ */
+export async function fetchTrendCorrected(word, typFilter = null, dateFilter = null) {
+  try {
+    let url = `/trend_corrected?word=${encodeURIComponent(word)}`;
+    if (typFilter && typFilter.length > 0) {
+      url += `&typ=${encodeURIComponent(typFilter.join(','))}`;
+    }
+    if (dateFilter) {
+      if (dateFilter.from) {
+        url += `&date_from=${encodeURIComponent(dateFilter.from)}`;
+      }
+      if (dateFilter.to) {
+        url += `&date_to=${encodeURIComponent(dateFilter.to)}`;
+      }
+    }
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error(`API error: ${res.status}`);
+      return [];
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error fetching corrected trend:", error);
+    return [];
   }
 }

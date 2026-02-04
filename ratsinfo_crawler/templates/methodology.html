@@ -31,7 +31,7 @@
         <h2 data-i18n="methodology.datasources.title">1. Datenquellen</h2>
         <ul class="legal-list">
           <li data-i18n="methodology.datasources.1">Basis ist die öffentlich zugängliche Ratsinformations-Plattform der Stadt München.</li>
-          <li data-i18n="methodology.datasources.2">Dokumente werden per Crawler geladen und in <code>data.csv</code> abgelegt (Spalten u. a.: Drucksachen-Nr., Titel, Typ, Gestellt am, Erledigt am, Gestellt von, Zuständiges Referat, document_content).</li>
+          <li data-i18n-html="methodology.datasources.2">Dokumente werden per Crawler geladen und in <code>data.csv</code> abgelegt (Spalten u. a.: Drucksachen-Nr., Titel, Typ, Gestellt am, Erledigt am, Gestellt von, Zuständiges Referat, document_content).</li>
           <li data-i18n="methodology.datasources.3">Personen- und Fraktionsnamen stammen ausschließlich aus den veröffentlichten Dokumenten.</li>
         </ul>
       </section>
@@ -41,7 +41,7 @@
         <ul class="legal-list">
           <li data-i18n="methodology.preprocessing.1">Alle Texte werden als String gespeichert, Datumsspalten in Datumsformate konvertiert (ungültige Daten werden verworfen).</li>
           <li data-i18n="methodology.preprocessing.2">Keine automatische Korrektur oder Normalisierung des Inhalts; eventuelle OCR-/Formatierungsartefakte bleiben bestehen.</li>
-          <li data-i18n="methodology.preprocessing.3">Optional können Filter nach Antragstyp (<code>typ_filter</code>) angewandt werden (OR-Logik über ausgewählte Typen).</li>
+          <li data-i18n-html="methodology.preprocessing.3">Optional können Filter nach Antragstyp (<code>typ_filter</code>) angewandt werden (OR-Logik über ausgewählte Typen).</li>
         </ul>
       </section>
 
@@ -49,28 +49,29 @@
         <h2 data-i18n="methodology.search.title">3. Such- und Zählregeln</h2>
         <ul class="legal-list">
           <li data-i18n="methodology.search.1">Suche erfolgt regex-basiert, case-insensitive, pro Suchwort.</li>
-          <li data-i18n="methodology.search.2"><strong>Schwelle:</strong> <code>MIN_OCCURRENCES_PER_DOC = 1</code>. Ein Dokument zählt als Treffer, sobald das Suchwort mindestens einmal vorkommt.</li>
-          <li data-i18n="methodology.search.3"><strong>Binär pro Dokument:</strong> Ein Dokument trägt maximal 1 zum Zähler bei, auch wenn das Wort mehrfach vorkommt.</li>
-          <li data-i18n="methodology.search.4"><strong>Theme-Expansion (aktiv):</strong> Suchbegriffe werden über <code>THEME_MAP</code> um thematisch verwandte Phrasen erweitert (z. B. "Wohnen" → Wohnung, Miete, Zimmer ...). Dadurch steigen Trefferzahlen, weil Synonyme mitgezählt werden. Abschaltbar via <code>expand_with_themes=False</code>.</li>
-          <li data-i18n="methodology.search.5"><strong>Mehrere Suchwörter:</strong> Trefferlisten werden vereinigt (Union). <code>total_word_count</code> zählt jedes Dokument höchstens einmal über alle Suchbegriffe.</li>
-          <li data-i18n="methodology.search.6"><strong>Lemmatisierung:</strong> Für Theme-Expansion wird spaCy auf Lemmebene eingesetzt; die eigentliche Zählung bleibt regex-basiert.</li>
+          <li data-i18n="methodology.search.7">Freie Stichwortsuche: Es kann jedes Wort bzw. jede Phrase gesucht werden.</li>
+          <li data-i18n-html="methodology.search.2"><strong>Schwelle:</strong> <code>MIN_OCCURRENCES_PER_DOC = 1</code>. Ein Dokument zählt als Treffer, sobald das Suchwort mindestens einmal vorkommt.</li>
+          <li data-i18n-html="methodology.search.3"><strong>Binär pro Dokument:</strong> Ein Dokument trägt maximal 1 zum Zähler bei, auch wenn das Wort mehrfach vorkommt.</li>
+          <li data-i18n-html="methodology.search.4"><strong>Theme-Expansion (aktiv):</strong> Suchbegriffe werden über <code>THEME_MAP</code> um thematisch verwandte Phrasen erweitert (z. B. "Wohnen" → Wohnung, Miete, Zimmer ...). Dadurch steigen Trefferzahlen, weil Synonyme mitgezählt werden. Abschaltbar via <code>expand_with_themes=False</code>.</li>
+          <li data-i18n-html="methodology.search.5"><strong>Mehrere Suchwörter:</strong> Trefferlisten werden vereinigt (Union). <code>total_word_count</code> zählt jedes Dokument höchstens einmal über alle Suchbegriffe.</li>
+          <li data-i18n-html="methodology.search.6"><strong>Lemmatisierung:</strong> Für Theme-Expansion wird spaCy auf Lemmebene eingesetzt; die eigentliche Zählung bleibt regex-basiert.</li>
         </ul>
       </section>
 
       <section class="legal-card">
         <h2 data-i18n="methodology.theme.title">4. Theme-Expansion und semantische Suche</h2>
-        <p data-i18n="methodology.theme.subtitle"><strong>Wie ein Suchbegriff zu mehreren Suchbegriffen wird:</strong></p>
-        <p data-i18n="methodology.theme.intro">
+        <p data-i18n-html="methodology.theme.subtitle"><strong>Wie ein Suchbegriff zu mehreren Suchbegriffen wird:</strong></p>
+        <p data-i18n-html="methodology.theme.intro">
           Um die Suchergebnisse zu verbessern, gibt es die Möglichkeit, mit einem Suchbegriff automatisch verwandte Begriffe zu finden. Dieses System heißt <strong>Theme-Expansion</strong> und funktioniert folgendermaßen:
         </p>
         <ul class="legal-list">
           <li data-i18n="methodology.theme.list.1">Der Nutzer klickt einen Theme-Button (z. B. „Wohnen") auf der Startseite oder gibt einen Suchbegriff ein.</li>
-          <li data-i18n="methodology.theme.list.2">Das System prüft, ob dieser Begriff einem <strong>Theme in der THEME_MAP</strong> entspricht oder einer der zugeordneten Phrasen.</li>
+          <li data-i18n-html="methodology.theme.list.2">Das System prüft, ob dieser Begriff einem <strong>Theme in der THEME_MAP</strong> entspricht oder einer der zugeordneten Phrasen.</li>
           <li data-i18n="methodology.theme.list.3">Falls ja: Alle Phrasen dieses Themes werden zur Suche hinzugefügt. Z. B. werden bei „Wohnen" automatisch auch „Wohnung", „Miete", „Mietspiegel", etc. gesucht.</li>
-          <li data-i18n="methodology.theme.list.4">Die Regex-basierte Suche wird dann für <strong>jeden dieser expandierten Begriffe</strong> durchgeführt.</li>
-          <li data-i18n="methodology.theme.list.5">Die Ergebnisse werden zusammengefasst (Union), sodass jedes Dokument maximal einmal gezählt wird.</li>
+          <li data-i18n-html="methodology.theme.list.4">Die Regex-basierte Suche wird dann für <strong>jeden dieser expandierten Begriffe</strong> durchgeführt.</li>
+          <li data-i18n-html="methodology.theme.list.5">Die Ergebnisse werden zusammengefasst (Union), sodass jedes Dokument maximal einmal gezählt wird.</li>
         </ul>
-        <p data-i18n="methodology.theme.technical">
+        <p data-i18n-html="methodology.theme.technical">
           <strong>Technischer Hintergrund:</strong> Die Theme-Expansion ist lexikon-basiert (rule-based) und nutzt <strong>spaCy</strong> auf Lemma-Ebene für die Erkennung von Themenbegriffen in Texten. Die eigentliche Zählung bleibt regex-basiert für optimale Performance. Die Theme-Expansion ist standardmäßig aktiviert, kann aber über <code>expand_with_themes=False</code> deaktiviert werden.
         </p>
 
@@ -143,10 +144,16 @@
       <section class="legal-card">
         <h2 data-i18n="methodology.evaluations.title">5. Auswertungen</h2>
         <ul class="legal-list">
-          <li data-i18n="methodology.evaluations.1"><strong>Trend:</strong> Gruppierung nach Monat (YYYY-MM) und Summe der binären <code>count</code>-Spalte; optionale Typ-Breakdowns.</li>
-          <li data-i18n="methodology.evaluations.2"><strong>Fraktionen/Einreicher:</strong> Feld <code>Gestellt von</code> wird an Kommata gesplittet, pro Name summiert; optional Typ-Breakdowns.</li>
-          <li data-i18n="methodology.evaluations.3"><strong>Anteil pro Fraktion:</strong> Verhältnis (Treffer / alle Dokumente je Fraktion), Null-Divisionen werden entfernt.</li>
-          <li data-i18n="methodology.evaluations.4"><strong>KPI Verarbeitung:</strong> Durchschnittliche Bearbeitungszeit (Erledigt am − Gestellt am) nur für erledigte Vorgänge; offene/geschlossene Zähler basieren auf Vorhandensein des Erledigt-Datums; Referats-Breakdown über erledigte Vorgänge.</li>
+          <li data-i18n-html="methodology.evaluations.10"><strong>Zeitslider-Hinweis:</strong> Zeigt die Inhaltsabdeckung (Anteil der Anträge mit Textinhalt) für das Jahr unter dem Regler. Die Prozentwerte werden je Jahr aus <code>document_content</code> berechnet und in Kategorien zusammengefasst.</li>
+          <li data-i18n-html="methodology.evaluations.4"><strong>KPI Verarbeitung:</strong> Durchschnittliche Bearbeitungszeit (Erledigt am − Gestellt am) nur für erledigte Vorgänge; offene/geschlossene Zähler basieren auf Vorhandensein des Erledigt-Datums; Referats-Breakdown über erledigte Vorgänge.</li>
+          <li data-i18n-html="methodology.evaluations.1"><strong>Trend (absolut):</strong> Gruppierung nach Monat (YYYY-MM) und Summe der binären <code>count</code>-Spalte; Tooltips zeigen Typ-Breakdown und Gesamtzahl.</li>
+          <li data-i18n-html="methodology.evaluations.5"><strong>Trend (Anteil):</strong> Anteil der Treffer pro Monat (<code>count/total</code>); Tooltips zeigen Anteil sowie Treffer/gesamt.</li>
+          <li data-i18n-html="methodology.evaluations.6"><strong>Trend (korrigiert):</strong> Korrektur der Monatszahlen mit der PDF-Verfügbarkeit (Schätzung fehlender Inhalte).</li>
+          <li data-i18n-html="methodology.evaluations.2"><strong>Fraktionen/Einreicher:</strong> Feld <code>Gestellt von</code> wird an Kommata gesplittet, pro Name summiert; Tooltips zeigen Typ-Breakdowns.</li>
+          <li data-i18n-html="methodology.evaluations.3"><strong>Anteil pro Fraktion:</strong> Verhältnis (Treffer / alle Dokumente je Fraktion); Tooltips zeigen Anteil und Treffer/gesamt.</li>
+          <li data-i18n-html="methodology.evaluations.7"><strong>Bearbeitungsdauer nach Referat:</strong> Durchschnittliche Tage pro Referat; Tooltips zeigen Ø‑Tage und Typ-Breakdown.</li>
+          <li data-i18n-html="methodology.evaluations.9"><strong>Stadtteilkarte:</strong> Kreisdiagramme je Stadtteil, normalisiert nach Gesamtaktivität der Fraktionen; Kreisgröße = Erwähnungen. Diese Karte ist statisch.</li>
+          <li data-i18n-html="methodology.evaluations.8"><strong>Antragsliste:</strong> Kartenansicht mit Titel, Datum und Kurzbeschreibung; Klick öffnet das Dokument (falls vorhanden).</li>
         </ul>
       </section>
 
@@ -155,6 +162,8 @@
         <ul class="legal-list">
           <li data-i18n="methodology.visualization.1">Frontend nutzt D3.js; Daten werden über JSON-Endpunkte aus Flask geladen.</li>
           <li data-i18n="methodology.visualization.2">Keine clientseitige Nachfilterung außer Darstellung (Tooltips, Sortierungen auf Basis der gelieferten Aggregationen).</li>
+          <li data-i18n="methodology.visualization.3">Tooltips zeigen zusätzliche Details (z. B. Typ-Breakdowns, Anteile und Treffer/gesamt).</li>
+          <li data-i18n="methodology.visualization.4">Die Stadtteilkarte ist vorgerendert und wird nicht durch die Filter beeinflusst.</li>
         </ul>
       </section>
 

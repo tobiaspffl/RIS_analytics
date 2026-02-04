@@ -11,6 +11,13 @@ import { t, getCurrentLang, setCurrentLang } from './i18n.js';
  */
 export function applyTranslations() {
   const lang = getCurrentLang();
+
+  // Translate HTML content (allows <strong>, <code>, etc.)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    const translation = t(key, lang);
+    el.innerHTML = translation;
+  });
   
   // Translate text content
   document.querySelectorAll('[data-i18n]').forEach(el => {

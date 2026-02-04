@@ -11,7 +11,7 @@
 import { t, getCurrentLang } from '../i18n.js';
 import { prepareTrendData, getTopDocuments } from "./transforms.js";
 import { renderTrendChart, renderBarChart, renderFraktionChart, renderFraktionShareChart, renderTrendShareChart, renderKPICards, renderProcessingTimeChart, renderApplicationsList } from './visualize.js';
-import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchTrendShare, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms, fetchApplications, APPLICATIONS_BATCH_SIZE } from './api.js';
+import { fetchTrend, fetchDocuments, fetchFraktionen, fetchFraktionenShare, fetchTrendShare, fetchTrendCorrected, fetchMetrics, fetchDateRange, fetchAvailableTypen, fetchExpandedSearchTerms, fetchApplications, fetchContentCoverageYearly, APPLICATIONS_BATCH_SIZE } from './api.js';
 
 /**
  * Helper function to capitalize first letter of a word
@@ -25,6 +25,7 @@ function capitalizeFirstLetter(word) {
 const state = {
   currentWord: "",
   showTrend: true,
+  showTrendCorrected: true,
   showTrendShare: true,
   showFraktionen: true,
   showFraktionenShare: true,
@@ -63,6 +64,7 @@ async function refresh() {
 
   // Show loading state in containers
   const trendContainer = document.getElementById("viz-trend");
+  const trendCorrectedContainer = document.getElementById("viz-trend-corrected");
   const trendShareContainer = document.getElementById("viz-trend-share");
   const fraktionenContainer = document.getElementById("viz-fraktionen");
   const fraktionenShareContainer = document.getElementById("viz-fraktionen-share");
@@ -73,6 +75,7 @@ async function refresh() {
   if (trendContainer && fraktionenContainer && fraktionenShareContainer && docsContainer) {
     const loadingHTML = `<p class="loading-text loading-dots">${t('loading.data')}</p>`;
     trendContainer.innerHTML = loadingHTML;
+    if (trendCorrectedContainer) trendCorrectedContainer.innerHTML = loadingHTML;
     if (trendShareContainer) trendShareContainer.innerHTML = loadingHTML;
     fraktionenContainer.innerHTML = loadingHTML;
     fraktionenShareContainer.innerHTML = loadingHTML;
@@ -97,7 +100,14 @@ async function refresh() {
       promises.push(Promise.resolve(null));
     }
 
-    // Only fetch trend share when word is provided
+    // Only fetch corrected trend when word is provided (no search data without keyword)
+    if (state.showTrendCorrected && word) {
+      promises.push(fetchTrendCorrected(word, typFilter, dateFilter));
+    } else {
+      promises.push(Promise.resolve(null));
+    }
+
+    // Only fetch trend share when word is provided (semantically makes no sense without keyword)
     if (state.showTrendShare && word) {
       promises.push(fetchTrendShare(word, typFilter, dateFilter));
     } else {
@@ -140,7 +150,7 @@ async function refresh() {
     
     promises.push(fetchMetrics(word, typFilter, dateFilter));
 
-    const [trendData, trendShareData, fraktionenData, fraktionenShareData, documentsData, applicationsData, metrics] = await Promise.all(promises);
+    const [trendData, trendCorrectedData, trendShareData, fraktionenData, fraktionenShareData, documentsData, applicationsData, metrics] = await Promise.all(promises);
     // Containers sind bereits oben initialisiert
 
     // Render trend chart
@@ -160,10 +170,35 @@ async function refresh() {
       trendContainer.innerHTML = "";
     }
 
+    // Render corrected trend chart (bias-corrected for missing PDFs)
+    if (state.showTrendCorrected && word && trendCorrectedContainer) {
+      if (trendCorrectedData && trendCorrectedData.length > 0) {
+        const mapped = trendCorrectedData
+          .map(d => ({
+            ...d,
+            count: typeof d.count_corrected === "number" ? d.count_corrected : d.count
+          }))
+          .filter(d => typeof d.count === "number" && d.count > 0);
+        const prepared = prepareTrendData(mapped).filter(d => d.count > 0);
+        renderTrendChart(prepared, "#viz-trend-corrected", {
+          title: t('chart.trend.corrected.title'),
+          searchTerm: word,
+          width: 900,
+          height: 400
+        });
+      } else {
+        trendCorrectedContainer.innerHTML = `<p>${t('error.no-data')}</p>`;
+      }
+    } else {
+      // Hide corrected trend chart when no keyword or container missing
+      if (trendCorrectedContainer) trendCorrectedContainer.innerHTML = "";
+    }
+
     // Render trend share chart (relative percentage per month)
     if (state.showTrendShare && word) {
       if (trendShareData && trendShareData.length > 0) {
-        const prepared = prepareTrendData(trendShareData, { isShare: true });
+        const prepared = prepareTrendData(trendShareData, { isShare: true })
+          .filter(d => typeof d.count === "number" && d.count > 0);
         renderTrendShareChart(prepared, "#viz-trend-share", {
           title: t('chart.trend.share.title'),
           searchTerm: word,
@@ -426,9 +461,15 @@ const dateSliderTo = document.getElementById("dateSliderTo");
 const sliderLabelFrom = document.getElementById("sliderDateFrom");
 const sliderLabelTo = document.getElementById("sliderDateTo");
 const sliderTrackActive = document.querySelector(".slider-track-active");
+const sliderTrackBase = document.querySelector(".slider-track");
+const sliderHintFrom = document.getElementById("sliderHintFrom");
+const sliderHintTo = document.getElementById("sliderHintTo");
 const clearDateBtn = document.getElementById("clearDateFilter");
 const dateFilterToggle = document.getElementById("dateFilterToggle");
 const dateFilterSection = document.querySelector(".date-filter-section");
+
+// Cache for yearly content coverage
+let contentCoverageByYear = null;
 
 /**
  * Format date for display in slider labels (Month/Year only)
@@ -479,6 +520,149 @@ function updateSliderTrack() {
     // Update state
     state.dateFilter.from = fromDate;
     state.dateFilter.to = toDate;
+
+    // Update left slider thumb color to match coverage under the handle
+    if (contentCoverageByYear) {
+      const fromYear = new Date(fromDate + "T00:00:00").getFullYear();
+      if (Number.isFinite(fromYear) && contentCoverageByYear[fromYear] !== undefined) {
+        const color = coverageToColor(contentCoverageByYear[fromYear]);
+        dateSliderFrom.style.setProperty("--slider-thumb-color", color);
+        dateSliderFrom.style.setProperty("--slider-thumb-shadow", rgbToRgba(color, 0.35));
+      }
+    }
+
+    // Update slider coverage hints
+    updateSliderHint(dateSliderFrom, sliderHintFrom, fromDate, fromPercent);
+    updateSliderHint(dateSliderTo, sliderHintTo, toDate, toPercent);
+  }
+}
+
+function getCoverageCategory(coverage) {
+  const v = Math.max(0, Math.min(1, coverage));
+  if (v < 0.1) return t('slider.coverage.none');
+  if (v < 0.3) return t('slider.coverage.very_low');
+  if (v < 0.5) return t('slider.coverage.low');
+  if (v < 0.7) return t('slider.coverage.medium');
+  if (v < 0.9) return t('slider.coverage.high');
+  return t('slider.coverage.very_high');
+}
+
+function updateSliderHint(sliderEl, hintEl, dateStr, percent) {
+  if (!sliderEl || !hintEl || !contentCoverageByYear || !dateStr) return;
+  const year = new Date(dateStr + "T00:00:00").getFullYear();
+  const coverage = contentCoverageByYear[year];
+  if (coverage === undefined) return;
+
+  const label = getCoverageCategory(coverage);
+  const pct = Math.round(coverage * 100);
+  hintEl.textContent = `${t('slider.coverage.label')}: ${pct}% · ${label}`;
+  hintEl.style.left = `${percent}%`;
+}
+
+/**
+ * Interpolate between two hex colors
+ */
+function interpolateColor(hex1, hex2, t) {
+  const c1 = hex1.replace('#', '');
+  const c2 = hex2.replace('#', '');
+  const r1 = parseInt(c1.substring(0, 2), 16);
+  const g1 = parseInt(c1.substring(2, 4), 16);
+  const b1 = parseInt(c1.substring(4, 6), 16);
+  const r2 = parseInt(c2.substring(0, 2), 16);
+  const g2 = parseInt(c2.substring(2, 4), 16);
+  const b2 = parseInt(c2.substring(4, 6), 16);
+
+  const r = Math.round(r1 + (r2 - r1) * t);
+  const g = Math.round(g1 + (g2 - g1) * t);
+  const b = Math.round(b1 + (b2 - b1) * t);
+
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+function rgbToRgba(rgb, alpha) {
+  const match = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(rgb);
+  if (!match) return `rgba(37, 99, 235, ${alpha})`;
+  const [, r, g, b] = match;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/**
+ * Map coverage (0-1) to a smooth red->blue color
+ */
+function coverageToColor(coverage) {
+  const clamped = Math.max(0, Math.min(1, coverage));
+  const eased = Math.pow(clamped, 0.7); // soften the transition
+  return interpolateColor("#ef4444", "#3b82f6", eased);
+}
+
+/**
+ * Build a smooth gradient based on yearly coverage
+ */
+function buildCoverageGradient() {
+  if (!contentCoverageByYear || !dateRangeData.allDates || dateRangeData.allDates.length < 2) return null;
+
+  const yearBounds = new Map();
+  dateRangeData.allDates.forEach((dateStr, idx) => {
+    const year = new Date(dateStr + "T00:00:00").getFullYear();
+    if (!yearBounds.has(year)) {
+      yearBounds.set(year, { start: idx, end: idx });
+    } else {
+      yearBounds.get(year).end = idx;
+    }
+  });
+
+  const years = Object.keys(contentCoverageByYear)
+    .map(Number)
+    .filter(year => yearBounds.has(year))
+    .sort((a, b) => a - b);
+
+  if (years.length === 0) return null;
+
+  const totalSteps = dateRangeData.allDates.length - 1;
+  const stops = [];
+
+  const firstYear = years[0];
+  const lastYear = years[years.length - 1];
+  stops.push(`${coverageToColor(contentCoverageByYear[firstYear])} 0%`);
+
+  years.forEach(year => {
+    const bounds = yearBounds.get(year);
+    const mid = (bounds.start + bounds.end) / 2;
+    const percent = (mid / totalSteps) * 100;
+    const color = coverageToColor(contentCoverageByYear[year]);
+    stops.push(`${color} ${percent.toFixed(2)}%`);
+  });
+
+  stops.push(`${coverageToColor(contentCoverageByYear[lastYear])} 100%`);
+
+  return `linear-gradient(90deg, ${stops.join(", ")})`;
+}
+
+/**
+ * Apply coverage gradient to the date slider
+ */
+async function applyCoverageGradient() {
+  if (!sliderTrackBase || !sliderTrackActive) return;
+
+  try {
+    const coverageData = await fetchContentCoverageYearly();
+    if (!coverageData || coverageData.length === 0) return;
+
+    contentCoverageByYear = coverageData.reduce((acc, row) => {
+      acc[row.year] = typeof row.coverage === "number" ? row.coverage : 0;
+      return acc;
+    }, {});
+
+    const gradient = buildCoverageGradient();
+    if (gradient) {
+      sliderTrackBase.style.background = gradient;
+      sliderTrackActive.style.display = "none";
+    }
+
+    // Ensure thumb color is set on initial load
+    updateSliderTrack();
+  } catch (error) {
+    console.error("Error applying coverage gradient:", error);
   }
 }
 
@@ -525,31 +709,38 @@ async function initDateRangeSlider() {
 
   // Initial update
   updateSliderTrack();
+  applyCoverageGradient();
 
   // Add event listeners - input for visual feedback, pointerup/mouseup for data refresh
   if (dateSliderFrom) {
     dateSliderFrom.addEventListener("input", () => {
       updateSliderTrack(); // Update visuals only (labels, track position)
+      if (sliderHintFrom) sliderHintFrom.style.display = "block";
     });
     
     dateSliderFrom.addEventListener("pointerup", () => {
       refresh(); // Refresh data when user releases the slider
+      if (sliderHintFrom) sliderHintFrom.style.display = "none";
     });
     dateSliderFrom.addEventListener("mouseup", () => {
       refresh(); // Fallback for older browsers
+      if (sliderHintFrom) sliderHintFrom.style.display = "none";
     });
   }
 
   if (dateSliderTo) {
     dateSliderTo.addEventListener("input", () => {
       updateSliderTrack(); // Update visuals only (labels, track position)
+      if (sliderHintTo) sliderHintTo.style.display = "block";
     });
     
     dateSliderTo.addEventListener("pointerup", () => {
       refresh(); // Refresh data when user releases the slider
+      if (sliderHintTo) sliderHintTo.style.display = "none";
     });
     dateSliderTo.addEventListener("mouseup", () => {
       refresh(); // Fallback for older browsers
+      if (sliderHintTo) sliderHintTo.style.display = "none";
     });
   }
 }

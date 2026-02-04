@@ -16,7 +16,7 @@
     <!-- Hero Section -->
     <header class="hero hero--wave">
       <div class="hero-overlay">
-        <div class="design-switcher" aria-label="Design auswählen">
+        <!-- <div class="design-switcher" aria-label="Design auswählen">
           <button class="design-btn" data-design="wave">Wave</button>
           <button class="design-btn" data-design="default">Default</button>
           <button class="design-btn" data-design="glass">Glass</button>
@@ -29,7 +29,7 @@
           <button class="design-btn" data-design="glassborder">Glass Border</button>
           <button class="design-btn" data-design="fade">Fade</button>
           <button class="design-btn" data-design="overlap">Overlap</button>
-        </div>
+        </div> -->
         <div class="language-switcher">
           <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
           <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
@@ -70,6 +70,7 @@
         </div>
 
         <!-- Search Input -->
+        <div class="search-hint" data-i18n="search.hint">Frag die Anträge, nicht die Orakel.</div>
         <div class="search-bar">
           <div class="search-input-wrapper">
             <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -159,6 +160,8 @@
                 />
                 <div class="slider-track"></div>
                 <div class="slider-track-active"></div>
+                <div id="sliderHintFrom" class="slider-hint" aria-hidden="true"></div>
+                <div id="sliderHintTo" class="slider-hint" aria-hidden="true"></div>
               </div>
               
               <button id="clearDateFilter" class="clear-btn" data-i18n="filter.date.clear">
@@ -184,14 +187,29 @@
           <div id="viz-fraktionen-share" class="chart-card"></div>
           <div id="viz-topdocs" class="chart-card"></div>
           <div id="viz-metrics-chart" class="chart-card"></div>
+          <!-- District-Party Map -->
+          <div class="chart-card" style="min-height: 600px;">
+            <div class="map-hint">
+              <p data-i18n="map.hint">Die Karte zeigt, welche Fraktionen relativ zu ihrer Gesamtaktivität in welchen Stadtteilen besonders aktiv sind (normalisierte Anteile). Die Kreisgröße steht für die Zahl der Erwähnungen, die Farben zeigen die Fraktionsanteile. Hinweis: Diese Karte ist statisch und wird nicht von den Filtern oben beeinflusst.</p>
+            </div>
+            <iframe 
+              src="/static/munich_districts_fairshare_map.html" 
+              style="width: 100%; height: 600px; border: none; border-radius: 8px;"
+              title="Munich Districts - Party Distribution Map">
+            </iframe>
+          </div>
         </div>
+        
+      </section>
 
         <!-- Peek window showing the wave cut again over the background image -->
         <div class="wave-window" aria-hidden="true"></div>
 
+
         <!-- Applications List -->
         <div id="viz-applications" class="applications-section"></div>
-      </section>
+
+
 
     </main>
 

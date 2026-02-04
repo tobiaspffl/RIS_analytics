@@ -739,6 +739,119 @@ def compute_date_range(file: str) -> dict:
         return {"minDate": None, "maxDate": None}
 
 
+def compute_pdf_availability_by_month(file: str, typ_filter=None, date_filter=None) -> pd.DataFrame:
+    """
+    Compute monthly availability of document content (proxy for PDF availability).
+
+    Returns a DataFrame with columns ['month', 'pdf_availability'].
+    """
+    try:
+        df = _load_data_cached(file)
+        if df.empty or "Gestellt am" not in df.columns:
+            return pd.DataFrame({"month": [], "pdf_availability": []})
+
+        if typ_filter:
+            df = df[df["Typ"].isin(typ_filter)]
+
+        if date_filter:
+            df["Gestellt am"] = pd.to_datetime(df["Gestellt am"], errors="coerce")
+            if "from" in date_filter and date_filter["from"]:
+                date_from = pd.to_datetime(date_filter["from"])
+                df = df[df["Gestellt am"] >= date_from]
+            if "to" in date_filter and date_filter["to"]:
+                date_to = pd.to_datetime(date_filter["to"])
+                df = df[df["Gestellt am"] <= date_to]
+
+        df["Gestellt am"] = pd.to_datetime(df["Gestellt am"], errors="coerce")
+        df = df[df["Gestellt am"].notna()]
+        if df.empty:
+            return pd.DataFrame({"month": [], "pdf_availability": []})
+
+        df["month"] = df["Gestellt am"].dt.strftime("%Y-%m")
+
+        if "document_content" in df.columns:
+            content_series = df["document_content"].fillna("").astype(str).str.strip()
+            df["has_content"] = content_series != ""
+        else:
+            df["has_content"] = False
+
+        totals = df.groupby("month").size().reset_index(name="total")
+        with_content = df.groupby("month")["has_content"].sum().reset_index(name="with_content")
+
+        result = totals.merge(with_content, on="month", how="left")
+        result["pdf_availability"] = result["with_content"] / result["total"].replace(0, pd.NA)
+        result["pdf_availability"] = result["pdf_availability"].fillna(0.0)
+
+        return result[["month", "pdf_availability"]].sort_values("month")
+    except Exception as e:
+        print(f"Error computing pdf availability by month: {e}")
+        return pd.DataFrame({"month": [], "pdf_availability": []})
+
+
+def compute_monthly_trend_corrected(file: str, words: list[str], typ_filter=None, date_filter=None) -> pd.DataFrame:
+    """
+    Compute bias-corrected monthly trend using PDF availability.
+
+    Returns a DataFrame with columns ['month', 'count', 'count_corrected', 'pdf_availability'].
+    """
+    trend = compute_monthly_trend(file, words, typ_filter=typ_filter, date_filter=date_filter)
+    if trend.empty:
+        return pd.DataFrame({"month": [], "count": [], "count_corrected": [], "pdf_availability": []})
+
+    availability = compute_pdf_availability_by_month(file, typ_filter=typ_filter, date_filter=date_filter)
+    merged = trend.merge(availability, on="month", how="left")
+
+    merged["pdf_availability"] = merged["pdf_availability"].fillna(0.0)
+    safe_availability = merged["pdf_availability"].replace(0, pd.NA)
+    merged["count_corrected"] = (merged["count"] / safe_availability).fillna(merged["count"])
+
+    return merged[["month", "count", "count_corrected", "pdf_availability"]].sort_values("month")
+
+
+def compute_content_coverage_by_year(file: str) -> pd.DataFrame:
+    """
+    Compute yearly coverage of proposals that contain document content.
+
+    Returns a DataFrame with columns:
+    [year, coverage, with_content, total]
+    """
+    try:
+        df = _load_data_cached(file)
+        if df.empty or "Gestellt am" not in df.columns:
+            return pd.DataFrame({"year": [], "coverage": [], "with_content": [], "total": []})
+
+        df = df.copy()
+        df["Gestellt am"] = pd.to_datetime(df["Gestellt am"], errors="coerce")
+        df = df[df["Gestellt am"].notna()]
+
+        if df.empty:
+            return pd.DataFrame({"year": [], "coverage": [], "with_content": [], "total": []})
+
+        df["year"] = df["Gestellt am"].dt.year
+
+        if "document_content" in df.columns:
+            content_series = df["document_content"].fillna("").astype(str).str.strip()
+            df["has_content"] = content_series != ""
+        else:
+            df["has_content"] = False
+
+        grouped = (
+            df.groupby("year")
+            .agg(total=("year", "size"), with_content=("has_content", "sum"))
+            .reset_index()
+        )
+        grouped["coverage"] = grouped["with_content"] / grouped["total"].replace(0, pd.NA)
+        grouped["coverage"] = grouped["coverage"].fillna(0.0)
+
+        grouped["with_content"] = grouped["with_content"].astype(int)
+        grouped["total"] = grouped["total"].astype(int)
+
+        return grouped[["year", "coverage", "with_content", "total"]].sort_values("year")
+    except Exception as e:
+        print(f"Error computing content coverage by year: {e}")
+        return pd.DataFrame({"year": [], "coverage": [], "with_content": [], "total": []})
+
+
 def get_available_typen(file: str) -> list:
     """
     Get all unique Typ values from the dataset.

@@ -16,6 +16,7 @@ export const translations = {
     'search.description': 'Erkunden Sie die häufigsten Themen in Münchner Stadtratsanträgen oder suchen Sie nach einem spezifischen Stichwort',
     'search.popular': 'Beliebte Themen:',
     'search.popular.note': '(Es werden hier die am meisten vorkommenden Keywords mit Hilfe von spacy gefiltert, gecached und angezeigt, exclusive der in keyword_extractor.py ausgeschlossenen stop words)',
+    'search.hint': 'Frag die Anträge, nicht die Orakel – jedes Wort geht.',
     'search.placeholder': 'Suchbegriff eingeben...',
     'search.button': 'Suchen',
     
@@ -27,6 +28,13 @@ export const translations = {
     'filter.date.to': 'Bis:',
     'filter.date.clear': 'Zurücksetzen',
     'filter.date.invalid': 'Ungültiger Zeitraum',
+    'slider.coverage.label': 'Inhaltsabdeckung',
+    'slider.coverage.none': 'nahezu keine Inhalte',
+    'slider.coverage.very_low': 'sehr wenige Inhalte',
+    'slider.coverage.low': 'wenige Inhalte',
+    'slider.coverage.medium': 'einige Inhalte',
+    'slider.coverage.high': 'viele Inhalte',
+    'slider.coverage.very_high': 'sehr viele Inhalte',
     
     // Date Range
     'daterange.prefix': 'Daten von',
@@ -50,6 +58,10 @@ export const translations = {
     'error.no-metrics': 'Keine Metriken verfügbar',
     'error.no-referate': 'Keine Daten für Referate verfügbar',
     
+    // Map Visualization
+    'map.title': 'Münchner Stadtteile - Parteienverteilung',
+    'map.hint': 'Die Karte zeigt, welche Fraktionen relativ zu ihrer Gesamtaktivität in welchen Stadtteilen besonders aktiv sind (normalisierte Anteile). Die Kreisgröße steht für die Zahl der Erwähnungen, die Farben zeigen die Fraktionsanteile. Hinweis: Diese Karte ist statisch und wird nicht von den Filtern oben beeinflusst.',
+    'error.no-map-data': 'Keine Kartendaten verfügbar',
     // Charts - Titles
     'chart.trend.title': 'Anträge pro Monat',
     'chart.trend.title.all': 'Alle Anträge pro Monat',
@@ -72,6 +84,8 @@ export const translations = {
     'chart.label.proposals': 'Anträge',
     'chart.label.total': 'Gesamt',
     'chart.label.keyword': 'Mit Stichwort',
+    'chart.label.share': 'Anteil',
+    'chart.label.corrected': 'Korrigiert',
     'chart.label.count': 'Anzahl',
     'chart.label.avgdays': 'Ø Tage',
     
@@ -85,6 +99,8 @@ export const translations = {
     'kpi.avgdays.title': 'Ø Bearbeitungszeit',
     'kpi.avgdays.description': 'Tage',
     'kpi.avgdays.na': 'k.A.',
+    'kpi.metrics.title': 'Bearbeitungsmetriken',
+    'kpi.metrics.title.all': 'Bearbeitungsmetriken (alle Anträge)',
 
     // Applications List
     'applications.title': 'Aufgelistete Anträge',
@@ -137,6 +153,7 @@ export const translations = {
     
     'methodology.search.title': '3. Such- und Zählregeln',
     'methodology.search.1': 'Suche erfolgt regex-basiert, case-insensitive, pro Suchwort.',
+    'methodology.search.7': 'Freie Stichwortsuche: Es kann jedes Wort bzw. jede Phrase gesucht werden.',
     'methodology.search.2': '<strong>Schwelle:</strong> <code>MIN_OCCURRENCES_PER_DOC = 1</code>. Ein Dokument zählt als Treffer, sobald das Suchwort mindestens einmal vorkommt.',
     'methodology.search.3': '<strong>Binär pro Dokument:</strong> Ein Dokument trägt maximal 1 zum Zähler bei, auch wenn das Wort mehrfach vorkommt.',
     'methodology.search.4': '<strong>Theme-Expansion (aktiv):</strong> Suchbegriffe werden über <code>THEME_MAP</code> um thematisch verwandte Phrasen erweitert (z. B. "Wohnen" → Wohnung, Miete, Zimmer ...). Dadurch steigen Trefferzahlen, weil Synonyme mitgezählt werden. Abschaltbar via <code>expand_with_themes=False</code>.',
@@ -168,14 +185,22 @@ export const translations = {
     'methodology.theme.themes.supply': 'Wasser, Energieversorgung, Tierschutz, Kinderrechte, Verbraucherschutz',
     
     'methodology.evaluations.title': '5. Auswertungen',
-    'methodology.evaluations.1': '<strong>Trend:</strong> Gruppierung nach Monat (YYYY-MM) und Summe der binären <code>count</code>-Spalte; optionale Typ-Breakdowns.',
-    'methodology.evaluations.2': '<strong>Fraktionen/Einreicher:</strong> Feld <code>Gestellt von</code> wird an Kommata gesplittet, pro Name summiert; optional Typ-Breakdowns.',
-    'methodology.evaluations.3': '<strong>Anteil pro Fraktion:</strong> Verhältnis (Treffer / alle Dokumente je Fraktion), Null-Divisionen werden entfernt.',
+    'methodology.evaluations.1': '<strong>Trend (absolut):</strong> Gruppierung nach Monat (YYYY-MM) und Summe der binären <code>count</code>-Spalte; Tooltips zeigen Typ-Breakdown und Gesamtzahl.',
+    'methodology.evaluations.5': '<strong>Trend (Anteil):</strong> Anteil der Treffer pro Monat (<code>count/total</code>); Tooltips zeigen Anteil sowie Treffer/gesamt.',
+    'methodology.evaluations.6': '<strong>Trend (korrigiert):</strong> Korrektur der Monatszahlen mit der PDF-Verfügbarkeit (Schätzung fehlender Inhalte).',
+    'methodology.evaluations.2': '<strong>Fraktionen/Einreicher:</strong> Feld <code>Gestellt von</code> wird an Kommata gesplittet, pro Name summiert; Tooltips zeigen Typ-Breakdowns.',
+    'methodology.evaluations.3': '<strong>Anteil pro Fraktion:</strong> Verhältnis (Treffer / alle Dokumente je Fraktion); Tooltips zeigen Anteil und Treffer/gesamt.',
     'methodology.evaluations.4': '<strong>KPI Verarbeitung:</strong> Durchschnittliche Bearbeitungszeit (Erledigt am − Gestellt am) nur für erledigte Vorgänge; offene/geschlossene Zähler basieren auf Vorhandensein des Erledigt-Datums; Referats-Breakdown über erledigte Vorgänge.',
+    'methodology.evaluations.7': '<strong>Bearbeitungsdauer nach Referat:</strong> Durchschnittliche Tage pro Referat; Tooltips zeigen Ø‑Tage und Typ-Breakdown.',
+    'methodology.evaluations.8': '<strong>Antragsliste:</strong> Kartenansicht mit Titel, Datum und Kurzbeschreibung; Klick öffnet das Dokument (falls vorhanden).',
+    'methodology.evaluations.9': '<strong>Stadtteilkarte:</strong> Es wird gezählt, wie oft vordefinierte Stadtteilnamen in Anträgen vorkommen. Diese Nennungen werden normalisiert; die Gesamtzahl der Stadtteil‑Nennungen bestimmt die Kreisgröße, und das Kreisdiagramm zeigt die Fraktionsanteile je Stadtteil. Diese Karte ist statisch.',
+    'methodology.evaluations.10': '<strong>Zeitslider-Hinweis:</strong> Zeigt die Inhaltsabdeckung (Anteil der Anträge mit Textinhalt) für das Jahr unter dem Regler. Die Prozentwerte werden je Jahr aus <code>document_content</code> berechnet und in Kategorien zusammengefasst.',
     
     'methodology.visualization.title': '6. Visualisierung',
     'methodology.visualization.1': 'Frontend nutzt D3.js; Daten werden über JSON-Endpunkte aus Flask geladen.',
     'methodology.visualization.2': 'Keine clientseitige Nachfilterung außer Darstellung (Tooltips, Sortierungen auf Basis der gelieferten Aggregationen).',
+    'methodology.visualization.3': 'Tooltips zeigen zusätzliche Details (z. B. Typ-Breakdowns, Anteile und Treffer/gesamt).',
+    'methodology.visualization.4': 'Die Stadtteilkarte ist vorgerendert und wird nicht durch die Filter beeinflusst.',
     
     'methodology.limits.title': '7. Grenzen & Bias',
     'methodology.limits.1': 'Regex- und Theme-Expansion können Über- oder Unterzählungen verursachen (z. B. Teilwörter, fehlende Synonyme).',
@@ -200,6 +225,7 @@ export const translations = {
     'search.description': 'Explore the most common topics in Munich city council proposals or search for a specific keyword',
     'search.popular': 'Popular Topics:',
     'search.popular.note': '(The most frequently occurring keywords are filtered, cached and displayed using spacy, excluding the stop words excluded in keyword_extractor.py)',
+    'search.hint': 'Seek any word and you shall find… hopefully.',
     'search.placeholder': 'Enter search term...',
     'search.button': 'Search',
     
@@ -211,6 +237,13 @@ export const translations = {
     'filter.date.to': 'To:',
     'filter.date.clear': 'Reset',
     'filter.date.invalid': 'Invalid date range',
+    'slider.coverage.label': 'Content coverage',
+    'slider.coverage.none': 'almost no content',
+    'slider.coverage.very_low': 'very little content',
+    'slider.coverage.low': 'little content',
+    'slider.coverage.medium': 'some content',
+    'slider.coverage.high': 'much content',
+    'slider.coverage.very_high': 'very much content',
     
     // Date Range
     'daterange.prefix': 'Data from',
@@ -234,6 +267,7 @@ export const translations = {
     // Charts - Titles
     'chart.trend.title': 'Proposals per Month',
     'chart.trend.title.all': 'All Proposals per Month',
+    'chart.trend.corrected.title': 'Proposals per Month (Corrected)',
     'chart.trend.share.title': 'Keyword Share per Month',
     'chart.fraktionen.title': 'Faction Participation',
     'chart.fraktionen.title.all': 'Faction Participation (all proposals)',
@@ -253,6 +287,8 @@ export const translations = {
     'chart.label.proposals': 'Proposals',
     'chart.label.total': 'Total',
     'chart.label.keyword': 'With Keyword',
+    'chart.label.share': 'Share',
+    'chart.label.corrected': 'Corrected',
     'chart.label.count': 'Count',
     'chart.label.avgdays': 'Avg. Days',
     
@@ -266,6 +302,8 @@ export const translations = {
     'kpi.avgdays.title': 'Avg. Processing Time',
     'kpi.avgdays.description': 'Days',
     'kpi.avgdays.na': 'N/A',
+    'kpi.metrics.title': 'Processing metrics',
+    'kpi.metrics.title.all': 'Processing metrics (all proposals)',
 
     // Applications List
     'applications.title': 'Listed Proposals',
@@ -354,6 +392,7 @@ export const translations = {
     
     'methodology.search.title': '3. Search and Counting Rules',
     'methodology.search.1': 'Search is regex-based, case-insensitive, per search word.',
+    'methodology.search.7': 'Free keyword search: any word or phrase can be searched.',
     'methodology.search.2': '<strong>Threshold:</strong> <code>MIN_OCCURRENCES_PER_DOC = 1</code>. A document counts as a hit as soon as the search word occurs at least once.',
     'methodology.search.3': '<strong>Binary per document:</strong> A document contributes at most 1 to the count, even if the word appears multiple times.',
     'methodology.search.4': '<strong>Theme Expansion (active):</strong> Search terms are expanded via <code>THEME_MAP</code> with thematically related phrases (e.g. "Housing" → apartment, rent, room ...). This increases hit counts because synonyms are counted. Can be disabled via <code>expand_with_themes=False</code>.',
@@ -385,20 +424,33 @@ export const translations = {
     'methodology.theme.themes.supply': 'Water, energy supply, animal welfare, children\'s rights, consumer protection',
     
     'methodology.evaluations.title': '5. Evaluations',
-    'methodology.evaluations.1': '<strong>Trend:</strong> Grouping by month (YYYY-MM) and sum of binary <code>count</code> column; optional type breakdowns.',
-    'methodology.evaluations.2': '<strong>Factions/Submitters:</strong> Field <code>submitted by</code> is split at commas, summed per name; optional type breakdowns.',
-    'methodology.evaluations.3': '<strong>Share per faction:</strong> Ratio (hits / all documents per faction), zero divisions removed.',
-    'methodology.evaluations.4': '<strong>KPI Processing:</strong> Average processing time (completed on − submitted on) only for completed items; open/closed counters based on presence of completion date; department breakdown via completed items.',
+    'methodology.evaluations.1': '<strong>Trend (absolute):</strong> Grouped by month (YYYY-MM) and sum of binary <code>count</code>; tooltips show type breakdown and total.',
+    'methodology.evaluations.5': '<strong>Trend (share):</strong> Share of hits per month (<code>count/total</code>); tooltips show share and hits/total.',
+    'methodology.evaluations.6': '<strong>Trend (corrected):</strong> Monthly counts corrected by PDF availability (estimate of missing content).',
+    'methodology.evaluations.2': '<strong>Factions/Submitters:</strong> <code>submitted by</code> is split at commas, summed per name; tooltips show type breakdowns.',
+    'methodology.evaluations.3': '<strong>Share per faction:</strong> Ratio (hits / all documents per faction); tooltips show share and hits/total.',
+    'methodology.evaluations.4': '<strong>KPI processing:</strong> Average processing time (completed on − submitted on) only for completed items; open/closed counters based on completion date; department breakdown via completed items.',
+    'methodology.evaluations.7': '<strong>Processing time by department:</strong> Average days per department; tooltips show avg days and type breakdown.',
+    'methodology.evaluations.8': '<strong>Proposal list:</strong> Card view with title, date and short description; clicking opens the document if available.',
+    'methodology.evaluations.9': '<strong>District map:</strong> We count how often predefined district names appear in proposals. Mentions are normalized and the overall share of district-name mentions is used to size the marker; the pie shows party shares for that district. This map is static.',
+    'methodology.evaluations.10': '<strong>Time slider hint:</strong> Shows content coverage (share of proposals with text content) for the year under the handle. Percentages are computed per year from <code>document_content</code> and grouped into categories.',
     
     'methodology.visualization.title': '6. Visualization',
     'methodology.visualization.1': 'Frontend uses D3.js; data is loaded via JSON endpoints from Flask.',
     'methodology.visualization.2': 'No client-side post-filtering except display (tooltips, sorting based on provided aggregations).',
+    'methodology.visualization.3': 'Tooltips display extra details (e.g., type breakdowns, shares and hits/total).',
+    'methodology.visualization.4': 'The district map is pre-rendered and not affected by filters.',
     
     'methodology.limits.title': '7. Limitations & Bias',
     'methodology.limits.1': 'Regex and theme expansion can cause over- or under-counting (e.g. partial words, missing synonyms).',
     'methodology.limits.2': 'Binary counting ignores multiple mentions within a document.',
     'methodology.limits.3': 'Quality of results depends on data completeness and correctness of the source.',
     'methodology.limits.4': 'No automatic removal of stop words in counting; theme expansion is curated and may be incomplete.',
+    
+    // Map Visualization
+    'map.title': 'Munich Districts - Party Distribution',
+    'map.hint': 'This map shows which parties focus on which districts relative to their overall activity (normalized shares). Marker size reflects total mentions; colors show party shares. Note: This map is static and not affected by the filters above.',
+    'error.no-map-data': 'No map data available',
   }
 };
 

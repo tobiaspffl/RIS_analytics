@@ -337,6 +337,13 @@ body {
   white-space: nowrap;
 }
 
+.search-hint {
+  font-size: 0.72rem;
+  color: rgba(100, 116, 139, 0.65);
+  margin-bottom: var(--spacing-sm);
+  text-align: left;
+}
+
 .search-btn:hover {
   background: var(--primary-700);
   transform: translateY(-1px);
@@ -509,38 +516,38 @@ body {
   appearance: none;
   width: 20px;
   height: 20px;
-  background: var(--primary-600);
+  background: var(--slider-thumb-color, var(--primary-600));
   border: 3px solid white;
   border-radius: 50%;
   cursor: pointer;
   pointer-events: all;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 2px 8px var(--slider-thumb-shadow, rgba(37, 99, 235, 0.3));
   transition: all 0.2s ease;
   margin: 0;
 }
 
 .date-slider::-webkit-slider-thumb:hover {
-  background: var(--primary-700);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  background: var(--slider-thumb-color, var(--primary-700));
+  box-shadow: 0 4px 12px var(--slider-thumb-shadow, rgba(37, 99, 235, 0.4));
   transform: scale(1.1);
 }
 
 .date-slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
-  background: var(--primary-600);
+  background: var(--slider-thumb-color, var(--primary-600));
   border: 3px solid white;
   border-radius: 50%;
   cursor: pointer;
   pointer-events: all;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 2px 8px var(--slider-thumb-shadow, rgba(37, 99, 235, 0.3));
   transition: all 0.2s ease;
   margin: 0;
 }
 
 .date-slider::-moz-range-thumb:hover {
-  background: var(--primary-700);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+  background: var(--slider-thumb-color, var(--primary-700));
+  box-shadow: 0 4px 12px var(--slider-thumb-shadow, rgba(37, 99, 235, 0.4));
   transform: scale(1.1);
 }
 
@@ -584,6 +591,24 @@ body {
   border-radius: 2px;
   pointer-events: none;
   z-index: 2;
+}
+
+.slider-hint {
+  position: absolute;
+  top: -28px;
+  transform: translateX(-50%);
+  background: white;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+  display: none;
+  pointer-events: none;
+  z-index: 7;
 }
 
 #clearDateFilter {
@@ -1561,6 +1586,21 @@ header.hero.hero--overlap + main .search-section { margin-top: -80px; }
   background: var(--gray-400);
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.map-hint {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  color: var(--gray-600);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.map-hint p {
+  margin: 0;
 }
 
 
