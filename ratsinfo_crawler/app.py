@@ -1,4 +1,4 @@
-﻿import pandas as pd
+import pandas as pd
 from flask import Flask, request, render_template, jsonify
 import Ratsinfo as ri
 
@@ -387,4 +387,4 @@ def methodik():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
