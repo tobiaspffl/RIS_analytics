@@ -160,6 +160,41 @@ def trend_share():
     return jsonify(trend_share_data.to_dict(orient="records"))
 
 
+# Route to return bias-corrected monthly trend data
+@app.route("/trend_corrected", methods=["GET"])
+def trend_corrected():
+    """
+    Returns monthly counts corrected by PDF availability.
+    Query params:
+        word (required) - the search keyword
+        typ (optional) - comma-separated list of Typ values to filter by
+        date_from (optional) - start date in YYYY-MM-DD format
+        date_to (optional) - end date in YYYY-MM-DD format
+
+    Response: [ {month: "2024-01", count: 5, count_corrected: 6.2, pdf_availability: 0.81}, ... ]
+    """
+    word = request.args.get("word", type=str)
+    typ_param = request.args.get("typ", type=str, default="")
+    date_from = request.args.get("date_from", type=str, default="")
+    date_to = request.args.get("date_to", type=str, default="")
+
+    if not word:
+        return jsonify([])
+
+    typ_filter = [t.strip() for t in typ_param.split(",") if t.strip()] if typ_param else None
+
+    date_filter = None
+    if date_from or date_to:
+        date_filter = {}
+        if date_from:
+            date_filter["from"] = date_from
+        if date_to:
+            date_filter["to"] = date_to
+
+    corrected = ri.compute_monthly_trend_corrected("data.csv", [word], typ_filter=typ_filter, date_filter=date_filter)
+    return jsonify(corrected.to_dict(orient="records"))
+
+
 # Route to return processing metrics
 @app.route("/metrics", methods=["GET"])
 def metrics():
@@ -211,6 +246,17 @@ def date_range():
     """
     date_range_data = ri.compute_date_range("data.csv")
     return jsonify(date_range_data)
+
+
+# Route to return yearly content coverage
+@app.route("/content-coverage-yearly", methods=["GET"])
+def content_coverage_yearly():
+    """
+    Returns yearly coverage of proposals that contain document content.
+    Response: [ {year: 2015, coverage: 0.98, with_content: 120, total: 123}, ... ]
+    """
+    coverage = ri.compute_content_coverage_by_year("data.csv")
+    return jsonify(coverage.to_dict(orient="records"))
 
 
 # Route to return available Typ values
@@ -309,6 +355,24 @@ def get_applications():
         "offset": offset,
         "limit": limit
     })
+
+
+# Route to return PDF availability statistics (cached)
+@app.route("/pdf_availability", methods=["GET"])
+def pdf_availability():
+    """
+    Returns PDF availability by month (what fraction of documents have PDFs).
+    
+    This data is cached and used to correct for missing PDF bias in older data.
+    
+    Response: [ {month: "2024-01", pdf_availability: 0.95}, ... ]
+    """
+    try:
+        result = ri.compute_pdf_availability_by_month("data.csv")
+        result = result.where(pd.notnull(result), None)
+        return jsonify(result.to_dict(orient="records"))
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/rechtliches", methods=["GET"])
