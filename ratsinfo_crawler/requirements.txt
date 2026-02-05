@@ -1,0 +1,11 @@
+pandas~=2.3.3
+Flask~=3.1.2
+matplotlib~=3.10.7
+spacy~=3.8.11
+requests~=2.32.5
+beautifulsoup4~=4.14.2
+pypdf~=6.2.0
+selenium~=4.38.0
+numpy~=2.3.4
+seaborn~=0.13.2
+gunicorn
